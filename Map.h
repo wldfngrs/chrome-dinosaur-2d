@@ -16,4 +16,4 @@ public:
 
 	void loadMap(int arr[20][25]);
 	void drawMap();
-}
+};

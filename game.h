@@ -7,18 +7,13 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
 
 class Game {
 	int initGame();
 	void closeGame();
 
-	static bool running;
-
 	const int SCREEN_WIDTH = 900;
 	const int SCREEN_HEIGHT = 480;
-
-	std::string errorMessage;
 
 	SDL_Window* window;
 
@@ -31,10 +26,10 @@ public:
 	void update();
 	void mainLoop();
 
-	std::string getErrorMessage();
-
-	bool isRunning() const { return running; }
-
 	static bool initError;
+	static bool running;
+	
+	static std::string errorMessage;
+
 	static SDL_Renderer* renderer;
 };

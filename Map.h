@@ -14,6 +14,9 @@ public:
 	Map();
 	~Map();
 
-	void loadMap(int arr[20][25]);
+	void loadMap(int arr[8][6]);
 	void drawMap();
+
+	static int row;
+	static int col;
 };

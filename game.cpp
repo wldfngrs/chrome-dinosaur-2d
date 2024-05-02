@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Map.h"
 
 #include <sstream>
 
@@ -9,7 +10,11 @@ GameObject* dino;
 bool Game::running = false;
 bool Game::initError = false;
 
+std::string Game::errorMessage = "null";
+
 SDL_Renderer* Game::renderer = nullptr;
+
+Map* map;
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -47,8 +52,9 @@ int Game::initGame() {
 	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
 
 	dino = new GameObject("assets\\Classic\\day_dino.png", 0, 0);
+	map = new Map();
 
-	this->running = true;
+	Game::running = true;
 
 	return 0;
 }
@@ -59,26 +65,31 @@ void Game::handleEvents() {
 
 	switch (event.type) {
 	case SDL_QUIT:
-		this->running = false;
+		this->closeGame();
 		break;
 	default:
 		break;
 	}
 }
 
-void Game::render() {
-	std::stringstream ss;
-	if (SDL_RenderClear(this->renderer) < 0) {
-		ss << "[ERROR] Game::render(): SDL_RenderClear() Failed!\n[Details] " << SDL_GetError() << "\n";
-		this->running = false;
-		throw std::runtime_error{ ss.str() };
+static inline void GameRender() {
+	if (SDL_RenderClear(Game::renderer) < 0) {
+		std::stringstream ss;
+		ss << "[ERROR] Game::render(): SDL_RenderClear() Failed!\nDetails: " << SDL_GetError() << "\n\n";
+		Game::errorMessage = ss.str();
+		Game::running = false;
 	}
+}
 
-	if (dino->render() < 0) {
-		ss << "[ERROR] " << dino->getErrorMessage() << " Game::render(): SDL_RenderCopy() Failed!\nDetails: " << SDL_GetError() << "\n";
-		this->running = false;
-		throw std::runtime_error{ ss.str() };
-	}
+void Game::render() {
+	GameRender();
+	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
+
+	map->drawMap();
+	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
+	
+	dino->render();
+	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 
 	SDL_RenderPresent(this->renderer);
 }
@@ -94,7 +105,7 @@ void Game::mainLoop() {
 	Uint32 frameStart;
 	int frameTime;
 
-	while (this->isRunning()) {
+	while (Game::running) {
 		try {
 			frameStart = SDL_GetTicks();
 			this->handleEvents();
@@ -112,10 +123,6 @@ void Game::mainLoop() {
 	}
 }
 
-std::string Game::getErrorMessage() {
-	return this->errorMessage;
-}
-
 void Game::closeGame() {
 	SDL_DestroyWindow(this->window);
 	SDL_DestroyRenderer(this->renderer);
@@ -126,4 +133,5 @@ void Game::closeGame() {
 	SDL_Quit();
 
 	std::cout << "Dino 2D exited...\n";
+	exit(0);
 }

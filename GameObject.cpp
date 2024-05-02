@@ -12,38 +12,22 @@ GameObject::GameObject(const char* pathToTexture, int x, int y) {
 GameObject::~GameObject() {}
 
 void GameObject::update() {
-	/*dstRect.h = 220;
-	dstRect.w = 320;
-	dstRect.x = 0;
-	dstRect.y = 250;
+	destRect.h = 110;
+	destRect.w = 100;
+	destRect.x = 60;
+	destRect.y = 310;
 
 	srcRect.x = xpos;
 	srcRect.y = ypos;
-	srcRect.w = dstRect.w * 2;
-	srcRect.h = dstRect.h * 2;*/
-
-	srcRect.h = 64;
-	srcRect.w = 90;
-	srcRect.x = 0;
-	srcRect.y = 0;
-
-	destRect.x = xpos;
-	destRect.y = ypos;
-	destRect.w = destRect.w * 2;
-	destRect.h = destRect.h * 2;
+	srcRect.w = destRect.w * 2;
+	srcRect.h = destRect.h * 2;
 }
 
-int GameObject::render() {
-	std::stringstream ss;
+void GameObject::render() {
 	if (SDL_RenderCopy(Game::renderer, this->objTexture, &(this->srcRect), &(this->destRect)) < 0) {
-		ss << "GameObject::render() <-";
-		this->errorMessage = ss.str();
-		return -1;
+		std::stringstream ss;
+		ss << "[ERROR] GameObject::render(): SDL_RenderCopy() Failed!\nDetails: " << SDL_GetError() << "\n\n";
+		Game::running = false;
+		Game::errorMessage = ss.str();
 	}
-
-	return 0;
-}
-
-std::string GameObject::getErrorMessage() const {
-	return this->errorMessage;
 }

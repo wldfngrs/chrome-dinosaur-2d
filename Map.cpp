@@ -3,9 +3,9 @@
 
 int lvl1[8][6] = {
 	{0,0,0,0,0,0},
-	{0,0,0,0,0,0},
-	{0,0,0,0,0,0},
-	{0,0,0,0,0,0},
+	{0,0,0,0,1,0},
+	{1,0,0,0,0,0},
+	{0,0,1,0,0,0},
 	{0,0,0,0,0,0},
 	{0,0,0,0,0,0},
 	{0,0,0,0,0,0},
@@ -16,9 +16,9 @@ int Map::row = 8;
 int Map::col = 6;
 
 Map::Map() {
-	this->dirt = TextureManager::loadTexture("assets\\Classic\\cloud1.png");
-	this->grass = TextureManager::loadTexture("assets\\Classic\\cloud1.png");
-	this->sky = TextureManager::loadTexture("assets\\Classic\\cloud1.png");
+	this->dirt = TextureManager::loadTexture("assets\\Classic\\day_cloud.png");
+	this->grass = TextureManager::loadTexture("assets\\Classic\\day_cloud.png");
+	this->sky = TextureManager::loadTexture("assets\\Classic\\day_cloud.png");
 
 	loadMap(lvl1);
 
@@ -50,6 +50,7 @@ void Map::drawMap() {
 
 			switch (type) {
 			case 0:
+				break;
 				TextureManager::draw(dirt, src, dest);
 				break;
 			case 1:

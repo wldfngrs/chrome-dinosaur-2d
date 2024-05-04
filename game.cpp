@@ -1,11 +1,10 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "GameObject.h"
 #include "Map.h"
+#include "Components.h"
 
 #include <sstream>
 
-GameObject* dino;
 
 bool Game::running = false;
 bool Game::initError = false;
@@ -15,6 +14,9 @@ std::string Game::errorMessage = "null";
 SDL_Renderer* Game::renderer = nullptr;
 
 Map* map;
+
+EntityManager entityManager;
+auto& newPlayer(entityManager.addEntity());
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -66,7 +68,6 @@ void Game::handleEvents() {
 	switch (event.type) {
 	case SDL_QUIT:
 		this->closeGame();
-		break;
 	default:
 		break;
 	}

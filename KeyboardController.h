@@ -17,7 +17,7 @@ public:
 			case SDLK_UP:
 			case SDLK_SPACE:
 				// dino jump
-				transform->velocity.y = -1;
+				transform->velocity.y = -5;
 				break;
 			case SDLK_DOWN:
 				// dino crouch

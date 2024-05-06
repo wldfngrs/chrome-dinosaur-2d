@@ -14,13 +14,11 @@ struct TransformComponent : public Component {
 	int speed = 3;
 
 	TransformComponent() {
-		position.x = 0.0f;
-		position.y = 0.0f;
+		position.zero();
 	}
 
 	TransformComponent(int scale) {
-		position.x = 0.0f;
-		position.y = 0.0f;
+		position.zero();
 		this->scale = scale;
 	}
 
@@ -38,8 +36,7 @@ struct TransformComponent : public Component {
 	}
 
 	void init() override {
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.zero();
 	}
 
 	void update() override {

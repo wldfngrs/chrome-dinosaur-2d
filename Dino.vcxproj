@@ -163,6 +163,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="ObjectHandler.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TileComponent.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

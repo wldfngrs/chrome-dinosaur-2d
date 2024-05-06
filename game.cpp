@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Components.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 #include <sstream>
 
@@ -13,6 +14,7 @@ bool Game::initError = false;
 std::string Game::errorMessage = "null";
 
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
 
 Map* map;
 
@@ -58,14 +60,14 @@ int Game::initGame() {
 
 	dino.addComponent<TransformComponent>(60, 310);
 	dino.addComponent<SpriteComponent>("assets\\Classic\\day_dino.png");
-	
+	dino.addComponent<KeyboardController>();
+
 	Game::running = true;
 
 	return 0;
 }
 
 void Game::handleEvents() {
-	SDL_Event event;
 	SDL_PollEvent(&event);
 
 	switch (event.type) {

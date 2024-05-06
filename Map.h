@@ -9,12 +9,12 @@ class Map {
 	SDL_Texture* grass;
 	SDL_Texture* sky;
 
-	int map[20][25];
+	int map[5][5];
 public:
 	Map();
 	~Map();
 
-	void loadMap(int arr[8][6]);
+	void loadMap(int arr[5][5]);
 	void drawMap();
 
 	static int row;

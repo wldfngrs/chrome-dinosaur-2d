@@ -18,7 +18,7 @@ inline ComponentID getComponentTypeID() {
 }
 
 template <typename T> inline ComponentID getComponentTypeID() noexcept {
-	static ComponentID typeID = getComponentTypeID();
+	static ComponentID typeID{ getComponentTypeID() };
 	return typeID;
 }
 
@@ -57,13 +57,13 @@ public:
 	void destroy() { active = false; }
 
 	template <typename T> bool hasComponent() const {
-		return componentBitSet(getComponentID<T>);
+		return componentBitSet(getComponentTypeID<T>);
 	}
 
 	template <typename T, typename... TArgs>
 	T& addComponent(TArgs&&... margs) {
-		T* c(new T(std::forward<Targs>(margs)...));
-		c->entity = true;
+		T* c(new T(std::forward<TArgs>(margs)...));
+		c->entity = this;
 		std::unique_ptr<Component> uPtr{ c };
 		components.emplace_back(std::move(uPtr));
 

@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "Map.h"
 #include "Components.h"
+#include "Vector2D.h"
 
 #include <sstream>
 
@@ -16,7 +17,7 @@ SDL_Renderer* Game::renderer = nullptr;
 Map* map;
 
 EntityManager entityManager;
-auto& newPlayer(entityManager.addEntity());
+auto& dino(entityManager.addEntity());
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -53,9 +54,11 @@ int Game::initGame() {
 
 	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
 
-	dino = new GameObject("assets\\Classic\\day_dino.png", 0, 0);
 	map = new Map();
 
+	dino.addComponent<TransformComponent>(60, 310);
+	dino.addComponent<SpriteComponent>("assets\\Classic\\day_dino.png");
+	
 	Game::running = true;
 
 	return 0;
@@ -89,14 +92,15 @@ void Game::render() {
 	map->drawMap();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 	
-	dino->render();
+	entityManager.draw();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 
 	SDL_RenderPresent(this->renderer);
 }
 
 void Game::update() {
-	dino->update();
+	entityManager.refresh();
+	entityManager.update();
 }
 
 void Game::mainLoop() {

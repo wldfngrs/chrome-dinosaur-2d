@@ -3,10 +3,11 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-#include "GameObject.h"
-
 #include <iostream>
 #include <string>
+#include <vector>
+
+class ColliderComponent;
 
 class Game {
 	int initGame();
@@ -33,4 +34,5 @@ public:
 
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
+	static std::vector<ColliderComponent*> colliders;
 };

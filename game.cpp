@@ -1,25 +1,32 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "Map.h"
 #include "Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
 
 #include <sstream>
 
+std::string Game::errorMessage;
+
+EntityManager entityManager;
 
 bool Game::running = false;
 bool Game::initError = false;
 
-std::string Game::errorMessage = "null";
-
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-Map* map;
+std::vector<ColliderComponent*> Game::colliders;
 
-EntityManager entityManager;
+auto& map(entityManager.addEntity());
 auto& dino(entityManager.addEntity());
+
+enum groupLabels : std::size_t {
+	groupMap,
+	groupPlayers,
+	groupObstacles,
+	groupColliders
+};
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -56,11 +63,17 @@ int Game::initGame() {
 
 	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
 
-	map = new Map();
+	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png");
+	map.addComponent<TransformComponent>(0, 400, 80, 900, 1);
+	map.addComponent<CelestialComponent>("assets\\lvl1\\moon.png");
+	map.addComponent<GroundComponent>("assets\\lvl1\\ground.png", 3, 150);
+	map.addComponent<ColliderComponent>("ground");
 
-	dino.addComponent<TransformComponent>(60, 310);
-	dino.addComponent<SpriteComponent>("assets\\Classic\\day_dino.png");
+	dino.addComponent<TransformComponent>(60, 280, 130, 150, 1);
+	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoRun2.png", 2, 200);
 	dino.addComponent<KeyboardController>();
+	dino.addComponent<ColliderComponent>("dino");
+
 
 	Game::running = true;
 
@@ -87,12 +100,25 @@ static inline void GameRender() {
 	}
 }
 
+auto& tiles(entityManager.getGroup(groupMap));
+auto& players(entityManager.getGroup(groupPlayers));
+auto& obstacles(entityManager.getGroup(groupPlayers));
+
 void Game::render() {
 	GameRender();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 
-	map->drawMap();
-	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
+	/*for (auto& t : tiles) {
+		t->draw();
+	}
+
+	for (auto& p : players) {
+		p->draw();
+	}
+
+	for (auto& o : obstacles) {
+		o->draw();
+	}*/
 	
 	entityManager.draw();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
@@ -103,6 +129,10 @@ void Game::render() {
 void Game::update() {
 	entityManager.refresh();
 	entityManager.update();
+
+	for (auto cc : colliders) {
+		Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
+	}
 }
 
 void Game::mainLoop() {

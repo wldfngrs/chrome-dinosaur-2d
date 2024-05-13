@@ -5,6 +5,7 @@
 #include "Components.h"
 
 class ColliderComponent : public Component {
+public:
 	SDL_Rect collider;
 	std::string tag;
 
@@ -20,6 +21,8 @@ class ColliderComponent : public Component {
 		}
 
 		transform = &entity->getComponent<TransformComponent>();
+
+		Game::colliders.push_back(this);
 	}
 
 	void update() override {

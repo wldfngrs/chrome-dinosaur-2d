@@ -5,3 +5,6 @@
 #include "SpriteComponent.h"
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
+#include "BackgroundComponent.h"
+#include "GroundComponent.h"
+#include "CelestialComponent.h"

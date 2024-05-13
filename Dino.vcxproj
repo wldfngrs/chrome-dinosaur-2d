@@ -142,16 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="CelestialComponent.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="ECS\ColliderComponent.h" />
     <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\EntityComponentSystem.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
@@ -159,11 +160,11 @@
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GroundComponent.h" />
     <ClInclude Include="KeyboardController.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="BackgroundComponent.h" />
     <ClInclude Include="ObjectHandler.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="TileComponent.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

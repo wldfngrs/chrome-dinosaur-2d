@@ -7,11 +7,11 @@ struct TransformComponent : public Component {
 	Vector2D position;
 	Vector2D velocity;
 
-	int height = 110;
-	int width = 100;
+	int height = 1;
+	int width = 1;
 	int scale = 1;
 
-	int speed = 3;
+	int speed = 1;
 
 	TransformComponent() {
 		position.zero();

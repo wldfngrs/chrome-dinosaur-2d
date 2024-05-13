@@ -40,7 +40,7 @@ public:
 	void draw() override {
 		TextureManager::draw(texture, srcRect, destRect);
 
-		if (destRect.x < 0) {
+		if (destRect.x < -60) {
 			destRect.x = 900;
 		}
 	}

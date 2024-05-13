@@ -63,14 +63,14 @@ int Game::initGame() {
 
 	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
 
-	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png");
+	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png", 2, 500);
 	map.addComponent<TransformComponent>(0, 400, 80, 900, 1);
 	map.addComponent<CelestialComponent>("assets\\lvl1\\moon.png");
 	map.addComponent<GroundComponent>("assets\\lvl1\\ground.png", 3, 150);
 	map.addComponent<ColliderComponent>("ground");
 
 	dino.addComponent<TransformComponent>(60, 280, 130, 150, 1);
-	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoRun2.png", 2, 200);
+	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoRun.png", 2, 200);
 	dino.addComponent<KeyboardController>();
 	dino.addComponent<ColliderComponent>("dino");
 

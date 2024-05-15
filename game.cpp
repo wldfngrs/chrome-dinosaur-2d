@@ -19,6 +19,7 @@ SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 
 auto& map(entityManager.addEntity());
+auto& ground(entityManager.addEntity());
 auto& dino(entityManager.addEntity());
 
 enum groupLabels : std::size_t {
@@ -63,14 +64,16 @@ int Game::initGame() {
 
 	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
 
-	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png", 2, 500);
-	map.addComponent<TransformComponent>(0, 400, 80, 900, 1);
+	map.addComponent<TransformComponent>(0, 0, 480, 900, 1);
+	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png", true);
 	map.addComponent<CelestialComponent>("assets\\lvl1\\moon.png");
-	map.addComponent<GroundComponent>("assets\\lvl1\\ground.png", 3, 150);
-	map.addComponent<ColliderComponent>("ground");
+	
+	ground.addComponent<TransformComponent>(0, 400, 80, 900, 1);
+	ground.addComponent<GroundComponent>("assets\\lvl1\\ground.png", 3, 150);
+	ground.addComponent<ColliderComponent>("ground");
 
-	dino.addComponent<TransformComponent>(60, 280, 130, 150, 1);
-	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoRun.png", 2, 200);
+	dino.addComponent<TransformComponent>(60, 225, 175, 173, 1);
+	dino.addComponent<DinoComponent>("assets\\lvl1\\DinoSheet.png", true);
 	dino.addComponent<KeyboardController>();
 	dino.addComponent<ColliderComponent>("dino");
 
@@ -100,25 +103,9 @@ static inline void GameRender() {
 	}
 }
 
-auto& tiles(entityManager.getGroup(groupMap));
-auto& players(entityManager.getGroup(groupPlayers));
-auto& obstacles(entityManager.getGroup(groupPlayers));
-
 void Game::render() {
 	GameRender();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
-
-	/*for (auto& t : tiles) {
-		t->draw();
-	}
-
-	for (auto& p : players) {
-		p->draw();
-	}
-
-	for (auto& o : obstacles) {
-		o->draw();
-	}*/
 	
 	entityManager.draw();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
@@ -131,7 +118,7 @@ void Game::update() {
 	entityManager.update();
 
 	for (auto cc : colliders) {
-		Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
+		//Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
 	}
 }
 

@@ -5,7 +5,6 @@
 
 struct TransformComponent : public Component {
 	Vector2D position;
-	Vector2D velocity;
 
 	int height = 1;
 	int width = 1;
@@ -36,11 +35,11 @@ struct TransformComponent : public Component {
 	}
 
 	void init() override {
-		velocity.zero();
+		;
 	}
 
 	void update() override {
-		position.x += velocity.x * speed;
-		position.y += velocity.y * speed;
+		position.x *= speed;
+		position.y *= speed;
 	}
 };

@@ -3,7 +3,6 @@
 #include "Components.h"
 
 class CelestialComponent : public Component {
-	TransformComponent* transform;
 	SDL_Rect srcRect, destRect;
 	SDL_Texture* texture;
 

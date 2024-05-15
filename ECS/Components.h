@@ -2,7 +2,7 @@
 
 #include "EntityComponentSystem.h"
 #include "TransformComponent.h"
-#include "SpriteComponent.h"
+#include "DinoComponent.h"
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "BackgroundComponent.h"

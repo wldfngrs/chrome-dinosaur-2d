@@ -150,6 +150,7 @@
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ECS\BackgroundComponent.h" />
     <ClInclude Include="ECS\CelestialComponent.h" />
@@ -158,9 +159,8 @@
     <ClInclude Include="ECS\EntityComponentSystem.h" />
     <ClInclude Include="ECS\GroundComponent.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
-    <ClInclude Include="ECS\TileComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
-    <ClInclude Include="ECS\SpriteComponent.h" />
+    <ClInclude Include="ECS\DinoComponent.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

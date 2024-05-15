@@ -17,8 +17,15 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B) {
 }
 
 bool Collision::AABB(const ColliderComponent& A, const ColliderComponent& B) {
+	if (A.tag == "dino" && B.tag == "ground") {
+		if (A.collider.y + A.collider.h >= B.collider.y) {
+			A.entity->getComponent<TransformComponent>().position.y = 225;
+			return true;
+		}
+	}
+
 	if (AABB(A.collider, B.collider)) {
-		std::cout << A.tag << "hit " << B.tag << std::endl;
+		std::cout << A.tag << " hit " << B.tag << std::endl;
 		return true;
 	}
 

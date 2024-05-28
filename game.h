@@ -13,9 +13,6 @@ class Game {
 	int initGame();
 	void closeGame();
 
-	const int SCREEN_WIDTH = 900;
-	const int SCREEN_HEIGHT = 480;
-
 	SDL_Window* window;
 
 public:
@@ -26,6 +23,9 @@ public:
 	void render();
 	void update();
 	void mainLoop();
+
+	static const int SCREEN_WIDTH = 900;
+	static const int SCREEN_HEIGHT = 480;
 
 	static bool initError;
 	static bool running;

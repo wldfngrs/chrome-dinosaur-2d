@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Components.h"
+#include "EntityComponentSystem.h"
 #include "Vector2D.h"
 
 struct TransformComponent : public Component {
@@ -26,7 +26,7 @@ struct TransformComponent : public Component {
 		position.y = y;
 	}
 
-	TransformComponent(float x, float y, int h, int w, int sc) {
+	TransformComponent(float x, float y, int w, int h, int sc) {
 		position.x = x;
 		position.y = y;
 		height = h;

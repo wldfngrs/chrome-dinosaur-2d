@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
-#include "SDL.h"
-#include "Components.h"
+#include "EntityComponentSystem.h"
+#include "TransformComponent.h"
+#include "Game.h"
 
 class ColliderComponent : public Component {
 public:

@@ -1,9 +1,11 @@
 #include "Game.h"
-#include "TextureManager.h"
-#include "Components.h"
-#include "Vector2D.h"
+#include "EntityComponentSystem.h"
+#include "TransformComponent.h"
+#include "KeyboardController.h"
+#include "ColliderComponent.h"
 #include "Collision.h"
-
+#include "SpriteComponent.h"
+#include "Sprites.h"
 #include <sstream>
 
 std::string Game::errorMessage;
@@ -19,15 +21,9 @@ SDL_Event Game::event;
 std::vector<ColliderComponent*> Game::colliders;
 
 auto& map(entityManager.addEntity());
+auto& celestialBody(entityManager.addEntity());
 auto& ground(entityManager.addEntity());
 auto& dino(entityManager.addEntity());
-
-enum groupLabels : std::size_t {
-	groupMap,
-	groupPlayers,
-	groupObstacles,
-	groupColliders
-};
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -62,18 +58,22 @@ int Game::initGame() {
 		return -1;
 	}
 
-	//(this->dinoHandler).setObjectHandler(new GameObject("assets\\Classic\\day_dino.png", this->renderer, 0, 0));
+	map.addComponent<TransformComponent>(0, 0, 900, 400, 1);
+	std::unique_ptr<BackgroundSprite> backgroundSprite{ new BackgroundSprite() };
+	map.addComponent<SpriteComponent>("assets\\lvl1\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 0, 96, 64);
 
-	map.addComponent<TransformComponent>(0, 0, 480, 900, 1);
-	map.addComponent<BackgroundComponent>("assets\\lvl1\\background.png", true);
-	map.addComponent<CelestialComponent>("assets\\lvl1\\moon.png");
-	
-	ground.addComponent<TransformComponent>(0, 400, 80, 900, 1);
-	ground.addComponent<GroundComponent>("assets\\lvl1\\ground.png", 3, 150);
+	celestialBody.addComponent<TransformComponent>(900, 100, 80, 72, 1);
+	std::unique_ptr<CelestialBodySprite> celestialBodySprite{ new CelestialBodySprite() };
+	celestialBody.addComponent<SpriteComponent>("assets\\lvl1\\Moon.png", std::move(celestialBodySprite), false, 0, 0, 28, 30);
+
+	ground.addComponent<TransformComponent>(0, 400, 900, 80, 1);
+	std::unique_ptr<GroundSprite> groundSprite{ new GroundSprite() };
+	ground.addComponent<SpriteComponent>("assets\\lvl1\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
 	ground.addComponent<ColliderComponent>("ground");
 
-	dino.addComponent<TransformComponent>(60, 225, 175, 173, 1);
-	dino.addComponent<DinoComponent>("assets\\lvl1\\DinoSheet.png", true);
+	dino.addComponent<TransformComponent>(60, 225, 173, 175, 1);
+	std::unique_ptr<DinoSprite> dinoSprite{ new DinoSprite() };
+	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
 	dino.addComponent<KeyboardController>();
 	dino.addComponent<ColliderComponent>("dino");
 
@@ -118,7 +118,7 @@ void Game::update() {
 	entityManager.update();
 
 	for (auto cc : colliders) {
-		//Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
+		Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
 	}
 }
 

@@ -5,6 +5,7 @@
 
 class Sprite {
 public:
+	std::vector<SDL_Rect> mColliders;
 	SDL_Texture* texture;
 
 	char* pathToTexture;
@@ -42,6 +43,10 @@ public:
 		transform->width = w;
 		transform->position.x = static_cast<float>(x);
 		transform->position.y = static_cast<float>(y);
+	}
+
+	std::vector<SDL_Rect>& getColliders() {
+		return mColliders;
 	}
 };
 

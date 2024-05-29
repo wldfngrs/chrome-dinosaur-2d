@@ -1,8 +1,6 @@
 #include "Game.h"
-#include "EntityComponentSystem.h"
 #include "TransformComponent.h"
 #include "KeyboardController.h"
-#include "ColliderComponent.h"
 #include "Collision.h"
 #include "SpriteComponent.h"
 #include "Sprites.h"
@@ -10,20 +8,19 @@
 
 std::string Game::errorMessage;
 
-EntityManager entityManager;
-
 bool Game::running = false;
 bool Game::initError = false;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-std::vector<ColliderComponent*> Game::colliders;
+EntityManager entityManager;
 
-auto& map(entityManager.addEntity());
-auto& celestialBody(entityManager.addEntity());
-auto& ground(entityManager.addEntity());
-auto& dino(entityManager.addEntity());
+
+Entity& map(entityManager.addEntity());
+Entity& celestialBody(entityManager.addEntity());
+Entity& ground(entityManager.addEntity());
+Entity& Game::dino = entityManager.addEntity();
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -65,18 +62,15 @@ int Game::initGame() {
 	celestialBody.addComponent<TransformComponent>(900, 100, 80, 72, 1);
 	std::unique_ptr<CelestialBodySprite> celestialBodySprite{ new CelestialBodySprite() };
 	celestialBody.addComponent<SpriteComponent>("assets\\lvl1\\Moon.png", std::move(celestialBodySprite), false, 0, 0, 28, 30);
-
+	
 	ground.addComponent<TransformComponent>(0, 400, 900, 80, 1);
 	std::unique_ptr<GroundSprite> groundSprite{ new GroundSprite() };
 	ground.addComponent<SpriteComponent>("assets\\lvl1\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
-	ground.addComponent<ColliderComponent>("ground");
 
 	dino.addComponent<TransformComponent>(60, 225, 173, 175, 1);
 	std::unique_ptr<DinoSprite> dinoSprite{ new DinoSprite() };
 	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
 	dino.addComponent<KeyboardController>();
-	dino.addComponent<ColliderComponent>("dino");
-
 
 	Game::running = true;
 
@@ -117,9 +111,7 @@ void Game::update() {
 	entityManager.refresh();
 	entityManager.update();
 
-	for (auto cc : colliders) {
-		Collision::AABB(dino.getComponent<ColliderComponent>(), *cc);
-	}
+	Collision::checkForCollisions();
 }
 
 void Game::mainLoop() {

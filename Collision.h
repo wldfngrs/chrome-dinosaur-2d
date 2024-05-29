@@ -2,10 +2,9 @@
 
 #include "SDL.h"
 
-class ColliderComponent;
-
 class Collision {
 public:
-	static bool AABB(const SDL_Rect& A, const SDL_Rect& B); // Axis-Aligned Bounding Box
-	static bool AABB(const ColliderComponent& A, const ColliderComponent& B);
+	static bool AABB(const SDL_Rect& A, const SDL_Rect& B);
+	static void checkForCollision(std::vector<SDL_Rect> colliders);
+	static void checkForCollisions();
 };

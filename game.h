@@ -7,7 +7,8 @@
 #include <string>
 #include <vector>
 
-class ColliderComponent;
+class EntityManager;
+class Entity;
 
 class Game {
 	int initGame();
@@ -19,10 +20,10 @@ public:
 	Game();
 	~Game();
 
-	void handleEvents();
 	void render();
 	void update();
 	void mainLoop();
+	void handleEvents();
 
 	static const int SCREEN_WIDTH = 900;
 	static const int SCREEN_HEIGHT = 480;
@@ -34,5 +35,6 @@ public:
 
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
-	static std::vector<ColliderComponent*> colliders;
+
+	static Entity& dino;
 };

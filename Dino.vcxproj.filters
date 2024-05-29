@@ -68,9 +68,6 @@
     <ClInclude Include="Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\ColliderComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ECS\KeyboardController.h">
       <Filter>Header Files</Filter>
     </ClInclude>

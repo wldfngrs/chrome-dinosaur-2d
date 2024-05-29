@@ -5,9 +5,9 @@
 
 class RunningState : public DinoState {
 	void enter(DinoSprite& dino) override {
-		if (dino.jump && !dino.duck) {
+		if (!dino.jump && !dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
-			
+
 			dino.setDestRect
 			(
 				dino.transform->position.x,
@@ -15,6 +15,21 @@ class RunningState : public DinoState {
 				dino.transform->width,
 				dino.transform->height
 			);
+
+			dino.mColliders[0].x = dino.transform->position.x + 12;
+			dino.mColliders[0].y = dino.transform->position.y + 7;
+			dino.mColliders[0].w = 14;
+			dino.mColliders[0].h = 9;
+
+			dino.mColliders[1].x = dino.transform->position.x + 16;
+			dino.mColliders[1].y = dino.transform->position.y + 16;
+			dino.mColliders[1].w = 7;
+			dino.mColliders[1].h = 16;
+
+			dino.mColliders[2].x = dino.transform->position.x + 2;
+			dino.mColliders[2].y = dino.transform->position.y + 16;
+			dino.mColliders[2].w = 14;
+			dino.mColliders[2].h = 12;
 		}
 
 		dino.setAnimation(0, 2, 150);
@@ -42,7 +57,22 @@ class DuckingState : public DinoState {
 				dino.transform->width,
 				dino.transform->height
 			);
-			
+
+			dino.mColliders[0].x = dino.transform->position.x + 16;
+			dino.mColliders[0].y = dino.transform->position.y + 16;
+			dino.mColliders[0].w = 14;
+			dino.mColliders[0].h = 9;
+
+			dino.mColliders[1].x = dino.transform->position.x + 16;
+			dino.mColliders[1].y = dino.transform->position.y + 31;
+			dino.mColliders[1].w = 7;
+			dino.mColliders[1].h = 1;
+
+			dino.mColliders[2].x = dino.transform->position.x + 1;
+			dino.mColliders[2].y = dino.transform->position.y + 21;
+			dino.mColliders[2].w = 6;
+			dino.mColliders[2].h = 13;
+
 			dino.duck = true;
 
 			dino.setAnimation(2, 2, 200);
@@ -77,7 +107,7 @@ public:
 	void enter(DinoSprite& dino) override {
 		if (!dino.jump && !dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
-			
+
 			dino.setDestRect
 			(
 				dino.transform->position.x,
@@ -85,7 +115,22 @@ public:
 				dino.transform->width,
 				dino.transform->height
 			);
-			
+
+			dino.mColliders[0].x = dino.transform->position.x + 16;
+			dino.mColliders[0].y = dino.transform->position.y + 9;
+			dino.mColliders[0].w = 12;
+			dino.mColliders[0].h = 7;
+
+			dino.mColliders[1].x = dino.transform->position.x + 8;
+			dino.mColliders[1].y = dino.transform->position.y + 16;
+			dino.mColliders[1].w = 14;
+			dino.mColliders[1].h = 15;
+
+			dino.mColliders[2].x = dino.transform->position.x + 1;
+			dino.mColliders[2].y = dino.transform->position.y + 21;
+			dino.mColliders[2].w = 7;
+			dino.mColliders[2].h = 5;
+
 			charge = true;
 		}
 	}
@@ -99,7 +144,7 @@ public:
 				charge = false;
 				dino.jump = true;
 				dino.setSrcRect(32, 32, 32, 32);
-				
+
 				dino.setDestRect
 				(
 					dino.transform->position.x,
@@ -107,6 +152,21 @@ public:
 					dino.transform->width,
 					dino.transform->height
 				);
+
+				dino.mColliders[0].x = dino.transform->position.x + 16;
+				dino.mColliders[0].y = dino.transform->position.y + 9;
+				dino.mColliders[0].w = 13;
+				dino.mColliders[0].h = 7;
+
+				dino.mColliders[1].x = dino.transform->position.x + 8;
+				dino.mColliders[1].y = dino.transform->position.y + 16;
+				dino.mColliders[1].w = 18;
+				dino.mColliders[1].h = 13;
+
+				dino.mColliders[2].x = dino.transform->position.x;
+				dino.mColliders[2].y = dino.transform->position.y + 21;
+				dino.mColliders[2].w = 7;
+				dino.mColliders[2].h = 12;
 			}
 		}
 
@@ -119,14 +179,29 @@ public:
 				dino.jump = false;
 				land = true;
 				dino.setSrcRect(64, 32, 32, 32);
-				
+
 				dino.setDestRect
 				(
 					dino.transform->position.x,
 					dino.transform->position.y + 150,
-					dino.transform->height,
-					dino.transform->width
+					dino.transform->width,
+					dino.transform->height
 				);
+
+				dino.mColliders[0].x = dino.transform->position.x + 18;
+				dino.mColliders[0].y = dino.transform->position.y + 19;
+				dino.mColliders[0].w = 10;
+				dino.mColliders[0].h = 9;
+
+				dino.mColliders[1].x = 10;
+				dino.mColliders[1].y = 31;
+				dino.mColliders[1].w = 11;
+				dino.mColliders[1].h = 1;
+
+				dino.mColliders[2].x = dino.transform->position.x;
+				dino.mColliders[2].y = dino.transform->position.y + 19;
+				dino.mColliders[2].w = 6;
+				dino.mColliders[2].h = 6;
 			}
 		}
 

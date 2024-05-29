@@ -2,12 +2,18 @@
 #include "DinoStates.h"
 
 void DinoSprite::init() {
+	mColliders.resize(3);
+
+	transform->entity->collidable = true;
+
 	state = new RunningState();
 	state->enter(*this);
 }
 
 void DinoSprite::update() {
 	state->update(*this);
+
+	if (transform->position.y >= 225) transform->position.y = 225;
 }
 
 void DinoSprite::press_UP_key() {

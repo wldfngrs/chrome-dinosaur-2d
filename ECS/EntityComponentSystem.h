@@ -52,7 +52,10 @@ class Entity {
 	GroupBitset groupBitset;
 
 public:
-	Entity(EntityManager& mManager) : eManager(mManager){}
+	bool collidable = false;
+	int entityIndex;
+
+	Entity(EntityManager& mManager) : eManager(mManager) {}
 	
 	void update() {
 		for (auto& c : components) c->update();
@@ -90,6 +93,10 @@ public:
 		auto ptr(componentArray[getComponentTypeID<T>()]);
 		return *static_cast<T*>(ptr);
 	}
+
+	EntityManager& getEntityManager() const {
+		return eManager;
+	}
 };
 
 class EntityManager {
@@ -114,9 +121,15 @@ public:
 	}
 
 	Entity& addEntity() {
+		static int index = 0;
 		Entity* a = new Entity(*this);
+		a->entityIndex = index++;
 		std::unique_ptr<Entity> uPtr{ a };
 		entities.emplace_back(std::move(uPtr));
 		return *a;
+	}
+
+	std::vector<std::unique_ptr<Entity>>& getEntities() {
+		return entities;
 	}
 };

@@ -1,7 +1,9 @@
 #include "Sprites.h"
 
 void BackgroundSprite::init() {
-	if (animated) setAnimation(0, 2, 500);
+	if (animated) {
+		setAnimation(0, 2, 500);
+	}
 }
 
 void BackgroundSprite::update() {

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EntityComponentSystem.h"
-#include "TransformComponent.h"
 #include "TextureManager.h"
 
 #include <cstdarg>

@@ -20,7 +20,7 @@ EntityManager entityManager;
 Entity& map(entityManager.addEntity());
 Entity& celestialBody(entityManager.addEntity());
 Entity& ground(entityManager.addEntity());
-Entity& Game::dino = entityManager.addEntity();
+Entity& Game::player = entityManager.addEntity();
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -57,7 +57,7 @@ int Game::initGame() {
 
 	map.addComponent<TransformComponent>(0, 0, 900, 400, 1);
 	std::unique_ptr<BackgroundSprite> backgroundSprite{ new BackgroundSprite() };
-	map.addComponent<SpriteComponent>("assets\\lvl1\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 0, 96, 64);
+	map.addComponent<SpriteComponent>("assets\\lvl1\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 64, 96, 64);
 
 	celestialBody.addComponent<TransformComponent>(900, 100, 80, 72, 1);
 	std::unique_ptr<CelestialBodySprite> celestialBodySprite{ new CelestialBodySprite() };
@@ -67,10 +67,10 @@ int Game::initGame() {
 	std::unique_ptr<GroundSprite> groundSprite{ new GroundSprite() };
 	ground.addComponent<SpriteComponent>("assets\\lvl1\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
 
-	dino.addComponent<TransformComponent>(60, 225, 173, 175, 1);
+	player.addComponent<TransformComponent>(60, 225, 173, 175, 1);
 	std::unique_ptr<DinoSprite> dinoSprite{ new DinoSprite() };
-	dino.addComponent<SpriteComponent>("assets\\lvl1\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
-	dino.addComponent<KeyboardController>();
+	player.addComponent<SpriteComponent>("assets\\lvl1\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
+	player.addComponent<KeyboardController>();
 
 	Game::running = true;
 

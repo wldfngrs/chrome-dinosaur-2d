@@ -1,9 +1,8 @@
 #include "Sprites.h"
+#include "KeyboardController.h"
 #include "DinoStates.h"
 
 void DinoSprite::init() {
-	mColliders.resize(3);
-
 	transform->entity->collidable = true;
 
 	state = new RunningState();
@@ -17,15 +16,17 @@ void DinoSprite::update() {
 }
 
 void DinoSprite::press_UP_key() {
-	state->leave(*this);
+	if (!jump) {
+		state->leave(*this);
 
-	if (state != nullptr) delete state;
+		if (state != nullptr) delete state;
 
-	state = new JumpingState();
+		state = new JumpingState();
 
-	duck = false;
+		duck = false;
 
-	state->enter(*this);
+		state->enter(*this);
+	}
 }
 
 void DinoSprite::press_DOWN_key() {

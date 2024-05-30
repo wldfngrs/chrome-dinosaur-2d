@@ -1,6 +1,8 @@
 #include <memory>
 
 #include "SpriteComponent.h"
+#include "TransformComponent.h"
+#include "KeyboardController.h"
 #include "Sprites.h"
 
 SpriteComponent::SpriteComponent(const char* pathToTexture, std::unique_ptr<Sprite> sp, bool isAnimated, int x, int y, int w, int h)

@@ -3,6 +3,8 @@
 #include "TransformComponent.h"
 #include "TextureManager.h"
 
+class KeyboardController;
+
 class Sprite {
 public:
 	std::vector<SDL_Rect> mColliders;
@@ -11,7 +13,10 @@ public:
 	char* pathToTexture;
 
 	TransformComponent* transform;
+
 	SDL_Rect srcRect, destRect;
+
+	bool keyInputDone = true;
 
 	bool animated;
 	int frames;

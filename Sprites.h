@@ -3,24 +3,17 @@
 #include "TransformComponent.h"
 #include "TextureManager.h"
 
-class KeyboardController;
-
 class Sprite {
 public:
 	std::vector<SDL_Rect> mColliders;
-	SDL_Texture* texture;
-
-	char* pathToTexture;
 
 	TransformComponent* transform;
 
 	SDL_Rect srcRect, destRect;
 
-	bool keyInputDone = true;
-
 	bool animated;
-	int frames;
-	int speed;
+	int framesCount;
+	int framesSpeed;
 
 	int animIndex = 0;
 
@@ -32,8 +25,8 @@ public:
 
 	void setAnimation(int index, int nFrames, int mSpeed) {
 		animIndex = index;
-		frames = nFrames;
-		speed = mSpeed;
+		framesCount = nFrames;
+		framesSpeed = mSpeed;
 	}
 
 	void setSrcRect(int x, int y, int w, int h) {
@@ -43,11 +36,11 @@ public:
 		srcRect.w = w;
 	}
 
-	void setDestRect(int x, int y, int w, int h) {
+	void setDestRect(float x, float y, int w, int h) {
 		transform->height = h;
 		transform->width = w;
-		transform->position.x = static_cast<float>(x);
-		transform->position.y = static_cast<float>(y);
+		transform->position.x = x;
+		transform->position.y = y;
 	}
 
 	std::vector<SDL_Rect>& getColliders() {
@@ -57,12 +50,14 @@ public:
 
 class DinoState;
 
-class DinoSprite : public Sprite {
+class Dino : public Sprite {
 public:
 	DinoState* state;
 
 	bool jump = false;
 	bool duck = false;
+
+	const int jumpHeight = 190;
 
 	void init() override;
 
@@ -75,19 +70,75 @@ public:
 	void release_DOWN_key() override;
 };
 
-class BackgroundSprite : public Sprite {
+class Background : public Sprite {
 public:
 	void init() override;
 
 	void update() override;
 };
 
-class CelestialBodySprite : public Sprite {
+class CelestialBody : public Sprite {
 public:
 	void update() override;
 };
 
-class GroundSprite : public Sprite {
+class Ground : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class DyingTree1 : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class DyingTree2 : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class Bucket : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class TreeStump2 : public Sprite {
+public:
+	void init() override;
+	
+	void update() override;
+};
+
+class Stalker : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class Brute : public Sprite {
+public:
+	void init() override;
+
+	void update() override;
+};
+
+class StalkerPup : public Sprite {
+public:
+	void init() override;
+	
+	void update() override;
+};
+
+class Gale : public Sprite {
 public:
 	void init() override;
 

@@ -145,6 +145,8 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObstacleHandler.cpp" />
+    <ClCompile Include="ObstacleSprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="DinoSprite.cpp" />
     <ClCompile Include="Sprites.h" />
@@ -157,9 +159,10 @@
     <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\EntityComponentSystem.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
-    <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
+    <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ObstacleHandler.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vector2D.h" />

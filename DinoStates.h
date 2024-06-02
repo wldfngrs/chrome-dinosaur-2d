@@ -4,14 +4,14 @@
 #include "Sprites.h"
 
 class RunningState : public DinoState {
-	void enter(DinoSprite& dino) override {
+	void enter(Dino& dino) override {
 		if (!dino.jump && !dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
 
 			dino.setDestRect
 			(
 				dino.transform->position.x,
-				dino.transform->position.y + 150,
+				dino.transform->position.y + dino.jumpHeight,
 				dino.transform->width,
 				dino.transform->height
 			);
@@ -19,14 +19,14 @@ class RunningState : public DinoState {
 			dino.mColliders.resize(2);
 
 			/* HEAD */
-			dino.mColliders[0].x = dino.transform->position.x + 12;
-			dino.mColliders[0].y = dino.transform->position.y + 7;
+			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 12);
+			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 7);
 			dino.mColliders[0].w = 14;
 			dino.mColliders[0].h = 9;
 
 			/* FRONT LEG/ARM */
-			dino.mColliders[1].x = dino.transform->position.x + 16;
-			dino.mColliders[1].y = dino.transform->position.y + 16;
+			dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 16);
+			dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
 			dino.mColliders[1].w = 7;
 			dino.mColliders[1].h = 16;
 
@@ -40,25 +40,25 @@ class RunningState : public DinoState {
 		dino.setAnimation(0, 2, 150);
 	}
 
-	void update(DinoSprite& dino) override {
+	void update(Dino& dino) override {
 		if (dino.animated) {
-			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.speed) % dino.frames);
+			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.framesSpeed) % dino.framesCount);
 			dino.srcRect.y = dino.animIndex * dino.srcRect.h;
 		}
 	}
 
-	void leave(DinoSprite& dino) override {}
+	void leave(Dino& dino) override {}
 };
 
 class DuckingState : public DinoState {
-	void enter(DinoSprite& dino) override {
+	void enter(Dino& dino) override {
 		if (!dino.duck && !dino.jump) {
 			dino.setSrcRect(0, 64, 32, 32);
 
 			dino.setDestRect
 			(
 				dino.transform->position.x,
-				dino.transform->position.y + 150,
+				dino.transform->position.y + dino.jumpHeight,
 				dino.transform->width,
 				dino.transform->height
 			);
@@ -66,8 +66,8 @@ class DuckingState : public DinoState {
 			dino.mColliders.resize(1);
 
 			/* HEAD */
-			dino.mColliders[0].x = dino.transform->position.x + 16;
-			dino.mColliders[0].y = dino.transform->position.y + 16;
+			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
+			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 16);
 			dino.mColliders[0].w = 15;
 			dino.mColliders[0].h = 9;
 
@@ -77,14 +77,14 @@ class DuckingState : public DinoState {
 		}
 	}
 
-	void update(DinoSprite& dino) override {
+	void update(Dino& dino) override {
 		if (dino.animated) {
-			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.speed) % dino.frames);
+			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.framesSpeed) % dino.framesCount);
 			dino.srcRect.y = dino.animIndex * dino.srcRect.h;
 		}
 	}
 
-	void leave(DinoSprite& dino) override {
+	void leave(Dino& dino) override {
 		if (dino.duck) dino.duck = false;
 	}
 };
@@ -103,7 +103,7 @@ class JumpingState : public DinoState {
 	const int MAX_JUMPTIME = 20;
 
 public:
-	void enter(DinoSprite& dino) override {
+	void enter(Dino& dino) override {
 		dino.jump = true;
 		if (!dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
@@ -111,7 +111,7 @@ public:
 			dino.setDestRect
 			(
 				dino.transform->position.x,
-				dino.transform->position.y + 150,
+				dino.transform->position.y + dino.jumpHeight,
 				dino.transform->width,
 				dino.transform->height
 			);
@@ -119,14 +119,14 @@ public:
 			dino.mColliders.resize(2);
 
 			/* HEAD */
-			dino.mColliders[0].x = dino.transform->position.x + 16;
-			dino.mColliders[0].y = dino.transform->position.y + 9;
+			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
+			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 9);
 			dino.mColliders[0].w = 12;
 			dino.mColliders[0].h = 7;
 
 			/* TORSO */
-			dino.mColliders[1].x = dino.transform->position.x + 8;
-			dino.mColliders[1].y = dino.transform->position.y + 16;
+			dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 8);
+			dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
 			dino.mColliders[1].w = 14;
 			dino.mColliders[1].h = 15;
 
@@ -134,7 +134,7 @@ public:
 		}
 	}
 
-	void update(DinoSprite& dino) override {
+	void update(Dino& dino) override {
 		if (charging) {
 			chargeTime++;
 
@@ -147,7 +147,7 @@ public:
 				dino.setDestRect
 				(
 					dino.transform->position.x,
-					dino.transform->position.y - 150,
+					dino.transform->position.y - dino.jumpHeight,
 					dino.transform->width,
 					dino.transform->height
 				);
@@ -155,14 +155,14 @@ public:
 				dino.mColliders.resize(2);
 
 				/* HEAD */
-				dino.mColliders[0].x = dino.transform->position.x + 16;
-				dino.mColliders[0].y = dino.transform->position.y + 9;
+				dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
+				dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 9);
 				dino.mColliders[0].w = 13;
 				dino.mColliders[0].h = 7;
 
 				/* TORSO */
-				dino.mColliders[1].x = dino.transform->position.x + 9;
-				dino.mColliders[1].y = dino.transform->position.y + 16;
+				dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 9);
+				dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
 				dino.mColliders[1].w = 18;
 				dino.mColliders[1].h = 8;
 
@@ -186,7 +186,7 @@ public:
 				dino.setDestRect
 				(
 					dino.transform->position.x,
-					dino.transform->position.y + 150,
+					dino.transform->position.y + dino.jumpHeight,
 					dino.transform->width,
 					dino.transform->height
 				);
@@ -194,8 +194,8 @@ public:
 				dino.mColliders.resize(1);
 
 				/* HEAD */
-				dino.mColliders[0].x = dino.transform->position.x + 18;
-				dino.mColliders[0].y = dino.transform->position.y + 19;
+				dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 18);
+				dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 19);
 				dino.mColliders[0].w = 10;
 				dino.mColliders[0].h = 9;
 
@@ -222,7 +222,7 @@ public:
 		}
 	}
 
-	void leave(DinoSprite& dino) override {
+	void leave(Dino& dino) override {
 		if (dino.state != nullptr) delete dino.state;
 
 		dino.state = new RunningState();

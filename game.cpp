@@ -3,6 +3,7 @@
 #include "KeyboardController.h"
 #include "Collision.h"
 #include "SpriteComponent.h"
+#include "ObstacleHandler.h"
 #include "Sprites.h"
 #include <sstream>
 
@@ -14,13 +15,19 @@ bool Game::initError = false;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-EntityManager entityManager;
+EntityManager Game::entityManager;
 
+Entity& map(Game::entityManager.addEntity());
+Entity& celestialBody(Game::entityManager.addEntity());
+Entity& ground(Game::entityManager.addEntity());
+Entity& Game::player = Game::entityManager.addEntity();
 
-Entity& map(entityManager.addEntity());
-Entity& celestialBody(entityManager.addEntity());
-Entity& ground(entityManager.addEntity());
-Entity& Game::player = entityManager.addEntity();
+Entity& obstacle1 = Game::entityManager.addEntity();
+Entity& obstacle2 = Game::entityManager.addEntity();
+
+ObstacleHandler Game::obstacleHandler;
+
+int Game::tick = 0;
 
 Game::Game() {
 	if (this->initGame() != 0) {
@@ -55,24 +62,36 @@ int Game::initGame() {
 		return -1;
 	}
 
-	map.addComponent<TransformComponent>(0, 0, 900, 400, 1);
-	std::unique_ptr<BackgroundSprite> backgroundSprite{ new BackgroundSprite() };
-	map.addComponent<SpriteComponent>("assets\\lvl1\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 64, 96, 64);
+	map.addComponent<TransformComponent>(0, 0, Game::SCREEN_WIDTH, 400, 1);
+	std::unique_ptr<Background> backgroundSprite{ new Background() };
+	map.addComponent<SpriteComponent>("assets\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 64, 96, 64);
 
-	celestialBody.addComponent<TransformComponent>(900, 100, 80, 72, 1);
-	std::unique_ptr<CelestialBodySprite> celestialBodySprite{ new CelestialBodySprite() };
-	celestialBody.addComponent<SpriteComponent>("assets\\lvl1\\Moon.png", std::move(celestialBodySprite), false, 0, 0, 28, 30);
+	celestialBody.addComponent<TransformComponent>(Game::SCREEN_WIDTH, 100, 80, 72, 1);
+	std::unique_ptr<CelestialBody> celestialBodySprite{ new CelestialBody() };
+	celestialBody.addComponent<SpriteComponent>("assets\\Moon.png", std::move(celestialBodySprite), false, 0, 0, 28, 30);
 	
-	ground.addComponent<TransformComponent>(0, 400, 900, 80, 1);
-	std::unique_ptr<GroundSprite> groundSprite{ new GroundSprite() };
-	ground.addComponent<SpriteComponent>("assets\\lvl1\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
+	ground.addComponent<TransformComponent>(0, 400, Game::SCREEN_WIDTH, 80, 1);
+	std::unique_ptr<Ground> groundSprite{ new Ground() };
+	ground.addComponent<SpriteComponent>("assets\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
 
 	player.addComponent<TransformComponent>(60, 225, 173, 175, 1);
-	std::unique_ptr<DinoSprite> dinoSprite{ new DinoSprite() };
-	player.addComponent<SpriteComponent>("assets\\lvl1\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
+	std::unique_ptr<Dino> dinoSprite{ new Dino() };
+	player.addComponent<SpriteComponent>("assets\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
 	player.addComponent<KeyboardController>();
 
+
+	/*Skeletal base entities, the components will be properly set in the loadObstacles function*/
+	Game::obstacleHandler.init();
+	obstacle1.addComponent<TransformComponent>();
+	obstacle1.addComponent<SpriteComponent>("assets\\ObstacleSheet.png");
+	Game::obstacleHandler.addObstacle(&obstacle1);
+	obstacle2.addComponent<TransformComponent>();
+	obstacle2.addComponent<SpriteComponent>("assets\\ObstacleSheet.png");
+	Game::obstacleHandler.addObstacle(&obstacle2);
+
 	Game::running = true;
+
+	Game::obstacleHandler.loadObstacles();
 
 	return 0;
 }
@@ -88,6 +107,10 @@ void Game::handleEvents() {
 	}
 }
 
+int Game::getTick() const {
+	return tick;
+}
+
 static inline void GameRender() {
 	if (SDL_RenderClear(Game::renderer) < 0) {
 		std::stringstream ss;
@@ -101,15 +124,17 @@ void Game::render() {
 	GameRender();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 	
-	entityManager.draw();
+	Game::entityManager.draw();
 	if (!Game::running) throw std::runtime_error{ Game::errorMessage };
 
 	SDL_RenderPresent(this->renderer);
 }
 
 void Game::update() {
-	entityManager.refresh();
-	entityManager.update();
+	Game::obstacleHandler.fieldObstacle();
+	Game::obstacleHandler.loadObstacles();
+	Game::entityManager.refresh();
+	Game::entityManager.update();
 
 	Collision::checkForCollisions();
 }

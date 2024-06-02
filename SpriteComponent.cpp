@@ -17,22 +17,27 @@ SpriteComponent::SpriteComponent(const char* pathToTexture, std::unique_ptr<Spri
 	setTexture(pathToTexture);
 }
 
-SpriteComponent::~SpriteComponent() {
-	SDL_DestroyTexture(sprite->texture);
+SpriteComponent::SpriteComponent(const char* pathToTexture) {
+	setTexture(pathToTexture);
 }
 
-void SpriteComponent::setTexture(const char* pathToTexture) const {
-	sprite->pathToTexture = const_cast<char*>(pathToTexture);
-	sprite->texture = TextureManager::loadTexture(pathToTexture);
+SpriteComponent::~SpriteComponent() {
+	SDL_DestroyTexture(texture);
+}
+
+void SpriteComponent::setTexture(const char* path) {
+	texture = TextureManager::loadTexture(path);
+	pathToTexture = const_cast<char*>(path);
 }
 
 void SpriteComponent::init() {
+	if (sprite == nullptr) return;
+
 	if (!entity->hasComponent<TransformComponent>()) {
 		entity->addComponent<TransformComponent>();
 	}
 
 	sprite->transform = &entity->getComponent<TransformComponent>();
-
 	sprite->init();
 }
 
@@ -46,5 +51,5 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::draw() {
-	TextureManager::draw(sprite->pathToTexture, sprite->texture, sprite->srcRect, sprite->destRect);
+	TextureManager::draw(pathToTexture, texture, sprite->srcRect, sprite->destRect);
 }

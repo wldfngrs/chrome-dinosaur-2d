@@ -1,10 +1,10 @@
 #pragma once
 
-class DinoSprite;
+class Dino;
 
 class DinoState {
 public:
-	virtual void enter(DinoSprite& sprite) {}
-	virtual void update(DinoSprite& sprite) {}
-	virtual void leave(DinoSprite& sprite) {}
+	virtual void enter(Dino& sprite) {}
+	virtual void update(Dino& sprite) {}
+	virtual void leave(Dino& sprite) {}
 };

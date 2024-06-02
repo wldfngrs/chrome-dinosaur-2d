@@ -7,12 +7,15 @@
 #include <string>
 #include <vector>
 
+class ObstacleHandler;
 class EntityManager;
 class Entity;
 
 class Game {
 	int initGame();
 	void closeGame();
+
+	static int tick;
 
 	SDL_Window* window;
 
@@ -24,6 +27,8 @@ public:
 	void update();
 	void mainLoop();
 	void handleEvents();
+
+	int getTick() const;
 
 	static const int SCREEN_WIDTH = 900;
 	static const int SCREEN_HEIGHT = 480;
@@ -37,4 +42,6 @@ public:
 	static SDL_Event event;
 
 	static Entity& player;
+	static EntityManager entityManager;
+	static ObstacleHandler obstacleHandler;
 };

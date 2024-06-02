@@ -2,20 +2,22 @@
 #include "KeyboardController.h"
 #include "DinoStates.h"
 
-void DinoSprite::init() {
+void Dino::init() {
 	transform->entity->collidable = true;
 
 	state = new RunningState();
 	state->enter(*this);
 }
 
-void DinoSprite::update() {
+void Dino::update() {
 	state->update(*this);
 
-	if (transform->position.y >= 225) transform->position.y = 225;
+	if (transform->position.y > 225) {
+		transform->position.y = 225;
+	}
 }
 
-void DinoSprite::press_UP_key() {
+void Dino::press_UP_key() {
 	if (!jump) {
 		state->leave(*this);
 
@@ -29,7 +31,7 @@ void DinoSprite::press_UP_key() {
 	}
 }
 
-void DinoSprite::press_DOWN_key() {
+void Dino::press_DOWN_key() {
 	if (!duck) {
 		state->leave(*this);
 
@@ -43,7 +45,7 @@ void DinoSprite::press_DOWN_key() {
 	}
 }
 
-void DinoSprite::release_DOWN_key() {
+void Dino::release_DOWN_key() {
 	state->leave(*this);
 
 	if (state != nullptr) delete state;

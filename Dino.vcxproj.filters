@@ -39,6 +39,12 @@
     <ClCompile Include="DinoSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObstacleSprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObstacleHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BackgroundSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\EntityComponentSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\TransformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\SpriteComponent.h">
@@ -75,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DinoStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\TransformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

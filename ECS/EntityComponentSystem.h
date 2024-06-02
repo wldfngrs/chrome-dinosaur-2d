@@ -66,6 +66,8 @@ public:
 	}
 
 	bool isActive() const { return active; }
+	bool isInactive() const { return !active; }
+	void wakeUp() { active = true; }
 	void destroy() { active = false; }
 
 	template <typename T> bool hasComponent() const {

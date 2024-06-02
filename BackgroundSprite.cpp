@@ -1,33 +1,33 @@
 #include "Sprites.h"
 
-void BackgroundSprite::init() {
+void Background::init() {
 	if (animated) {
-		setAnimation(1, 2, 500);
+		setAnimation(0, 2, 500);
 	}
 }
 
-void BackgroundSprite::update() {
+void Background::update() {
 	if (animated) {
-		srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+		srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
 		srcRect.y = animIndex * srcRect.h;
 	}
 }
 
-void CelestialBodySprite::update() {
-	transform->position.x--;
+void CelestialBody::update() {
+	transform->velocity.x = -1;
 
 	if (transform->position.x <= -transform->width) {
 		transform->position.x = Game::SCREEN_WIDTH;
 	}
 }
 
-void GroundSprite::init() {
+void Ground::init() {
 	setAnimation(0, 3, 200);
 }
 
-void GroundSprite::update() {
+void Ground::update() {
 	if (animated) {
-		srcRect.y = srcRect.h * static_cast<int>((SDL_GetTicks() / speed) % frames);
+		srcRect.y = srcRect.h * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
 		srcRect.x = animIndex * srcRect.w;
 	}
 }

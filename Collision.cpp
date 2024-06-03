@@ -38,7 +38,7 @@ void Collision::checkForCollisions() {
 	/* Check for collision between Game::dino and the other game entities, only if they are collidable i.e Obstacles */
 
 	for (auto& e : entities) {
-		if (e->collidable && (Game::player.entityIndex != e->entityIndex)) {
+		if (e->collidable && (Game::player.entityIndex != e->entityIndex) && e->isActive()) {
 			checkForCollision(e->getComponent<SpriteComponent>().sprite->mColliders);
 		}
 	}

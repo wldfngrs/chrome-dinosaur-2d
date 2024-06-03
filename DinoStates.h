@@ -19,22 +19,13 @@ class RunningState : public DinoState {
 			dino.mColliders.resize(2);
 
 			/* HEAD */
-			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 12);
-			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 7);
-			dino.mColliders[0].w = 14;
-			dino.mColliders[0].h = 9;
+			dino.setCollider(0, dino.transform->position.x + 12, dino.transform->position.y + 7, 14, 9);
 
 			/* FRONT LEG/ARM */
-			dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 16);
-			dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
-			dino.mColliders[1].w = 7;
-			dino.mColliders[1].h = 16;
+			dino.setCollider(1, dino.transform->position.x + 16, dino.transform->position.y + 16, 7, 16);
 
 			/* TAIL/TAILING LEG*/
-			// dino.mColliders[2].x = dino.transform->position.x + 2;
-			// dino.mColliders[2].y = dino.transform->position.y + 16;
-			// dino.mColliders[2].w = 14;
-			// dino.mColliders[2].h = 12;
+			// dino.setCollider(2, dino.transform->position.x + 2, dino.transform->position.y + 16, 14, 12);
 		}
 
 		dino.setAnimation(0, 2, 150);
@@ -66,10 +57,7 @@ class DuckingState : public DinoState {
 			dino.mColliders.resize(1);
 
 			/* HEAD */
-			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
-			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 16);
-			dino.mColliders[0].w = 15;
-			dino.mColliders[0].h = 9;
+			dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 16, 15, 9);
 
 			dino.duck = true;
 
@@ -100,7 +88,7 @@ class JumpingState : public DinoState {
 
 	bool jumping = false;
 	int jumpTime = 0;
-	const int MAX_JUMPTIME = 20;
+	const int MAX_JUMPTIME = 25;
 
 public:
 	void enter(Dino& dino) override {
@@ -119,16 +107,10 @@ public:
 			dino.mColliders.resize(2);
 
 			/* HEAD */
-			dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
-			dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 9);
-			dino.mColliders[0].w = 12;
-			dino.mColliders[0].h = 7;
+			dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 9, 12, 7);
 
 			/* TORSO */
-			dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 8);
-			dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
-			dino.mColliders[1].w = 14;
-			dino.mColliders[1].h = 15;
+			dino.setCollider(1, dino.transform->position.x + 8, dino.transform->position.y + 16, 14, 15);
 
 			charging = true;
 		}
@@ -155,17 +137,12 @@ public:
 				dino.mColliders.resize(2);
 
 				/* HEAD */
-				dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 16);
-				dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 9);
-				dino.mColliders[0].w = 13;
-				dino.mColliders[0].h = 7;
+				dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 9, 13, 7);
 
 				/* TORSO */
-				dino.mColliders[1].x = static_cast<int>(dino.transform->position.x + 9);
-				dino.mColliders[1].y = static_cast<int>(dino.transform->position.y + 16);
-				dino.mColliders[1].w = 18;
-				dino.mColliders[1].h = 8;
+				dino.setCollider(1, dino.transform->position.x + 9, dino.transform->position.y + 16, 18, 8);
 
+				//dino.setCollider(2, static_cast<int>(dino.transform->position.x), static_cast<int>(dino.transform->position.y + 21), 7, 12);
 				//dino.mColliders[2].x = dino.transform->position.x;
 				//dino.mColliders[2].y = dino.transform->position.y + 21;
 				//dino.mColliders[2].w = 7;
@@ -194,10 +171,7 @@ public:
 				dino.mColliders.resize(1);
 
 				/* HEAD */
-				dino.mColliders[0].x = static_cast<int>(dino.transform->position.x + 18);
-				dino.mColliders[0].y = static_cast<int>(dino.transform->position.y + 19);
-				dino.mColliders[0].w = 10;
-				dino.mColliders[0].h = 9;
+				dino.setCollider(0, dino.transform->position.x + 18, dino.transform->position.y + 19, 10, 9);
 
 				// dino.mColliders[1].x = 10;
 				// dino.mColliders[1].y = 31;

@@ -77,13 +77,13 @@
     <ClInclude Include="States.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DinoStates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObstacleHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\TransformComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DinoStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

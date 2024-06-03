@@ -30,7 +30,7 @@ public:
 
 	int getTick() const;
 
-	static const int SCREEN_WIDTH = 900;
+	static const int SCREEN_WIDTH = 1200;
 	static const int SCREEN_HEIGHT = 480;
 
 	static bool initError;

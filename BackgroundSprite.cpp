@@ -2,7 +2,7 @@
 
 void Background::init() {
 	if (animated) {
-		setAnimation(0, 2, 500);
+		setAnimation(1, 2, 500);
 	}
 }
 

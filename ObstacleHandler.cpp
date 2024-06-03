@@ -28,47 +28,31 @@ void ObstacleHandler::hotSwapObstacleSprite(SpriteComponent* spriteComponent, in
 	switch (sType) {
 	case 0:
 		spriteComponent->sprite = std::move(std::make_unique<DyingTree1>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(0, 0, 32, 32);
 		break;
 	case 1:
 		spriteComponent->sprite = std::move(std::make_unique<DyingTree2>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(32, 0, 32, 32);
 		break;
 	case 2:
 		spriteComponent->sprite = std::move(std::make_unique<Bucket>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(64, 0, 32, 32);
 		break;
 	case 3:
-		spriteComponent->sprite = std::move(std::make_unique<TreeStump2>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(0, 32, 32, 32);
+		spriteComponent->sprite = std::move(std::make_unique<TreeStump>());
 		break;
 	case 4:
 		spriteComponent->sprite = std::move(std::make_unique<Stalker>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(32, 32, 32, 32);
 		break;
 	case 5:
 		spriteComponent->sprite = std::move(std::make_unique<Brute>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(0, 64, 32, 32);
 		break;
 	case 6:
 		spriteComponent->sprite = std::move(std::make_unique<StalkerPup>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(0, 96, 32, 32);
 		break;
 	case 7:
 		spriteComponent->sprite = std::move(std::make_unique<Gale>());
-		spriteComponent->init();
-		spriteComponent->sprite->setSrcRect(0, 128, 32, 32);
 		break;
 	}
 
-	spriteComponent->sprite->setDestRect(Game::SCREEN_WIDTH + 102, 225, 173, 175);
+	spriteComponent->init();
 }
 
 void ObstacleHandler::loadObstacles() {
@@ -85,10 +69,6 @@ void ObstacleHandler::loadObstacles() {
 			obstacles[i]->wakeUp();
 		}
 	}
-
-	if (obstaclesTransformData[0]->position.x == obstaclesTransformData[1]->position.x) {
-		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
-	}
 }
 
 void ObstacleHandler::fieldObstacle() {
@@ -98,10 +78,14 @@ void ObstacleHandler::fieldObstacle() {
 			return;
 		}
 	}
+
+	if (obstaclesTransformData[0]->position.x == obstaclesTransformData[1]->position.x) {
+		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
+	}
 	
-	if (abs(obstaclesTransformData[0]->position.x - Game::SCREEN_WIDTH) >= 700 && obstaclesTransformData[1]->position.x == Game::SCREEN_WIDTH + 102) {
+	if (abs(obstaclesTransformData[0]->position.x - Game::SCREEN_WIDTH) >= 550 && obstaclesTransformData[1]->position.x == Game::SCREEN_WIDTH + 102) {
 		obstaclesTransformData[1]->position.x = Game::SCREEN_WIDTH + 101;
-	} else if (abs(obstaclesTransformData[1]->position.x - Game::SCREEN_WIDTH) >= 700 && obstaclesTransformData[0]->position.x == Game::SCREEN_WIDTH + 102) {
+	} else if (abs(obstaclesTransformData[1]->position.x - Game::SCREEN_WIDTH) >= 550 && obstaclesTransformData[0]->position.x == Game::SCREEN_WIDTH + 102) {
 		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
 	}
 }

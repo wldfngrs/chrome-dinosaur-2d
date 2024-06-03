@@ -133,6 +133,7 @@ void Game::render() {
 void Game::update() {
 	Game::obstacleHandler.fieldObstacle();
 	Game::obstacleHandler.loadObstacles();
+	
 	Game::entityManager.refresh();
 	Game::entityManager.update();
 

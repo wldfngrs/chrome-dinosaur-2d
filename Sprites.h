@@ -46,6 +46,13 @@ public:
 	std::vector<SDL_Rect>& getColliders() {
 		return mColliders;
 	}
+
+	void setCollider(int mColliderIndex, float x, float y, int w, int h) {
+		mColliders[mColliderIndex].x = static_cast<int>(x);
+		mColliders[mColliderIndex].y = static_cast<int>(y);
+		mColliders[mColliderIndex].w = w;
+		mColliders[mColliderIndex].h = h;
+	}
 };
 
 class DinoState;
@@ -110,7 +117,7 @@ public:
 	void update() override;
 };
 
-class TreeStump2 : public Sprite {
+class TreeStump : public Sprite {
 public:
 	void init() override;
 	

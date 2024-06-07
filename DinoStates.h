@@ -88,7 +88,7 @@ class JumpingState : public DinoState {
 
 	bool jumping = false;
 	int jumpTime = 0;
-	const int MAX_JUMPTIME = 25;
+	const int MAX_JUMPTIME = 30;
 
 public:
 	void enter(Dino& dino) override {

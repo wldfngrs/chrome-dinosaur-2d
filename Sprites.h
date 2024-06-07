@@ -64,7 +64,7 @@ public:
 	bool jump = false;
 	bool duck = false;
 
-	const int jumpHeight = 190;
+	const int jumpHeight = 290;
 
 	void init() override;
 

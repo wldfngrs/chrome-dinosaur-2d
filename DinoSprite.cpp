@@ -12,8 +12,8 @@ void Dino::init() {
 void Dino::update() {
 	state->update(*this);
 
-	if (transform->position.y > 225) {
-		transform->position.y = 225;
+	if (transform->position.y > (Game::SCREEN_HEIGHT - 355)) {
+		transform->position.y = Game::SCREEN_HEIGHT - 355;
 	}
 }
 

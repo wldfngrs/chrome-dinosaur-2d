@@ -112,13 +112,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)ECS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_ttf\include;C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)ECS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\wldfn\source\repos\Dino\SDL2\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_ttf\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,21 +129,22 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)ECS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_ttf\include;C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)ECS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\wldfn\source\repos\Dino\SDL2\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_ttf\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackgroundSprite.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObstacleHandler.cpp" />
     <ClCompile Include="ObstacleSprite.cpp" />
@@ -161,7 +162,9 @@
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="ObstacleHandler.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />

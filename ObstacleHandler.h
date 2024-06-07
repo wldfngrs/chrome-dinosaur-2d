@@ -7,14 +7,14 @@
 #include "SpriteComponent.h"
 
 class ObstacleHandler {
-	std::vector<Entity*> obstacles;
-	std::vector<TransformComponent*> obstaclesTransformData;
-	std::vector<SpriteComponent*> obstaclesSpriteData;
+	static std::vector<Entity*> obstacles;
+	static std::vector<TransformComponent*> obstaclesTransformData;
+	static std::vector<SpriteComponent*> obstaclesSpriteData;
 
 public:
-	void init();
-	void loadObstacles();
-	void fieldObstacle();
-	void addObstacle(Entity* obstacleEntity);
-	void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
+	static void init();
+	static void loadObstacles();
+	static void fieldObstacle();
+	static void addObstacle(Entity* obstacleEntity);
+	static void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
 };

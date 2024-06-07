@@ -4,6 +4,10 @@
 
 #include <random>
 
+std::vector<Entity*> ObstacleHandler::obstacles;
+std::vector<TransformComponent*> ObstacleHandler::obstaclesTransformData;
+std::vector<SpriteComponent*> ObstacleHandler::obstaclesSpriteData;
+
 void ObstacleHandler::init() {
 	obstacles.resize(2);
 	obstaclesTransformData.resize(2);
@@ -83,9 +87,9 @@ void ObstacleHandler::fieldObstacle() {
 		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
 	}
 	
-	if (abs(obstaclesTransformData[0]->position.x - Game::SCREEN_WIDTH) >= 550 && obstaclesTransformData[1]->position.x == Game::SCREEN_WIDTH + 102) {
+	if (abs(obstaclesTransformData[0]->position.x - Game::SCREEN_WIDTH) >= 900 && obstaclesTransformData[1]->position.x == Game::SCREEN_WIDTH + 102) {
 		obstaclesTransformData[1]->position.x = Game::SCREEN_WIDTH + 101;
-	} else if (abs(obstaclesTransformData[1]->position.x - Game::SCREEN_WIDTH) >= 550 && obstaclesTransformData[0]->position.x == Game::SCREEN_WIDTH + 102) {
+	} else if (abs(obstaclesTransformData[1]->position.x - Game::SCREEN_WIDTH) >= 900 && obstaclesTransformData[0]->position.x == Game::SCREEN_WIDTH + 102) {
 		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
 	}
 }

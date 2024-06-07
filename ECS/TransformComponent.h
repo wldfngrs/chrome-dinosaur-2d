@@ -9,7 +9,6 @@ struct TransformComponent : public Component {
 
 	int height = 1;
 	int width = 1;
-	int scale = 1;
 
 	TransformComponent() {
 		position.zero();
@@ -19,7 +18,6 @@ struct TransformComponent : public Component {
 	TransformComponent(int scale) {
 		position.zero();
 		velocity.zero();
-		this->scale = scale;
 	}
 
 	TransformComponent(float x, float y) {
@@ -28,12 +26,11 @@ struct TransformComponent : public Component {
 		velocity.zero();
 	}
 
-	TransformComponent(float x, float y, int w, int h, int sc) {
+	TransformComponent(float x, float y, int w, int h) {
 		position.x = x;
 		position.y = y;
 		height = h;
 		width = w;
-		scale = sc;
 	}
 
 	void init() override {}

@@ -2,22 +2,24 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
+#include "Font.h"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-class ObstacleHandler;
-class EntityManager;
 class Entity;
 
 class Game {
-	int initGame();
-	void closeGame();
+	int initSDL();
+	int initFonts();
+	int initEntities();
+	int initObstacles();
+	bool showTitleScreen() const;
 
-	static int tick;
 
-	SDL_Window* window;
+	SDL_Window* gameWindow;
 
 public:
 	Game();
@@ -25,23 +27,25 @@ public:
 
 	void render();
 	void update();
-	void mainLoop();
-	void handleEvents();
+	void inGameLoop();
+	void handleEvents() const;
 
-	int getTick() const;
+	static const int SCREEN_WIDTH = 1280;
+	static const int SCREEN_HEIGHT = 720;
 
-	static const int SCREEN_WIDTH = 1200;
-	static const int SCREEN_HEIGHT = 480;
+	bool initDone;
 
-	static bool initError;
-	static bool running;
-	
+	static bool quit;
+	static bool playerFail;
+
 	static std::string errorMessage;
 
-	static SDL_Renderer* renderer;
+	static SDL_Renderer* gameRenderer;
+
+	std::unique_ptr<Font> gameTitle;
+	std::unique_ptr<Font> gameSubtitle;
+
 	static SDL_Event event;
 
 	static Entity& player;
-	static EntityManager entityManager;
-	static ObstacleHandler obstacleHandler;
 };

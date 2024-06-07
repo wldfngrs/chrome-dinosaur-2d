@@ -26,7 +26,7 @@ SpriteComponent::~SpriteComponent() {
 }
 
 void SpriteComponent::setTexture(const char* path) {
-	texture = TextureManager::loadTexture(path);
+	texture = TextureManager::loadSpriteTexture(path);
 	pathToTexture = const_cast<char*>(path);
 }
 
@@ -51,5 +51,5 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::draw() {
-	TextureManager::draw(pathToTexture, texture, sprite->srcRect, sprite->destRect);
+	TextureManager::drawSprite(pathToTexture, texture, sprite->srcRect, sprite->destRect);
 }

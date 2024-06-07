@@ -7,11 +7,13 @@
 int main(int argc, char **argv) {
 	Game game;
 
-	if (game.initError) {
+	if (!game.initDone) {
 		return -1;
 	}
 
-	game.mainLoop();
+	while (!game.quit) {
+		game.inGameLoop();
+	}
 
 	return 0;
 }

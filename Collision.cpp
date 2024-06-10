@@ -5,7 +5,7 @@
 #include "Sprites.h"
 #include "SpriteComponent.h"
 
-bool Collision::AABB(const SDL_Rect& A, const char* Atag, const SDL_Rect& B, const char* Btag) {
+bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collisionTag) {
 	if (A.x + A.w >= B.x
 		&&
 		B.x + B.w >= A.x
@@ -14,8 +14,7 @@ bool Collision::AABB(const SDL_Rect& A, const char* Atag, const SDL_Rect& B, con
 		&&
 		B.y + B.h >= A.y)
 	{
-		std::cout << Atag << " hit " << Btag << std::endl;
-		std::cout << "Game Over!" << std::endl;
+		std::cout << collisionTag << std::endl;
 		Game::playerFail = true;
 		return true;
 	}
@@ -23,12 +22,12 @@ bool Collision::AABB(const SDL_Rect& A, const char* Atag, const SDL_Rect& B, con
 	return false;
 }
 
-void Collision::checkForCollision(std::vector<std::pair<const char*, SDL_Rect>> colliders) {
-	std::vector<std::pair<const char*, SDL_Rect>>& dinoColliders = Game::dino.getComponent<SpriteComponent>().sprite->mColliders;
+void Collision::checkForCollision(Collider collider) {
+	std::vector<SDL_Rect> dinoColliders = Game::dino.getComponent<SpriteComponent>().sprite->collider.colliderRects;
 		
 	for (auto& p : dinoColliders) {
-		for (auto& c : colliders) {
-			if (AABB(p.second, p.first, c.second, c.first)) {
+		for (auto& c : collider.colliderRects) {
+			if (AABB(p, c, collider.tagOnCollision)) {
 				return;
 			}
 		}
@@ -43,7 +42,7 @@ void Collision::checkForCollisions() {
 
 	for (auto& e : entities) {
 		if (e->isActive() && e->collidable && (Game::dino.entityIndex != e->entityIndex)) {
-			checkForCollision(e->getComponent<SpriteComponent>().sprite->mColliders);
+			checkForCollision(e->getComponent<SpriteComponent>().sprite->collider);
 		}
 	}
 }

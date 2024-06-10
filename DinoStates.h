@@ -16,8 +16,8 @@ class RunningState : public DinoState {
 				dino.transform->height
 			);
 
-			dino.mColliders.resize(1);
-			dino.setCollider(0, "Dino", dino.transform->position.x, dino.transform->position.y + 59, 221, 213);
+			dino.collider.colliderRects.resize(1);
+			dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 59, 221, 213);
 
 			dino.setAnimation(0, 2, 150);
 		}
@@ -46,8 +46,8 @@ class DuckingState : public DinoState {
 				dino.transform->height
 			);
 
-			dino.mColliders.resize(1);
-			dino.setCollider(0, "Dino",dino.transform->position.x, dino.transform->position.y + 136, 273, 136);
+			dino.collider.colliderRects.resize(1);
+			dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 136, 273, 136);
 
 			dino.duck = true;
 
@@ -86,8 +86,8 @@ public:
 		if (!dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
 
-			dino.mColliders.resize(1);
-			dino.setCollider(0, "Dino",dino.transform->position.x + 8, dino.transform->position.y + 76, 230, 196);
+			dino.collider.colliderRects.resize(1);
+			dino.setCollider(0, dino.transform->position.x + 8, dino.transform->position.y + 76, 230, 196);
 
 			charging = true;
 		}
@@ -111,8 +111,8 @@ public:
 					dino.transform->height
 				);
 
-				dino.mColliders.resize(1);
-				dino.setCollider(0, "Dino",-1, -1, -1, -1);
+				dino.collider.colliderRects.resize(1);
+				dino.setCollider(0, -1, -1, -1, -1);
 			}
 		}
 
@@ -134,8 +134,8 @@ public:
 					dino.transform->height
 				);
 
-				dino.mColliders.resize(1);
-				dino.setCollider(0, "Dino",dino.transform->position.x, dino.transform->position.y + 315, 255, 119);
+				dino.collider.colliderRects.resize(1);
+				dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 315, 255, 119);
 			}
 		}
 

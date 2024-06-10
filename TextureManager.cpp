@@ -31,8 +31,8 @@ void TextureManager::drawSprite(const char* pathToTexture, SDL_Texture* texture,
 	}
 }
 
-SDL_Texture* TextureManager::loadFromRenderedText(std::string textureText, TTF_Font* font, SDL_Color textColor) {
-	SDL_Surface* tempSurface = TTF_RenderText_Solid(font, textureText.c_str(), textColor);
+SDL_Texture* TextureManager::loadFromRenderedText(const char* textureText, TTF_Font* font, SDL_Color textColor) {
+	SDL_Surface* tempSurface = TTF_RenderText_Solid(font, textureText, textColor);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::gameRenderer, tempSurface);
 
 	if (texture == nullptr) {

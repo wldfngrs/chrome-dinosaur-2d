@@ -5,7 +5,8 @@ const int obstacleVelocity = -15;
 
 void DyingTree1::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!";
 
 	setSrcRect(0, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -15,7 +16,7 @@ void DyingTree1::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "DyingTree1", transform->position.x + 89, transform->position.y + 8, 166, 264);
+		setCollider(0, transform->position.x + 89, transform->position.y + 8, 166, 264);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -24,7 +25,9 @@ void DyingTree1::update() {
 
 void DyingTree2::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Sh*t! caught in the Dying Trees! Wriggle out for your next run?";
+	
 
 	setSrcRect(32, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -34,7 +37,7 @@ void DyingTree2::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "DyingTree2", transform->position.x + 72, transform->position.y + 93, 140, 187);
+		setCollider(0, transform->position.x + 72, transform->position.y + 93, 140, 187);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -43,7 +46,8 @@ void DyingTree2::update() {
 
 void Bucket::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Danmit! You've kicked the Bucket. Did I mention you have nine(ahem) lives?";
 
 	setSrcRect(64, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -53,8 +57,7 @@ void Bucket::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 7, transform->position.y + 6, 17, 25);
-		setCollider(0, "Bucket", transform->position.x + 105, transform->position.y + 51, 106, 221);
+		setCollider(0, transform->position.x + 105, transform->position.y + 51, 106, 221);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -63,7 +66,8 @@ void Bucket::update() {
 
 void TreeStump::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Oof! The Tree Stump ended your run! Watch your path, Rex.";
 
 	setSrcRect(0, 32, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -73,8 +77,7 @@ void TreeStump::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 7, transform->position.y + 19, 16, 12);
-		setCollider(0, "TreeStump", transform->position.x + 123, transform->position.y + 162, 81, 110);
+		setCollider(0, transform->position.x + 123, transform->position.y + 162, 81, 110);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -83,7 +86,8 @@ void TreeStump::update() {
 
 void Stalker::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Hehe, the one-eyed wanderer gets us all...burned by the Stalker!";
 
 	setAnimation(1, 2, 200);
 	setSrcRect(32, 32, 32, 32);
@@ -94,7 +98,7 @@ void Stalker::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "Stalker", transform->position.x + 115, transform->position.y + 8, 123, 255);
+		setCollider(0, transform->position.x + 115, transform->position.y + 8, 123, 255);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 
@@ -106,7 +110,8 @@ void Stalker::update() {
 
 void Brute::init() {
 	transform->entity->collidable = true;
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Ouch, crushed by the merciless Brute! Oh well, you're not THAT hurt, go again?";
 
 	setAnimation(2, 2, 200);
 	setSrcRect(0, 64, 32, 32);
@@ -117,7 +122,7 @@ void Brute::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "Brute", transform->position.x + 72, transform->position.y + 59, 191, 213);
+		setCollider(0, transform->position.x + 72, transform->position.y + 59, 191, 213);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
@@ -135,14 +140,13 @@ void StalkerPup::init() {
 	setAnimation(3, 2, 200);
 	setSrcRect(0, 96, 32, 32);
 	
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Yikes, the baby one-eyed wanderer gets us all...better luck with the Stalker Pup next time!";
 
 	if (upordown >= 5) {
-		//setDestRect(Game::SCREEN_WIDTH + 102, 185, 103, 100);
 		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
-		//setDestRect(Game::SCREEN_WIDTH + 102, 295, 103, 100);
 		setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
 	}
 }
@@ -151,7 +155,7 @@ void StalkerPup::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "StalkerPup", transform->position.x + 64, transform->position.y, 109, 175);
+		setCollider(0, transform->position.x + 64, transform->position.y, 109, 175);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
@@ -171,14 +175,13 @@ void Gale::init() {
 	setAnimation(4, 2, 200);
 	setSrcRect(0, 128, 32, 32);
 
-	mColliders.resize(1);
+	collider.colliderRects.resize(1);
+	collider.tagOnCollision = "Whoaa, you let the Night Gale sweep you away? Hold on tight next run!";
 
 	if (upordown >= 5) {
-		//setDestRect(Game::SCREEN_WIDTH + 102, 135, 153, 150);
 		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
-		//setDestRect(Game::SCREEN_WIDTH + 102, 245, 153, 150);
 		setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
 	}
 }
@@ -187,7 +190,7 @@ void Gale::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
 		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, "Gale", transform->position.x + 64, transform->position.y, 109, 175);
+		setCollider(0, transform->position.x + 64, transform->position.y, 109, 175);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();

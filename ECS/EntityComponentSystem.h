@@ -25,10 +25,8 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept {
 }
 
 constexpr std::size_t maxComponents = 32;
-constexpr std::size_t maxGroups = 32;
 
 using ComponentBitset = std::bitset<maxComponents>;
-using GroupBitset = std::bitset<maxGroups>;
 using ComponentArray = std::array<Component*, maxComponents>;
 
 class Component {
@@ -49,7 +47,6 @@ class Entity {
 
 	ComponentArray componentArray;
 	ComponentBitset componentBitset;
-	GroupBitset groupBitset;
 
 public:
 	bool collidable = false;

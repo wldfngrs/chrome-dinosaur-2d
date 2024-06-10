@@ -1,6 +1,8 @@
 #include "Sprites.h"
 #include "Game.h"
 
+const int obstacleVelocity = -15;
+
 void DyingTree1::init() {
 	transform->entity->collidable = true;
 	mColliders.resize(1);
@@ -11,11 +13,9 @@ void DyingTree1::init() {
 
 void DyingTree1::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 2, transform->position.y + 2, 23, 7);
-		//setCollider(1, transform->position.x + 9, transform->position.y + 16, 13, 12);
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "DyingTree1", transform->position.x + 89, transform->position.y + 8, 166, 264);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -32,11 +32,9 @@ void DyingTree2::init() {
 
 void DyingTree2::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 1, transform->position.y + 31, 4, 3);
-		//setCollider(1, transform->position.x + 9, transform->position.y + 9, 10, 22);
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "DyingTree2", transform->position.x + 72, transform->position.y + 93, 140, 187);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -53,10 +51,10 @@ void Bucket::init() {
 
 void Bucket::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
 		//setCollider(0, transform->position.x + 7, transform->position.y + 6, 17, 25);
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "Bucket", transform->position.x + 105, transform->position.y + 51, 106, 221);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -73,10 +71,10 @@ void TreeStump::init() {
 
 void TreeStump::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
 		//setCollider(0, transform->position.x + 7, transform->position.y + 19, 16, 12);
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "TreeStump", transform->position.x + 123, transform->position.y + 162, 81, 110);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 }
@@ -94,13 +92,9 @@ void Stalker::init() {
 
 void Stalker::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 5, transform->position.y + 7, 6, 11);
-		//setCollider(1, transform->position.x + 8, transform->position.y + 32, 7, 8);
-		//setCollider(2, transform->position.x + 35, transform->position.y + 35, 8, 3);
-
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "Stalker", transform->position.x + 115, transform->position.y + 8, 123, 255);
 	}
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
 
@@ -121,12 +115,9 @@ void Brute::init() {
 
 void Brute::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
-		
-		//setCollider(0, transform->position.x + 2, transform->position.y + 14, 27, 7);
-		//setCollider(1, transform->position.x + 8, transform->position.y + 7, 15, 5);
+		transform->velocity.x = obstacleVelocity;
 
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "Brute", transform->position.x + 72, transform->position.y + 59, 191, 213);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
@@ -158,12 +149,9 @@ void StalkerPup::init() {
 
 void StalkerPup::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 2, transform->position.y + 14, 8, 9);
-		//setCollider(1, transform->position.x + 5, transform->position.y + 9, 25, 9);
-
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "StalkerPup", transform->position.x + 64, transform->position.y, 109, 175);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();
@@ -197,14 +185,9 @@ void Gale::init() {
 
 void Gale::update() {
 	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = -12;
+		transform->velocity.x = obstacleVelocity;
 
-		//setCollider(0, transform->position.x + 2, transform->position.y + 32, 5, 8);
-		//setCollider(1, transform->position.x + 6, transform->position.y + 4, 8, 11);
-		//setCollider(2, transform->position.x + 11, transform->position.y + 33, 16, 8);
-		//setCollider(3, transform->position.x + 21, transform->position.y + 26, 7, 3);
-
-		setCollider(0, transform->position.x, transform->position.y, 273, 275);
+		setCollider(0, "Gale", transform->position.x + 64, transform->position.y, 109, 175);
 	}
 
 	if (transform->position.x <= -transform->width) transform->velocity.zero();

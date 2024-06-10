@@ -5,7 +5,7 @@
 #include "Sprites.h"
 #include "SpriteComponent.h"
 
-bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B) {
+bool Collision::AABB(const SDL_Rect& A, const char* Atag, const SDL_Rect& B, const char* Btag) {
 	if (A.x + A.w >= B.x
 		&&
 		B.x + B.w >= A.x
@@ -14,31 +14,35 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B) {
 		&&
 		B.y + B.h >= A.y)
 	{
-		std::cout << "Collision happened!" << std::endl;
+		std::cout << Atag << " hit " << Btag << std::endl;
+		std::cout << "Game Over!" << std::endl;
+		Game::playerFail = true;
 		return true;
 	}
 	
 	return false;
 }
 
-void Collision::checkForCollision(std::vector<SDL_Rect> colliders) {
-	std::vector<SDL_Rect>& dinoColliders = Game::player.getComponent<SpriteComponent>().sprite->mColliders;
+void Collision::checkForCollision(std::vector<std::pair<const char*, SDL_Rect>> colliders) {
+	std::vector<std::pair<const char*, SDL_Rect>>& dinoColliders = Game::dino.getComponent<SpriteComponent>().sprite->mColliders;
 		
 	for (auto& p : dinoColliders) {
 		for (auto& c : colliders) {
-			AABB(p, c);
+			if (AABB(p.second, p.first, c.second, c.first)) {
+				return;
+			}
 		}
 	}
 }
 
 void Collision::checkForCollisions() {
-	EntityManager& eManager = Game::player.getEntityManager();
+	EntityManager& eManager = Game::dino.getEntityManager();
 	std::vector<std::unique_ptr<Entity>>& entities = eManager.getEntities();
 	
 	/* Check for collision between Game::dino and the other game entities, only if they are collidable i.e Obstacles */
 
 	for (auto& e : entities) {
-		if (e->collidable && (Game::player.entityIndex != e->entityIndex) && e->isActive()) {
+		if (e->isActive() && e->collidable && (Game::dino.entityIndex != e->entityIndex)) {
 			checkForCollision(e->getComponent<SpriteComponent>().sprite->mColliders);
 		}
 	}

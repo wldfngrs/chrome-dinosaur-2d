@@ -6,7 +6,7 @@
 class RunningState : public DinoState {
 	void enter(Dino& dino) override {
 		if (!dino.jump && !dino.duck) {
-			dino.setSrcRect(0, 32, 32, 32);
+			dino.setSrcRect(0, 0, 32, 32);
 
 			dino.setDestRect
 			(
@@ -16,19 +16,11 @@ class RunningState : public DinoState {
 				dino.transform->height
 			);
 
-			dino.mColliders.resize(2);
+			dino.mColliders.resize(1);
+			dino.setCollider(0, "Dino", dino.transform->position.x, dino.transform->position.y + 59, 221, 213);
 
-			/* HEAD */
-			dino.setCollider(0, dino.transform->position.x + 12, dino.transform->position.y + 7, 14, 9);
-
-			/* FRONT LEG/ARM */
-			dino.setCollider(1, dino.transform->position.x + 16, dino.transform->position.y + 16, 7, 16);
-
-			/* TAIL/TAILING LEG*/
-			// dino.setCollider(2, dino.transform->position.x + 2, dino.transform->position.y + 16, 14, 12);
+			dino.setAnimation(0, 2, 150);
 		}
-
-		dino.setAnimation(0, 2, 150);
 	}
 
 	void update(Dino& dino) override {
@@ -55,9 +47,7 @@ class DuckingState : public DinoState {
 			);
 
 			dino.mColliders.resize(1);
-
-			/* HEAD */
-			dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 16, 15, 9);
+			dino.setCollider(0, "Dino",dino.transform->position.x, dino.transform->position.y + 136, 273, 136);
 
 			dino.duck = true;
 
@@ -80,11 +70,11 @@ class DuckingState : public DinoState {
 class JumpingState : public DinoState {
 	bool charging = false;
 	int chargeTime = 0;
-	const int MAX_CHARGETIME = 10;
+	const int MAX_CHARGETIME = 5;
 
 	bool landing = false;
 	int landTime = 0;
-	const int MAX_LANDTIME = 15;
+	const int MAX_LANDTIME = 13;
 
 	bool jumping = false;
 	int jumpTime = 0;
@@ -96,21 +86,8 @@ public:
 		if (!dino.duck) {
 			dino.setSrcRect(0, 32, 32, 32);
 
-			dino.setDestRect
-			(
-				dino.transform->position.x,
-				dino.transform->position.y + dino.jumpHeight,
-				dino.transform->width,
-				dino.transform->height
-			);
-
-			dino.mColliders.resize(2);
-
-			/* HEAD */
-			dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 9, 12, 7);
-
-			/* TORSO */
-			dino.setCollider(1, dino.transform->position.x + 8, dino.transform->position.y + 16, 14, 15);
+			dino.mColliders.resize(1);
+			dino.setCollider(0, "Dino",dino.transform->position.x + 8, dino.transform->position.y + 76, 230, 196);
 
 			charging = true;
 		}
@@ -134,19 +111,8 @@ public:
 					dino.transform->height
 				);
 
-				dino.mColliders.resize(2);
-
-				/* HEAD */
-				dino.setCollider(0, dino.transform->position.x + 16, dino.transform->position.y + 9, 13, 7);
-
-				/* TORSO */
-				dino.setCollider(1, dino.transform->position.x + 9, dino.transform->position.y + 16, 18, 8);
-
-				//dino.setCollider(2, static_cast<int>(dino.transform->position.x), static_cast<int>(dino.transform->position.y + 21), 7, 12);
-				//dino.mColliders[2].x = dino.transform->position.x;
-				//dino.mColliders[2].y = dino.transform->position.y + 21;
-				//dino.mColliders[2].w = 7;
-				//dino.mColliders[2].h = 12;
+				dino.mColliders.resize(1);
+				dino.setCollider(0, "Dino",-1, -1, -1, -1);
 			}
 		}
 
@@ -169,19 +135,7 @@ public:
 				);
 
 				dino.mColliders.resize(1);
-
-				/* HEAD */
-				dino.setCollider(0, dino.transform->position.x + 18, dino.transform->position.y + 19, 10, 9);
-
-				// dino.mColliders[1].x = 10;
-				// dino.mColliders[1].y = 31;
-				// dino.mColliders[1].w = 11;
-				// dino.mColliders[1].h = 1;
-				// 
-				// dino.mColliders[2].x = dino.transform->position.x;
-				// dino.mColliders[2].y = dino.transform->position.y + 19;
-				// dino.mColliders[2].w = 6;
-				// dino.mColliders[2].h = 6;
+				dino.setCollider(0, "Dino",dino.transform->position.x, dino.transform->position.y + 315, 255, 119);
 			}
 		}
 
@@ -199,8 +153,8 @@ public:
 	void leave(Dino& dino) override {
 		if (dino.state != nullptr) delete dino.state;
 
+		dino.jump = false;
 		dino.state = new RunningState();
 		dino.state->enter(dino);
-		dino.jump = false;
 	}
 };

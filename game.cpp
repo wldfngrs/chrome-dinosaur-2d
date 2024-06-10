@@ -6,7 +6,7 @@
 #include "ObstacleHandler.h"
 #include "Sprites.h"
 #include "Font.h"
-#include "HighScore.h"
+#include "Score.h"
 #include <sstream>
 
 SDL_Event Game::event;
@@ -15,13 +15,14 @@ bool Game::playerFail = false;
 std::string Game::errorMessage;
 SDL_Renderer* Game::gameRenderer;
 
-EntityManager entityManager;
-Entity& map(entityManager.addEntity());
-Entity& ground(entityManager.addEntity());
-Entity& obstacle1 = entityManager.addEntity();
-Entity& obstacle2 = entityManager.addEntity();
-Entity& celestialBody = entityManager.addEntity();
-Entity& Game::player = entityManager.addEntity();
+int Game::tick = 0;
+
+EntityManager Game::entityManager;
+
+Entity& map(Game::entityManager.addEntity());
+Entity& ground(Game::entityManager.addEntity());
+Entity& celestialBody(Game::entityManager.addEntity());
+Entity& Game::dino(Game::entityManager.addEntity());
 
 Game::Game() {
 	if (initSDL() != 0) {
@@ -36,13 +37,19 @@ Game::Game() {
 		return;
 	}
 
-	if (initEntities() != 0) {
+	if (initNonDinoEntities() != 0) {
 		return;
 	}
-	
+
+	if (initDinoEntity() != 0) {
+		return;
+	}
+
 	if (initObstacles() != 0) {
 		return;
 	}
+
+	Score::init();
 
 	initDone = true;
 }
@@ -54,7 +61,7 @@ Game::~Game() {
 	gameWindow = nullptr;
 	gameRenderer = nullptr;
 
-	HighScore::scoreFont.reset();
+	Score::font.reset();
 	gameSubtitle.reset();
 	gameTitle.reset();
 
@@ -80,11 +87,6 @@ int Game::initSDL() {
 		return -1;
 	}
 
-	if (SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 255) < 0) {
-		std::cerr << "[Error] Game::initSDL(): SDL_SetRenderDrawColor() Failed!\nDetails: " << SDL_GetError() << "\n";
-		return -1;
-	}
-
 	return 0;
 }
 
@@ -101,37 +103,45 @@ int Game::initFonts() {
 		return -1;
 	}
 
-	gameSubtitle = std::move(std::make_unique<Font>("assets\\fonts\\ALBA____.TTF", 24));
+	gameSubtitle = std::move(std::make_unique<Font>("assets\\fonts\\ALBA____.TTF", 12));
 	if (gameSubtitle->errorCode == -1) {
 		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << gameSubtitle->pathToFont << "' failed!\nDetails: 'assets\\fonts\\ALBA____.TTF'" << TTF_GetError() << "\n";
 		return -1;
 	}
 
-	HighScore::scoreFont = std::move(std::make_unique<Font>("assets\\fonts\\bunny$mambo.ttf", 24));
-	if (HighScore::scoreFont->errorCode == -1) {
-		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << HighScore::scoreFont->pathToFont << "' failed!\nDetails: 'assets\\fonts\\bunny$mambo.ttf' " << TTF_GetError() << "\n";
+	Score::font = std::move(std::make_unique<Font>("assets\\fonts\\bunny$mambo.ttf", 24));
+	if (Score::font->errorCode == -1) {
+		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << Score::font->pathToFont << "' failed!\nDetails: 'assets\\fonts\\bunny$mambo.ttf' " << TTF_GetError() << "\n";
 		return -1;
 	}
 
 	return 0;
 }
 
-bool Game::showTitleScreen() const {
-	SDL_Color titleTextColor = { 184, 37, 53 };
-	SDL_Color subtitleTextColor = { 0, 0, 0 };
-	gameTitle->texture = TextureManager::loadFromRenderedText("DINO RUN", gameTitle->font, titleTextColor);
-	//gameSubtitle->texture = TextureManager::loadFromRenderedText("press [SPACE] to start", gameSubtitle->font, subtitleTextColor);
-	
+static inline void titleSteadySubtitleBlink(SDL_Texture* titleTexture, SDL_Texture* subtitleTexture, bool subtitleIsVisible) {
 	SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(Game::gameRenderer);
-
-	TextureManager::drawText(gameTitle->texture, Game::SCREEN_WIDTH / 4, Game::SCREEN_HEIGHT / 6, Game::SCREEN_WIDTH/2, Game::SCREEN_HEIGHT/4);
-	//TextureManager::drawText(gameSubtitle->texture, Game::SCREEN_WIDTH / 4 + 10, Game::SCREEN_HEIGHT / 4 + Game::SCREEN_HEIGHT/2 + 10, 0, 0);
+	
+	TextureManager::drawText(titleTexture, Game::SCREEN_WIDTH / 4, Game::SCREEN_HEIGHT / 6, Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 4);
+	if (subtitleIsVisible) {
+		TextureManager::drawText(subtitleTexture, 430, 360, 420, 40);
+	}
 	
 	SDL_RenderPresent(Game::gameRenderer);
+}
+
+bool Game::showTitleScreen() const {
+	int time = 0;
+	bool subtitleVisibility = true;
+
+	SDL_Color titleTextColor = { 184, 37, 53 };
+	SDL_Color subtitleTextColor = { 255, 255, 255 };
+	gameTitle->texture = TextureManager::loadFromRenderedText("DINO SAUR", gameTitle->font, titleTextColor);
+	gameSubtitle->texture = TextureManager::loadFromRenderedText("press [SPACE] to start", gameSubtitle->font, subtitleTextColor);
 
 	while (true) {
 		try {
+			titleSteadySubtitleBlink(gameTitle->texture, gameSubtitle->texture, subtitleVisibility);
 			this->handleEvents();
 		}
 		catch (std::exception& e) {
@@ -142,10 +152,15 @@ bool Game::showTitleScreen() const {
 	
 			return true;
 		}
+
+		if (++time >= 400) {
+			time = 0;
+			subtitleVisibility = subtitleVisibility ? false : true;
+		}
 	}
 }
 
-int Game::initEntities() {
+int Game::initNonDinoEntities() {
 	try {
 		map.addComponent<TransformComponent>(0, 0, Game::SCREEN_WIDTH, Game::SCREEN_HEIGHT - 80);
 		std::unique_ptr<Background> backgroundSprite{ new Background() };
@@ -158,11 +173,6 @@ int Game::initEntities() {
 		ground.addComponent<TransformComponent>(0, Game::SCREEN_HEIGHT - 80, Game::SCREEN_WIDTH, 80);
 		std::unique_ptr<Ground> groundSprite{ new Ground() };
 		ground.addComponent<SpriteComponent>("assets\\sprites\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
-
-		player.addComponent<TransformComponent>(60, Game::SCREEN_HEIGHT - 355, 273, 275);
-		std::unique_ptr<Dino> dinoSprite{ new Dino() };
-		player.addComponent<SpriteComponent>("assets\\sprites\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
-		player.addComponent<KeyboardController>();
 	}
 	catch (std::runtime_error& e) {
 		std::cout << e.what();
@@ -172,19 +182,20 @@ int Game::initEntities() {
 	return 0;
 }
 
-int Game::initObstacles() {
+void Game::resetNonDinoEntities() {
+	TransformComponent* transformComponent = &celestialBody.getComponent<TransformComponent>();
+	transformComponent->position.x = Game::SCREEN_WIDTH;
+
+	SpriteComponent* spriteComponent = &map.getComponent<SpriteComponent>();
+	spriteComponent->sprite->setAnimation(1, 2, 500);
+}
+
+int Game::initDinoEntity() {
 	try {
-		ObstacleHandler::init();
-
-		obstacle1.addComponent<TransformComponent>();
-		obstacle1.addComponent<SpriteComponent>("assets\\sprites\\ObstacleSheet.png");
-		ObstacleHandler::addObstacle(&obstacle1);
-
-		obstacle2.addComponent<TransformComponent>();
-		obstacle2.addComponent<SpriteComponent>("assets\\sprites\\ObstacleSheet.png");
-		ObstacleHandler::addObstacle(&obstacle2);
-
-		ObstacleHandler::loadObstacles();
+		dino.addComponent<TransformComponent>(60, Game::SCREEN_HEIGHT - 355, 273, 275);
+		std::unique_ptr<Dino> dinoSprite{ new Dino() };
+		dino.addComponent<SpriteComponent>("assets\\sprites\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
+		dino.addComponent<KeyboardController>();
 	}
 	catch (std::runtime_error& e) {
 		std::cout << e.what();
@@ -192,6 +203,44 @@ int Game::initObstacles() {
 	}
 
 	return 0;
+}
+
+void Game::resetDinoEntity() {
+	SpriteComponent* spriteComponent = &dino.getComponent<SpriteComponent>();
+	
+	if (spriteComponent->sprite != nullptr) {
+		spriteComponent->sprite.reset();
+	}
+	
+	spriteComponent->sprite = std::move(std::make_unique<Dino>());
+	spriteComponent->init();
+}
+
+
+int Game::initObstacles() {
+	try {
+		ObstacleHandler::init();
+	}
+	catch (std::runtime_error& e) {
+		std::cout << e.what();
+		return -1;
+	}
+
+	return 0;
+}
+
+void Game::resetObstacles() {
+	ObstacleHandler::reset();
+}
+
+void Game::resetGame() {
+	resetNonDinoEntities();
+	resetDinoEntity();
+	resetObstacles();
+
+	Score::reset();
+
+	Game::playerFail = false;
 }
 
 void Game::handleEvents() const {
@@ -230,11 +279,14 @@ void Game::render() {
 }
 
 void Game::update() {
-	ObstacleHandler::fieldObstacle();
-	ObstacleHandler::loadObstacles();
+	tick++;
+
+	ObstacleHandler::update();
 	
 	entityManager.refresh();
 	entityManager.update();
+
+	Score::update();
 
 	Collision::checkForCollisions();
 }
@@ -260,7 +312,9 @@ void Game::inGameLoop() {
 		}
 		catch (std::exception& e) {
 			std::cout << e.what();
-			break;
+			return;
 		}
 	}
+
+	resetGame();
 }

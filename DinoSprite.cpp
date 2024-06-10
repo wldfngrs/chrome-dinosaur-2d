@@ -3,6 +3,10 @@
 #include "DinoStates.h"
 
 void Dino::init() {
+	if (!animated) {
+		animated = true;
+	}
+	
 	transform->entity->collidable = true;
 
 	state = new RunningState();
@@ -11,10 +15,6 @@ void Dino::init() {
 
 void Dino::update() {
 	state->update(*this);
-
-	if (transform->position.y > (Game::SCREEN_HEIGHT - 355)) {
-		transform->position.y = Game::SCREEN_HEIGHT - 355;
-	}
 }
 
 void Dino::press_UP_key() {
@@ -24,8 +24,6 @@ void Dino::press_UP_key() {
 		if (state != nullptr) delete state;
 
 		state = new JumpingState();
-
-		duck = false;
 
 		state->enter(*this);
 	}
@@ -39,8 +37,6 @@ void Dino::press_DOWN_key() {
 
 		state = new DuckingState();
 
-		jump = false;
-
 		state->enter(*this);
 	}
 }
@@ -51,5 +47,18 @@ void Dino::release_DOWN_key() {
 	if (state != nullptr) delete state;
 
 	state = new RunningState();
+	
 	state->enter(*this);
+}
+
+void Dino::setDestRect(float x, float y, int w, int h) {
+	transform->height = h;
+	transform->width = w;
+	transform->position.x = x;
+
+	if (y > (Game::SCREEN_HEIGHT - 355)) {
+		transform->position.y = Game::SCREEN_HEIGHT - 355;
+	} else {
+		transform->position.y = y;
+	}
 }

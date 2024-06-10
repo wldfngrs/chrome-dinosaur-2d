@@ -48,7 +48,7 @@
     <ClCompile Include="BackgroundSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HighScore.cpp">
+    <ClCompile Include="Score.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="DinoStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HighScore.h">
+    <ClInclude Include="Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">

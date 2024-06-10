@@ -4,6 +4,7 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 #include "Font.h"
+#include "EntityComponentSystem.h"
 
 #include <iostream>
 #include <string>
@@ -14,8 +15,15 @@ class Entity;
 class Game {
 	int initSDL();
 	int initFonts();
-	int initEntities();
+	int initDinoEntity();
+	int initNonDinoEntities();
 	int initObstacles();
+
+	void resetNonDinoEntities();
+	void resetDinoEntity();
+	void resetObstacles();
+	void resetGame();
+
 	bool showTitleScreen() const;
 
 
@@ -38,6 +46,8 @@ public:
 	static bool quit;
 	static bool playerFail;
 
+	static int tick;
+
 	static std::string errorMessage;
 
 	static SDL_Renderer* gameRenderer;
@@ -47,5 +57,6 @@ public:
 
 	static SDL_Event event;
 
-	static Entity& player;
+	static EntityManager entityManager;
+	static Entity& dino;
 };

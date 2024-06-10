@@ -13,8 +13,9 @@ class ObstacleHandler {
 
 public:
 	static void init();
+	static void reset();
+	static void update();
 	static void loadObstacles();
 	static void fieldObstacle();
-	static void addObstacle(Entity* obstacleEntity);
 	static void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
 };

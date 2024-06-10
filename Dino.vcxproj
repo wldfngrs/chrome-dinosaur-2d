@@ -144,7 +144,7 @@
     <ClCompile Include="BackgroundSprite.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="HighScore.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObstacleHandler.cpp" />
     <ClCompile Include="ObstacleSprite.cpp" />
@@ -164,7 +164,7 @@
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="HighScore.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="ObstacleHandler.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />

@@ -12,16 +12,37 @@ void ObstacleHandler::init() {
 	obstacles.resize(2);
 	obstaclesTransformData.resize(2);
 	obstaclesSpriteData.resize(2);
+
+	for (auto i = 0; i < obstacles.size(); i++) {
+		obstacles[i] = &(Game::entityManager.addEntity());
+		
+		Entity& obstacle = *(obstacles[i]);
+		obstacle.addComponent<TransformComponent>();
+		obstacle.addComponent<SpriteComponent>("assets\\sprites\\ObstacleSheet.png");
+
+		obstacle.destroy();
+		obstaclesTransformData[i] = &obstacle.getComponent<TransformComponent>();
+		obstaclesSpriteData[i] = &obstacle.getComponent<SpriteComponent>();
+	}
+
+	loadObstacles();
 }
 
-void ObstacleHandler::addObstacle(Entity* obstacleEntity) {
-	static int index = 0;
+void ObstacleHandler::reset() {
+	for (auto i = 0; i < obstacles.size(); i++) {
+		Entity& obstacle = *(obstacles[i]);
+		obstacle.destroy();
+		obstacle.getComponent<TransformComponent>().velocity.zero();
+	}
 
-	obstacleEntity->destroy();
-	obstacles[index] = obstacleEntity;
-	obstaclesTransformData[index] = &obstacles[index]->getComponent<TransformComponent>();
-	obstaclesSpriteData[index] = &obstacles[index]->getComponent<SpriteComponent>();
-	index++;
+	loadObstacles();
+}
+
+void ObstacleHandler::update() {
+	if (Game::tick < 105) return;
+
+	fieldObstacle();
+	loadObstacles();
 }
 
 void ObstacleHandler::hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType) {

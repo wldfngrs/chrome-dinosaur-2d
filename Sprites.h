@@ -5,7 +5,8 @@
 
 class Sprite {
 public:
-	std::vector<SDL_Rect> mColliders;
+	std::vector<std::pair<const char*, SDL_Rect>> mColliders;
+	//std::vector<SDL_Rect> mColliders;
 
 	TransformComponent* transform;
 
@@ -36,23 +37,28 @@ public:
 		srcRect.w = w;
 	}
 
-	void setDestRect(float x, float y, int w, int h) {
+	virtual void setDestRect(float x, float y, int w, int h) {
 		transform->height = h;
 		transform->width = w;
 		transform->position.x = x;
 		transform->position.y = y;
 	}
 
-	std::vector<SDL_Rect>& getColliders() {
-		return mColliders;
+	void setCollider(int mColliderIndex, const char* tag, float x, float y, int w, int h) {
+		mColliders[mColliderIndex].first = tag;
+		
+		mColliders[mColliderIndex].second.x = static_cast<int>(x);
+		mColliders[mColliderIndex].second.y = static_cast<int>(y);
+		mColliders[mColliderIndex].second.w = w;
+		mColliders[mColliderIndex].second.h = h;
 	}
 
-	void setCollider(int mColliderIndex, float x, float y, int w, int h) {
-		mColliders[mColliderIndex].x = static_cast<int>(x);
-		mColliders[mColliderIndex].y = static_cast<int>(y);
-		mColliders[mColliderIndex].w = w;
-		mColliders[mColliderIndex].h = h;
-	}
+	//void setCollider(int mColliderIndex, float x, float y, int w, int h) {
+	//	mColliders[mColliderIndex].x = static_cast<int>(x);
+	//	mColliders[mColliderIndex].y = static_cast<int>(y);
+	//	mColliders[mColliderIndex].w = w;
+	//	mColliders[mColliderIndex].h = h;
+	//}
 };
 
 class DinoState;
@@ -75,6 +81,8 @@ public:
 	void press_DOWN_key() override;
 
 	void release_DOWN_key() override;
+
+	void setDestRect(float x, float y, int w, int h) override;
 };
 
 class Background : public Sprite {

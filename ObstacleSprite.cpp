@@ -6,7 +6,7 @@ const int obstacleVelocity = -15;
 void DyingTree1::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!";
+	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!\nWriggle out for your next run?";
 
 	setSrcRect(0, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -26,7 +26,7 @@ void DyingTree1::update() {
 void DyingTree2::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Sh*t! caught in the Dying Trees! Wriggle out for your next run?";
+	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!\nWriggle out for your next run?";
 	
 
 	setSrcRect(32, 0, 32, 32);
@@ -47,7 +47,7 @@ void DyingTree2::update() {
 void Bucket::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Danmit! You've kicked the Bucket. Did I mention you have nine(ahem) lives?";
+	collider.tagOnCollision = "Danmit! You've kicked the Bucket.\nDid I mention you have nine(ahem) lives?";
 
 	setSrcRect(64, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -67,7 +67,7 @@ void Bucket::update() {
 void TreeStump::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Oof! The Tree Stump ended your run! Watch your path, Rex.";
+	collider.tagOnCollision = "Oof! crashed right into a Tree Stump!\nWatch your path, Rex.";
 
 	setSrcRect(0, 32, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -87,7 +87,7 @@ void TreeStump::update() {
 void Stalker::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Hehe, the one-eyed wanderer gets us all...burned by the Stalker!";
+	collider.tagOnCollision = "Hehe, the one-eyed Stalker...\nLook away next time, okay?";
 
 	setAnimation(1, 2, 200);
 	setSrcRect(32, 32, 32, 32);
@@ -111,7 +111,7 @@ void Stalker::update() {
 void Brute::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Ouch, crushed by the merciless Brute! Oh well, you're not THAT hurt, go again?";
+	collider.tagOnCollision = "Ouch, crushed by the merciless Brute!\nOh well, you're not THAT hurt, go again?";
 
 	setAnimation(2, 2, 200);
 	setSrcRect(0, 64, 32, 32);
@@ -141,7 +141,7 @@ void StalkerPup::init() {
 	setSrcRect(0, 96, 32, 32);
 	
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Yikes, the baby one-eyed wanderer gets us all...better luck with the Stalker Pup next time!";
+	collider.tagOnCollision = "Yikes, Stalker Pups...\nNothing to say or see here, Rex, run again?";
 
 	if (upordown >= 5) {
 		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);
@@ -176,7 +176,7 @@ void Gale::init() {
 	setSrcRect(0, 128, 32, 32);
 
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Whoaa, you let the Night Gale sweep you away? Hold on tight next run!";
+	collider.tagOnCollision = "Whoaa, you let the Night Gale sweep you away?\nHold on tight next run!";
 
 	if (upordown >= 5) {
 		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);

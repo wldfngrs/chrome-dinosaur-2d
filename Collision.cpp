@@ -14,7 +14,8 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collision
 		&&
 		B.y + B.h >= A.y)
 	{
-		std::cout << collisionTag << std::endl;
+		//std::cout << collisionTag << std::endl;
+		Game::gameOverTag = collisionTag;
 		Game::playerFail = true;
 		return true;
 	}

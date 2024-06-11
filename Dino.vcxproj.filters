@@ -42,13 +42,16 @@
     <ClCompile Include="ObstacleSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObstacleHandler.cpp">
+    <ClCompile Include="ObstacleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Score.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,7 +83,7 @@
     <ClInclude Include="States.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObstacleHandler.h">
+    <ClInclude Include="ObstacleManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\TransformComponent.h">
@@ -92,7 +95,7 @@
     <ClInclude Include="Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h">
+    <ClInclude Include="Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

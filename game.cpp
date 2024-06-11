@@ -3,15 +3,16 @@
 #include "KeyboardController.h"
 #include "Collision.h"
 #include "SpriteComponent.h"
-#include "ObstacleHandler.h"
+#include "ObstacleManager.h"
 #include "Sprites.h"
-#include "Font.h"
+#include "Text.h"
 #include "Score.h"
 #include <sstream>
 
 SDL_Event Game::event;
 bool Game::quit = false;
 bool Game::playerFail = false;
+std::string Game::gameOverTag;
 std::string Game::errorMessage;
 SDL_Renderer* Game::gameRenderer;
 
@@ -33,9 +34,9 @@ Game::Game() {
 		return;
 	}
 	
-	if (!showTitleScreen()) {
-		return;
-	}
+	//if (!showTitleScreen()) {
+	//	return;
+	//}
 
 	if (initNonDinoEntities() != 0) {
 		return;
@@ -60,10 +61,6 @@ Game::~Game() {
 
 	gameWindow = nullptr;
 	gameRenderer = nullptr;
-
-	Score::font.reset();
-	gameSubtitle.reset();
-	gameTitle.reset();
 
 	SDL_Quit();
 	TTF_Quit();
@@ -96,24 +93,13 @@ int Game::initFonts() {
 		return -1;
 	}
 	
-	gameTitle = std::move(std::make_unique<Font>("assets\\fonts\\Marshland_Beauty.otf", 72));
-
-	if (gameTitle->errorCode == -1) {
-		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << gameTitle->pathToFont << "' failed!\nDetails: " << TTF_GetError() << "\n";
+	textManager.init();
+	if (textManager.errorCode == -1) {
+		std::cerr << errorMessage << std::endl;
 		return -1;
 	}
 
-	gameSubtitle = std::move(std::make_unique<Font>("assets\\fonts\\ALBA____.TTF", 12));
-	if (gameSubtitle->errorCode == -1) {
-		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << gameSubtitle->pathToFont << "' failed!\nDetails: 'assets\\fonts\\ALBA____.TTF'" << TTF_GetError() << "\n";
-		return -1;
-	}
-
-	Score::font = std::move(std::make_unique<Font>("assets\\fonts\\bunny$mambo.ttf", 24));
-	if (Score::font->errorCode == -1) {
-		std::cerr << "[Error] Game::initTTF(): TTF_OpenFont() '" << Score::font->pathToFont << "' failed!\nDetails: 'assets\\fonts\\bunny$mambo.ttf' " << TTF_GetError() << "\n";
-		return -1;
-	}
+	Score::init();
 
 	return 0;
 }
@@ -130,35 +116,35 @@ static inline void titleSteadySubtitleBlink(SDL_Texture* titleTexture, SDL_Textu
 	SDL_RenderPresent(Game::gameRenderer);
 }
 
-bool Game::showTitleScreen() const {
-	int time = 0;
-	bool subtitleVisibility = true;
-
-	SDL_Color titleTextColor = { 184, 37, 53 };
-	SDL_Color subtitleTextColor = { 255, 255, 255 };
-	gameTitle->texture = TextureManager::loadFromRenderedText("DINO SAUR", gameTitle->font, titleTextColor);
-	gameSubtitle->texture = TextureManager::loadFromRenderedText("press [SPACE] to start", gameSubtitle->font, subtitleTextColor);
-
-	while (true) {
-		try {
-			titleSteadySubtitleBlink(gameTitle->texture, gameSubtitle->texture, subtitleVisibility);
-			this->handleEvents();
-		}
-		catch (std::exception& e) {
-			if (quit) {
-				std::cout << e.what();
-				return false;
-			}
-	
-			return true;
-		}
-
-		if (++time >= 400) {
-			time = 0;
-			subtitleVisibility = subtitleVisibility ? false : true;
-		}
-	}
-}
+//bool Game::showTitleScreen() const {
+//	int time = 0;
+//	bool subtitleVisibility = true;
+//
+//	SDL_Color titleTextColor = { 184, 37, 53 };
+//	SDL_Color subtitleTextColor = { 255, 255, 255 };
+//	gameTitle->texture = TextureManager::loadTextTexture("DINO SAUR", gameTitle->font, titleTextColor);
+//	gameSubtitle->texture = TextureManager::loadTextTexture("press [SPACE] to start", gameSubtitle->font, subtitleTextColor);
+//
+//	while (true) {
+//		try {
+//			titleSteadySubtitleBlink(gameTitle->texture, gameSubtitle->texture, subtitleVisibility);
+//			this->handleEvents();
+//		}
+//		catch (std::exception& e) {
+//			if (quit) {
+//				std::cout << e.what();
+//				return false;
+//			}
+//	
+//			return true;
+//		}
+//
+//		if (++time >= 400) {
+//			time = 0;
+//			subtitleVisibility = subtitleVisibility ? false : true;
+//		}
+//	}
+//}
 
 int Game::initNonDinoEntities() {
 	try {
@@ -219,7 +205,7 @@ void Game::resetDinoEntity() {
 
 int Game::initObstacles() {
 	try {
-		ObstacleHandler::init();
+		obstacleManager.init();
 	}
 	catch (std::runtime_error& e) {
 		std::cout << e.what();
@@ -230,7 +216,7 @@ int Game::initObstacles() {
 }
 
 void Game::resetObstacles() {
-	ObstacleHandler::reset();
+	obstacleManager.reset();
 }
 
 void Game::resetGame() {
@@ -281,7 +267,7 @@ void Game::render() {
 void Game::update() {
 	tick++;
 
-	ObstacleHandler::update();
+	obstacleManager.update();
 	
 	entityManager.refresh();
 	entityManager.update();

@@ -3,7 +3,6 @@
 
 int Score::highscore;
 int Score::currentscore;
-std::unique_ptr<Font> Score::font;
 
 
 void Score::init() {

@@ -3,8 +3,9 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include "Font.h"
 #include "EntityComponentSystem.h"
+#include "ObstacleManager.h"
+#include "Text.h"
 
 #include <iostream>
 #include <string>
@@ -41,6 +42,8 @@ public:
 	static const int SCREEN_WIDTH = 1280;
 	static const int SCREEN_HEIGHT = 720;
 
+	static std::string gameOverTag;
+
 	bool initDone;
 
 	static bool quit;
@@ -52,11 +55,11 @@ public:
 
 	static SDL_Renderer* gameRenderer;
 
-	std::unique_ptr<Font> gameTitle;
-	std::unique_ptr<Font> gameSubtitle;
-
 	static SDL_Event event;
 
 	static EntityManager entityManager;
 	static Entity& dino;
+
+	ObstacleManager obstacleManager;
+	TextManager textManager;
 };

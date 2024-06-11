@@ -146,11 +146,12 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ObstacleHandler.cpp" />
+    <ClCompile Include="ObstacleManager.cpp" />
     <ClCompile Include="ObstacleSprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="DinoSprite.cpp" />
     <ClCompile Include="Sprites.h" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
@@ -162,10 +163,10 @@
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
-    <ClInclude Include="Font.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Score.h" />
-    <ClInclude Include="ObstacleHandler.h" />
+    <ClInclude Include="ObstacleManager.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vector2D.h" />

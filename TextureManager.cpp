@@ -31,22 +31,17 @@ void TextureManager::drawSprite(const char* pathToTexture, SDL_Texture* texture,
 	}
 }
 
-SDL_Texture* TextureManager::loadFromRenderedText(const char* textureText, TTF_Font* font, SDL_Color textColor) {
-	SDL_Surface* tempSurface = TTF_RenderText_Solid(font, textureText, textColor);
+SDL_Texture* TextureManager::loadTextTexture(std::string textureText, TTF_Font* font, SDL_Color textColor) {
+	SDL_Surface* tempSurface = TTF_RenderText_Blended_Wrapped(font, textureText.c_str(), textColor, (Uint32)1280);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::gameRenderer, tempSurface);
-
-	if (texture == nullptr) {
-		std::stringstream ss;
-		ss << "[Error] TextureManager::loadRenderedText(): SDL_CreateTextureFromSurface() failed!\nDetails: " << SDL_GetError() << "\n\n";
-		Game::errorMessage = ss.str();
-		Game::quit = true;
-
-		throw std::runtime_error{ Game::errorMessage };
-	}
 
 	SDL_FreeSurface(tempSurface);
 
 	return texture;
+}
+
+void TextureManager::getTextureWidthHeight(SDL_Texture* texture, int* width, int* height) {
+	SDL_QueryTexture(texture, NULL, NULL, width, height);
 }
 
 void TextureManager::drawText(SDL_Texture* texture, int x, int y, int w, int h) {

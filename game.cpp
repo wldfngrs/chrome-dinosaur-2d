@@ -34,9 +34,9 @@ Game::Game() {
 		return;
 	}
 	
-	//if (!showTitleScreen()) {
-	//	return;
-	//}
+	if (!showTitleScreen()) {
+		return;
+	}
 
 	if (initNonDinoEntities() != 0) {
 		return;
@@ -104,47 +104,39 @@ int Game::initFonts() {
 	return 0;
 }
 
-static inline void titleSteadySubtitleBlink(SDL_Texture* titleTexture, SDL_Texture* subtitleTexture, bool subtitleIsVisible) {
-	SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
-	SDL_RenderClear(Game::gameRenderer);
-	
-	TextureManager::drawText(titleTexture, Game::SCREEN_WIDTH / 4, Game::SCREEN_HEIGHT / 6, Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 4);
-	if (subtitleIsVisible) {
-		TextureManager::drawText(subtitleTexture, 430, 360, 420, 40);
-	}
-	
-	SDL_RenderPresent(Game::gameRenderer);
-}
+bool Game::showTitleScreen() {
+	int time = 0;
+	bool subtitleIsVisible = true;
 
-//bool Game::showTitleScreen() const {
-//	int time = 0;
-//	bool subtitleVisibility = true;
-//
-//	SDL_Color titleTextColor = { 184, 37, 53 };
-//	SDL_Color subtitleTextColor = { 255, 255, 255 };
-//	gameTitle->texture = TextureManager::loadTextTexture("DINO SAUR", gameTitle->font, titleTextColor);
-//	gameSubtitle->texture = TextureManager::loadTextTexture("press [SPACE] to start", gameSubtitle->font, subtitleTextColor);
-//
-//	while (true) {
-//		try {
-//			titleSteadySubtitleBlink(gameTitle->texture, gameSubtitle->texture, subtitleVisibility);
-//			this->handleEvents();
-//		}
-//		catch (std::exception& e) {
-//			if (quit) {
-//				std::cout << e.what();
-//				return false;
-//			}
-//	
-//			return true;
-//		}
-//
-//		if (++time >= 400) {
-//			time = 0;
-//			subtitleVisibility = subtitleVisibility ? false : true;
-//		}
-//	}
-//}
+	while (true) {
+		try {
+			SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
+			SDL_RenderClear(Game::gameRenderer);
+
+			textManager.drawAtSpecifiedPosition("DINO SAUR", Game::SCREEN_WIDTH / 4, Game::SCREEN_HEIGHT / 5, Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 4, true);
+			if (subtitleIsVisible) {
+				textManager.drawAtSpecifiedPosition("press [SPACE] to start", 430, 360, 420, 40, true);
+			}
+
+			SDL_RenderPresent(Game::gameRenderer);
+
+			this->handleEvents();
+		}
+		catch (std::exception& e) {
+			if (quit) {
+				std::cout << e.what();
+				return false;
+			}
+	
+			return true;
+		}
+
+		if (++time >= 400) {
+			time = 0;
+			subtitleIsVisible = subtitleIsVisible ? false : true;
+		}
+	}
+}
 
 int Game::initNonDinoEntities() {
 	try {
@@ -227,6 +219,7 @@ void Game::resetGame() {
 	Score::reset();
 
 	Game::playerFail = false;
+	Game::tick = 0;
 }
 
 void Game::handleEvents() const {

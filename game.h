@@ -25,7 +25,7 @@ class Game {
 	void resetObstacles();
 	void resetGame();
 
-	bool showTitleScreen() const;
+	bool showTitleScreen();
 
 
 	SDL_Window* gameWindow;

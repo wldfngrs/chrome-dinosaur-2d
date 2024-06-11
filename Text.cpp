@@ -7,8 +7,6 @@
 #include <string>
 #include <map>
 
-std::map<std::string, SDL_Texture*> TextManager::textCache;
-
 TextManager::TextManager() {}
 
 TextManager::~TextManager() {
@@ -54,6 +52,7 @@ void TextManager::draw(std::string text, int x, int y, int w, int h, bool isStat
 		auto numSpaces = 8 - text.size();
 		int letterSize = w / 8;
 		int spacing = 1;
+
 		for (auto i = 0; i < numSpaces; i++) {
 			TextureManager::drawText(textCache[" "], x, y, w, h);
 			x = x + letterSize + spacing;
@@ -72,7 +71,7 @@ void TextManager::init() {
 	SDL_Color dinoRed = { 184, 37, 53 };
 	SDL_Color snowWhite = { 255, 255, 255 };
 	addToTextCache("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed, true);
-	addToTextCache("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
+	addToTextCache("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 24, snowWhite, true);
 
 	addToTextCache("HIGH SCORE", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
 	addToTextCache("CURRENT SCORE", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
@@ -94,8 +93,9 @@ void TextManager::drawAtSpecifiedPosition(std::string text, int x, int y, int w,
 	draw(text, x, y, w, h, isStatic);
 }
 
+// TODO: FIX FOR THE PROPER CENTERING OF TEXT
 void TextManager::drawAtStandardPosition(std::string text, int position, int w, int h, bool isStatic) {
-	int x, y;
+	int x(0), y(0);
 
 	if (((position & LEFT) && (position & RIGHT)) || ((position & UP) && (position & DOWN)) || ((position & LEFT) && (position & UP))) {
 		x = 0;

@@ -95,6 +95,15 @@ void TextManager::drawAtSpecifiedPosition(std::string text, int x, int y, int w,
 
 // TODO: FIX FOR THE PROPER CENTERING OF TEXT
 void TextManager::drawAtStandardPosition(std::string text, int position, int w, int h, bool isStatic) {
+//	   .__________________________________________________________.
+//	   |LEFT & UP			    UP & CENTER				RIGHT & UP|
+//	   |														  |
+//	   |														  |
+//	   |LEFT & CENTER			 CENTER				RIGHT & CENTER|
+//	   |														  |
+//	   |														  |
+//	   |LEFT & DOWN_____________UP & DOWN_____________RIGHT & DOWN|
+
 	int x(0), y(0);
 
 	if (((position & LEFT) && (position & RIGHT)) || ((position & UP) && (position & DOWN)) || ((position & LEFT) && (position & UP))) {
@@ -102,44 +111,44 @@ void TextManager::drawAtStandardPosition(std::string text, int position, int w, 
 		y = 0;
 	}
 
-	if ((position & CENTER)) {
-		x = Game::SCREEN_WIDTH / 2;
-		y = Game::SCREEN_HEIGHT / 2;
-	}
-
-	if ((position & LEFT) && (position & CENTER)) {
+	else if ((position & LEFT) && (position & CENTER)) {
 		x = 0;
-		y = Game::SCREEN_HEIGHT / 2;
+		y = Game::SCREEN_HEIGHT / 2 - h/2;
 	}
 
-	if ((position & LEFT) && (position & DOWN)) {
+	else if ((position & LEFT) && (position & DOWN)) {
 		x = 0;
-		y = Game::SCREEN_HEIGHT;
+		y = Game::SCREEN_HEIGHT - h;
 	}
 
-	if ((position & UP) && (position & CENTER)) {
-		x = Game::SCREEN_WIDTH / 2;
+	else if ((position & UP) && (position & CENTER)) {
+		x = Game::SCREEN_WIDTH / 2 - w/2;
 		y = 0;
 	}
 
-	if ((position & DOWN) && (position & CENTER)) {
-		x = Game::SCREEN_WIDTH / 2;
+	else if ((position & DOWN) && (position & CENTER)) {
+		x = Game::SCREEN_WIDTH / 2 - w/2;
 		y = Game::SCREEN_HEIGHT;
 	}
 
-	if ((position & RIGHT) && (position & UP)) {
-		x = Game::SCREEN_WIDTH;
+	else if ((position & RIGHT) && (position & UP)) {
+		x = Game::SCREEN_WIDTH - w;
 		y = 0;
 	}
 
-	if ((position & RIGHT) && (position & CENTER)) {
-		x = Game::SCREEN_WIDTH;
-		y = Game::SCREEN_HEIGHT / 2;
+	else if ((position & RIGHT) && (position & CENTER)) {
+		x = Game::SCREEN_WIDTH - w;
+		y = Game::SCREEN_HEIGHT / 2 - h/2;
 	}
 
-	if ((position & RIGHT) && (position & DOWN)) {
-		x = Game::SCREEN_WIDTH;
-		y = Game::SCREEN_HEIGHT;
+	else if ((position & RIGHT) && (position & DOWN)) {
+		x = Game::SCREEN_WIDTH - w;
+		y = Game::SCREEN_HEIGHT - h;
+	}
+
+	else if ((position & CENTER)) {
+		x = Game::SCREEN_WIDTH / 2 - w / 2;
+		y = Game::SCREEN_HEIGHT / 2 - h / 2;
 	}
 
 	draw(text, x, y, w, h, isStatic);

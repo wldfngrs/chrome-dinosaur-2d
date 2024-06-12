@@ -4,21 +4,26 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
-enum TEXTPOSITION {
-	LEFT	= 1 << 0,
-	RIGHT	= 1 << 1,
-	DOWN	= 1 << 2,
-	UP		= 1 << 3,
-	CENTER	= 1 << 4
+//
+// Basically, newlines and Obstacle names (as strings) are segment delimiters.
+//
+//
+
+enum position {
+	CENTERED,
+	NOTCENTERED,
 };
 
 class TextManager {
 	std::map<std::string, SDL_Texture*> textCache;
-	
+
+	void extractTextSegments(std::vector<std::string>& segments, std::vector<int>& lineLen, std::string text);
+
+	void drawTextSegments(std::vector<std::string> segments, std::vector<int> lineLen, int x, int y, int letterWidth, int letterHeight);
+
 	void addToTextCache(std::string text, const char* fontPath, const int fontIndex, SDL_Color color, bool isStatic);
-	
-	void draw(std::string text, int x, int y, int w, int h, bool isStatic);
 
 public:
 	int errorCode = 0;
@@ -30,8 +35,5 @@ public:
 
 	void init();
 	void update();
-	
-	void drawAtSpecifiedPosition(std::string text, int x, int y, int w, int h, bool isStatic);
-	
-	void drawAtStandardPosition(std::string text, int position, int w, int h, bool isStatic);
+	void drawText(std::string t, int x, int y, int letterWidth, int letterHeight, bool isStatic);
 };

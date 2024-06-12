@@ -47,7 +47,7 @@ void DyingTree2::update() {
 void Bucket::init() {
 	transform->entity->collidable = true;
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Danmit! You've kicked the Bucket.\nDid I mention you have nine(ahem) lives?";
+	collider.tagOnCollision = "Danmit! You've kicked The Bucket\nDid I mention you have nine (ahem) lives?";
 
 	setSrcRect(64, 0, 32, 32);
 	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
@@ -141,7 +141,7 @@ void StalkerPup::init() {
 	setSrcRect(0, 96, 32, 32);
 	
 	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Yikes, Stalker Pups...\nNothing to say or see here, Rex, run again?";
+	collider.tagOnCollision = "Yikes, Stalker Pups...\nNothing to see or say here, Rex, run again?";
 
 	if (upordown >= 5) {
 		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);

@@ -26,6 +26,7 @@ class Game {
 	void resetGame();
 
 	bool showTitleScreen();
+	void showGameOverScreen();
 
 
 	SDL_Window* gameWindow;

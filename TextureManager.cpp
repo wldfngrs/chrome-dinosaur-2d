@@ -32,7 +32,7 @@ void TextureManager::drawSprite(const char* pathToTexture, SDL_Texture* texture,
 }
 
 SDL_Texture* TextureManager::loadTextTexture(std::string textureText, TTF_Font* font, SDL_Color textColor) {
-	SDL_Surface* tempSurface = TTF_RenderText_Blended_Wrapped(font, textureText.c_str(), textColor, (Uint32)1280);
+	SDL_Surface* tempSurface = TTF_RenderText_Blended(font, textureText.c_str(), textColor);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::gameRenderer, tempSurface);
 
 	SDL_FreeSurface(tempSurface);

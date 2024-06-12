@@ -113,9 +113,9 @@ bool Game::showTitleScreen() {
 			SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(Game::gameRenderer);
 
-			textManager.drawAtSpecifiedPosition("DINO SAUR", Game::SCREEN_WIDTH / 4, Game::SCREEN_HEIGHT / 5, Game::SCREEN_WIDTH / 2, Game::SCREEN_HEIGHT / 4, true);
+			textManager.drawText("DINO SAUR", CENTERED, Game::SCREEN_HEIGHT / 5, 72, 150, true);
 			if (subtitleIsVisible) {
-				textManager.drawAtSpecifiedPosition("press [SPACE] to start", 430, 360, 420, 40, true);
+				textManager.drawText("press [SPACE] to start", CENTERED, 360, 18, 40, true);
 			}
 
 			SDL_RenderPresent(Game::gameRenderer);
@@ -134,6 +134,31 @@ bool Game::showTitleScreen() {
 		if (++time >= 400) {
 			time = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
+		}
+	}
+}
+
+void Game::showGameOverScreen() {
+	while (true) {
+		try {
+			SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
+			SDL_RenderClear(Game::gameRenderer);
+
+			std::cout << Game::gameOverTag << std::endl;
+
+			textManager.drawText(Game::gameOverTag, CENTERED, Game::SCREEN_HEIGHT / 2 + Game::SCREEN_HEIGHT / 5, 24, Game::SCREEN_HEIGHT / 12,  true);
+
+			SDL_RenderPresent(Game::gameRenderer);
+			
+			this->handleEvents();
+		}
+		catch (std::exception& e) {
+			if (quit) {
+				std::cout << e.what();
+				return;
+			}
+
+			return;
 		}
 	}
 }
@@ -296,4 +321,5 @@ void Game::inGameLoop() {
 	}
 
 	resetGame();
+	showGameOverScreen();
 }

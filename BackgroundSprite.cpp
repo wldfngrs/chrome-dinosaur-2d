@@ -14,7 +14,7 @@ void Background::update() {
 }
 
 void CelestialBody::update() {
-	transform->velocity.x = -1;
+	transform->velocity.x = -3;
 
 	if (transform->position.x <= -transform->width) {
 		transform->position.x = Game::SCREEN_WIDTH;

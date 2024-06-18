@@ -15,6 +15,7 @@ bool Game::playerFail = false;
 std::string Game::gameOverTag;
 std::string Game::errorMessage;
 SDL_Renderer* Game::gameRenderer;
+TextManager Game::textManager;
 
 int Game::tick = 0;
 
@@ -34,10 +35,6 @@ Game::Game() {
 		return;
 	}
 	
-	if (!showTitleScreen()) {
-		return;
-	}
-
 	if (initNonDinoEntities() != 0) {
 		return;
 	}
@@ -53,6 +50,8 @@ Game::Game() {
 	Score::init();
 
 	initDone = true;
+
+	showTitleScreen();
 }
 
 Game::~Game() {
@@ -94,7 +93,7 @@ int Game::initFonts() {
 	}
 	
 	textManager.init();
-	if (textManager.errorCode == -1) {
+	if (textManager.getErrorCode() == -1) {
 		std::cerr << errorMessage << std::endl;
 		return -1;
 	}
@@ -104,78 +103,80 @@ int Game::initFonts() {
 	return 0;
 }
 
-bool Game::showTitleScreen() {
+void Game::showTitleScreen() {
 	int time = 0;
 	bool subtitleIsVisible = true;
+	inLobby = true;
 
-	while (true) {
-		try {
-			SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
-			SDL_RenderClear(Game::gameRenderer);
+	while (inLobby) {
+		SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
+		SDL_RenderClear(Game::gameRenderer);
 
-			textManager.drawText("DINO SAUR", CENTERED, Game::SCREEN_HEIGHT / 5, 72, 150, true);
-			if (subtitleIsVisible) {
-				textManager.drawText("press [SPACE] to start", CENTERED, 360, 18, 40, true);
-			}
-
-			SDL_RenderPresent(Game::gameRenderer);
-
-			this->handleEvents();
+		textManager.drawText_Static("DINO SAUR", CENTERED, Game::SCREEN_HEIGHT / 5, 80, 150);
+		if (subtitleIsVisible) {
+			textManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40);
 		}
-		catch (std::exception& e) {
-			if (quit) {
-				std::cout << e.what();
-				return false;
-			}
-	
-			return true;
-		}
+
+		SDL_RenderPresent(Game::gameRenderer);
 
 		if (++time >= 400) {
 			time = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
 		}
+
+		this->handleEvents();
 	}
 }
 
 void Game::showGameOverScreen() {
-	while (true) {
-		try {
-			SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
-			SDL_RenderClear(Game::gameRenderer);
+	int time = 0;
+	bool subtitleIsVisible = true;
 
-			std::cout << Game::gameOverTag << std::endl;
+	inLobby = true;
 
-			textManager.drawText(Game::gameOverTag, CENTERED, Game::SCREEN_HEIGHT / 2 + Game::SCREEN_HEIGHT / 5, 24, Game::SCREEN_HEIGHT / 12,  true);
+	int currScore = Score::getCurrentScore();
 
-			SDL_RenderPresent(Game::gameRenderer);
+	if (currScore > Score::getHighScore()) {
+		Score::setHighScore(currScore);
+	}
+
+	obstacleManager.initGameOverAnimation();
+
+	while (inLobby) {
+		SDL_SetRenderDrawColor(Game::gameRenderer, 0, 0, 0, 0);
+		SDL_RenderClear(Game::gameRenderer);
+
+		textManager.drawText_Static_NonStatic("HIGH SCORE: ", std::to_string(Score::getHighScore()), CENTERED, 40, 24, 40);
+		textManager.drawText_Static_NonStatic("CURRENT SCORE: ", std::to_string(Score::getCurrentScore()), CENTERED, 90, 24, 40);
+
+		obstacleManager.updateGameOverAnimation();
+
+		textManager.drawText_Static(Game::gameOverTag, CENTERED, Game::SCREEN_HEIGHT / 2 + Game::SCREEN_HEIGHT / 5, 24, Game::SCREEN_HEIGHT / 12);
+		if (subtitleIsVisible) {
+			textManager.drawText_Static("press [SPACE] to run again!", CENTERED, 640, 18, 40);
+		}
+
+		SDL_RenderPresent(Game::gameRenderer);
+
+		if (++time >= 400) {
+			time = 0;
+			subtitleIsVisible = subtitleIsVisible ? false : true;
+		}
 			
-			this->handleEvents();
-		}
-		catch (std::exception& e) {
-			if (quit) {
-				std::cout << e.what();
-				return;
-			}
-
-			return;
-		}
+		this->handleEvents();
 	}
 }
 
 int Game::initNonDinoEntities() {
 	try {
 		map.addComponent<TransformComponent>(0, 0, Game::SCREEN_WIDTH, Game::SCREEN_HEIGHT - 80);
-		std::unique_ptr<Background> backgroundSprite{ new Background() };
-		map.addComponent<SpriteComponent>("assets\\sprites\\BackgroundSheet.png", std::move(backgroundSprite), true, 0, 64, 96, 64);
-
+		map.addComponent<SpriteComponent>("assets\\sprites\\BackgroundSheet.png", std::make_unique<Background>(), 0, 64, 96, 64);
+		
 		celestialBody.addComponent<TransformComponent>(Game::SCREEN_WIDTH, 150, 139, 130);
-		std::unique_ptr<CelestialBody> celestialBodySprite{ new CelestialBody() };
-		celestialBody.addComponent<SpriteComponent>("assets\\sprites\\Moon.png", std::move(celestialBodySprite), false, 0, 0, 28, 30);
+		celestialBody.addComponent<SpriteComponent>("assets\\sprites\\Moon.png", std::make_unique<CelestialBody>(), 0, 0, 28, 30);
 
 		ground.addComponent<TransformComponent>(0, Game::SCREEN_HEIGHT - 80, Game::SCREEN_WIDTH, 80);
-		std::unique_ptr<Ground> groundSprite{ new Ground() };
-		ground.addComponent<SpriteComponent>("assets\\sprites\\GroundSheet.png", std::move(groundSprite), true, 0, 0, 96, 16);
+		ground.addComponent<SpriteComponent>("assets\\sprites\\GroundSheet.png", std::make_unique<Ground>(), 0, 0, 96, 16);
 	}
 	catch (std::runtime_error& e) {
 		std::cout << e.what();
@@ -187,17 +188,16 @@ int Game::initNonDinoEntities() {
 
 void Game::resetNonDinoEntities() {
 	TransformComponent* transformComponent = &celestialBody.getComponent<TransformComponent>();
-	transformComponent->position.x = Game::SCREEN_WIDTH;
+	transformComponent->mPosition.x = Game::SCREEN_WIDTH;
 
 	SpriteComponent* spriteComponent = &map.getComponent<SpriteComponent>();
-	spriteComponent->sprite->setAnimation(1, 2, 500);
+	spriteComponent->getSprite()->setAnimation(1, 2, 500);
 }
 
 int Game::initDinoEntity() {
 	try {
 		dino.addComponent<TransformComponent>(60, Game::SCREEN_HEIGHT - 355, 273, 275);
-		std::unique_ptr<Dino> dinoSprite{ new Dino() };
-		dino.addComponent<SpriteComponent>("assets\\sprites\\DinoSheet.png", std::move(dinoSprite), true, 0, 0, 32, 32);
+		dino.addComponent<SpriteComponent>("assets\\sprites\\DinoSheet.png", std::make_unique<Dino>(), 0, 0, 32, 32);
 		dino.addComponent<KeyboardController>();
 	}
 	catch (std::runtime_error& e) {
@@ -210,13 +210,8 @@ int Game::initDinoEntity() {
 
 void Game::resetDinoEntity() {
 	SpriteComponent* spriteComponent = &dino.getComponent<SpriteComponent>();
-	
-	if (spriteComponent->sprite != nullptr) {
-		spriteComponent->sprite.reset();
-	}
-	
-	spriteComponent->sprite = std::move(std::make_unique<Dino>());
-	spriteComponent->init();
+
+	spriteComponent->getSprite()->init();
 }
 
 
@@ -247,17 +242,19 @@ void Game::resetGame() {
 	Game::tick = 0;
 }
 
-void Game::handleEvents() const {
+void Game::handleEvents() {
 	SDL_PollEvent(&Game::event);
 
 	switch (event.type) {
 	case SDL_QUIT:
 		quit = true;
-		throw std::exception{ "Dino 2D exited..." };
+		std::cout << "Dino 2D exited..." << std::endl;
+		exit(0);
 	case SDL_KEYDOWN:
-		if (!initDone && Game::event.key.keysym.sym == SDLK_SPACE) {
-			throw std::exception{};
+		if (inLobby && Game::event.key.keysym.sym == SDLK_SPACE) {
+			inLobby = false;
 		}
+		break;
 	default:
 		break;
 	}
@@ -278,6 +275,8 @@ void Game::render() {
 	renderClear();
 	
 	entityManager.draw();
+	
+	Score::draw();
 
 	SDL_RenderPresent(Game::gameRenderer);
 }
@@ -319,7 +318,7 @@ void Game::inGameLoop() {
 			return;
 		}
 	}
-
-	resetGame();
+	
 	showGameOverScreen();
+	resetGame();
 }

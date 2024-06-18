@@ -31,7 +31,7 @@ using ComponentArray = std::array<Component*, maxComponents>;
 
 class Component {
 public:
-	Entity* entity = nullptr;
+	Entity* mEntity = nullptr;
 
 	virtual void init() {}
 	virtual void update() {}
@@ -41,25 +41,24 @@ public:
 };
 
 class Entity {
-	EntityManager& eManager;
+	EntityManager& mEntityManager;
 	bool active = true;
-	std::vector<std::unique_ptr<Component>> components;
+	std::vector<std::unique_ptr<Component>> mComponents;
 
-	ComponentArray componentArray;
-	ComponentBitset componentBitset;
+	ComponentArray mComponentArray;
+	ComponentBitset mComponentBitset;
 
 public:
-	bool collidable = false;
-	int entityIndex;
+	int mEntityIndex = 0;
 
-	Entity(EntityManager& mManager) : eManager(mManager) {}
+	Entity(EntityManager& mManager) : mEntityManager(mManager) {}
 	
 	void update() {
-		for (auto& c : components) c->update();
+		for (auto& c : mComponents) c->update();
 	}
 
 	void draw() {
-		for (auto& c : components) c->draw();
+		for (auto& c : mComponents) c->draw();
 	}
 
 	bool isActive() const { return active; }
@@ -68,7 +67,7 @@ public:
 	void destroy() { active = false; }
 
 	template <typename T> bool hasComponent() const {
-		return componentBitset[getComponentTypeID<T>()];
+		return mComponentBitset[getComponentTypeID<T>()];
 	}
 
 	template <typename T, typename... TArgs>
@@ -76,12 +75,12 @@ public:
 		assert(!hasComponent<T>());
 
 		T* c(new T(std::forward<TArgs>(margs)...));
-		c->entity = this;
+		c->mEntity = this;
 		std::unique_ptr<Component> uPtr{ c };
-		components.emplace_back(std::move(uPtr));
+		mComponents.emplace_back(std::move(uPtr));
 
-		componentArray[getComponentTypeID<T>()] = c;
-		componentBitset[getComponentTypeID<T>()] = true;
+		mComponentArray[getComponentTypeID<T>()] = c;
+		mComponentBitset[getComponentTypeID<T>()] = true;
 
 		c->init();
 		return *c;
@@ -89,46 +88,46 @@ public:
 
 	template <typename T> T& getComponent() const {
 		assert(hasComponent<T>());
-		auto ptr(componentArray[getComponentTypeID<T>()]);
+		auto ptr(mComponentArray[getComponentTypeID<T>()]);
 		return *static_cast<T*>(ptr);
 	}
 
 	EntityManager& getEntityManager() const {
-		return eManager;
+		return mEntityManager;
 	}
 };
 
 class EntityManager {
-	std::vector<std::unique_ptr<Entity>> entities;
+	std::vector<std::unique_ptr<Entity>> mEntities;
 
 public:
 	void update() {
-		for (auto& e : entities) e->update();
+		for (auto& e : mEntities) e->update();
 	}
 
 	void draw() {
-		for (auto& e : entities) e->draw();
+		for (auto& e : mEntities) e->draw();
 	}
 
 	void refresh() {
-		entities.erase(std::remove_if(std::begin(entities), std::end(entities), 
+		mEntities.erase(std::remove_if(std::begin(mEntities), std::end(mEntities), 
 			[](const std::unique_ptr<Entity>& mEntity)
 			{
 				return !mEntity->isActive();
 			}),
-		std::end(entities));
+		std::end(mEntities));
 	}
 
 	Entity& addEntity() {
 		static int index = 0;
 		Entity* a = new Entity(*this);
-		a->entityIndex = index++;
+		a->mEntityIndex = index++;
 		std::unique_ptr<Entity> uPtr{ a };
-		entities.emplace_back(std::move(uPtr));
+		mEntities.emplace_back(std::move(uPtr));
 		return *a;
 	}
 
 	std::vector<std::unique_ptr<Entity>>& getEntities() {
-		return entities;
+		return mEntities;
 	}
 };

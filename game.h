@@ -25,9 +25,10 @@ class Game {
 	void resetObstacles();
 	void resetGame();
 
-	bool showTitleScreen();
+	void showTitleScreen();
 	void showGameOverScreen();
 
+	bool inLobby;
 
 	SDL_Window* gameWindow;
 
@@ -38,7 +39,7 @@ public:
 	void render();
 	void update();
 	void inGameLoop();
-	void handleEvents() const;
+	void handleEvents();
 
 	static const int SCREEN_WIDTH = 1280;
 	static const int SCREEN_HEIGHT = 720;
@@ -61,6 +62,7 @@ public:
 	static EntityManager entityManager;
 	static Entity& dino;
 
+	static TextManager textManager;
+
 	ObstacleManager obstacleManager;
-	TextManager textManager;
 };

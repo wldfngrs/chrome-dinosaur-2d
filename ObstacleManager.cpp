@@ -8,74 +8,68 @@
 #include <random>
 
 
-ObstacleManager::ObstacleManager() {}
-
 void ObstacleManager::init() {
-	obstacles.resize(2);
-	obstaclesTransformData.resize(2);
-	obstaclesSpriteData.resize(2);
+	mObstacles.resize(2);
+	mObstaclesTransformData.resize(2);
+	mObstaclesSpriteData.resize(2);
 
-	for (auto i = 0; i < obstacles.size(); i++) {
-		obstacles[i] = &(Game::entityManager.addEntity());
+	for (size_t i = 0; i < mObstacles.size(); i++) {
+		mObstacles[i] = &(Game::entityManager.addEntity());
 		
-		Entity& obstacle = *(obstacles[i]);
+		Entity& obstacle = *(mObstacles[i]);
 		obstacle.addComponent<TransformComponent>();
 		obstacle.addComponent<SpriteComponent>("assets\\sprites\\ObstacleSheet.png");
 
 		obstacle.destroy();
-		obstaclesTransformData[i] = &obstacle.getComponent<TransformComponent>();
-		obstaclesSpriteData[i] = &obstacle.getComponent<SpriteComponent>();
+		mObstaclesTransformData[i] = &obstacle.getComponent<TransformComponent>();
+		mObstaclesSpriteData[i] = &obstacle.getComponent<SpriteComponent>();
 	}
 
 	loadObstacles();
 }
 
 void ObstacleManager::reset() {
-	for (auto i = 0; i < obstacles.size(); i++) {
-		Entity& obstacle = *(obstacles[i]);
+	for (size_t i = 0; i < mObstacles.size(); i++) {
+		Entity& obstacle = *(mObstacles[i]);
 		obstacle.destroy();
-		obstacle.getComponent<TransformComponent>().velocity.zero();
+		obstacle.getComponent<TransformComponent>().mVelocity.zero();
 	}
 
 	loadObstacles();
 }
 
 void ObstacleManager::update() {
-	if (Game::tick < 105) return;
+	if (Game::tick < 90) return;
 
 	fieldObstacle();
 	loadObstacles();
 }
 
 void ObstacleManager::hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType) {
-	if (spriteComponent->sprite != nullptr) {
-		spriteComponent->sprite.reset();
-	}
-
 	switch (sType) {
 	case 0:
-		spriteComponent->sprite = std::move(std::make_unique<DyingTree1>());
+		spriteComponent->setSprite(std::make_unique<DyingTree1>());
 		break;
 	case 1:
-		spriteComponent->sprite = std::move(std::make_unique<DyingTree2>());
+		spriteComponent->setSprite(std::make_unique<DyingTree2>());
 		break;
 	case 2:
-		spriteComponent->sprite = std::move(std::make_unique<Bucket>());
+		spriteComponent->setSprite(std::make_unique<Bucket>());
 		break;
 	case 3:
-		spriteComponent->sprite = std::move(std::make_unique<TreeStump>());
+		spriteComponent->setSprite(std::make_unique<TreeStump>());
 		break;
 	case 4:
-		spriteComponent->sprite = std::move(std::make_unique<Stalker>());
+		spriteComponent->setSprite(std::make_unique<Stalker>());
 		break;
 	case 5:
-		spriteComponent->sprite = std::move(std::make_unique<Brute>());
+		spriteComponent->setSprite(std::make_unique<Brute>());
 		break;
 	case 6:
-		spriteComponent->sprite = std::move(std::make_unique<StalkerPup>());
+		spriteComponent->setSprite(std::make_unique<StalkerPup>());
 		break;
 	case 7:
-		spriteComponent->sprite = std::move(std::make_unique<Gale>());
+		spriteComponent->setSprite(std::make_unique<Gale>());
 		break;
 	}
 
@@ -83,36 +77,66 @@ void ObstacleManager::hotSwapObstacleSprite(SpriteComponent* spriteComponent, in
 }
 
 void ObstacleManager::loadObstacles() {
-	for (auto i = 0; i < obstacles.size(); i++) {
-		if (obstacles[i]->isInactive()) {
+	for (size_t i = 0; i < mObstacles.size(); i++) {
+		if (mObstacles[i]->isInactive()) {
 			std::random_device rd;
 			std::mt19937 gen(rd());
 			std::uniform_int_distribution<> distr(0, 7);
 
-			SpriteComponent* spriteComponent = obstaclesSpriteData[i];
+			SpriteComponent* spriteComponent = mObstaclesSpriteData[i];
 
 			hotSwapObstacleSprite(spriteComponent, distr(gen));
 
-			obstacles[i]->wakeUp();
+			mObstacles[i]->wakeUp();
 		}
 	}
 }
 
 void ObstacleManager::fieldObstacle() {
-	for (auto i = 0; i < obstacles.size(); i++) {
-		if (obstaclesTransformData[i]->position.x <= -obstaclesTransformData[i]->width) {
-			obstacles[i]->destroy();
+	for (size_t i = 0; i < mObstacles.size(); i++) {
+		if (mObstaclesTransformData[i]->mPosition.x <= -mObstaclesTransformData[i]->mWidth) {
+			mObstacles[i]->destroy();
 			return;
 		}
 	}
 
-	if (obstaclesTransformData[0]->position.x == obstaclesTransformData[1]->position.x) {
-		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
+	if (mObstaclesTransformData[0]->mPosition.x == mObstaclesTransformData[1]->mPosition.x) {
+		
+		mObstaclesTransformData[0]->mPosition.x = Game::SCREEN_WIDTH + 101;
+	
 	}
 	
-	if (abs(obstaclesTransformData[0]->position.x - Game::SCREEN_WIDTH) >= 900 && obstaclesTransformData[1]->position.x == Game::SCREEN_WIDTH + 102) {
-		obstaclesTransformData[1]->position.x = Game::SCREEN_WIDTH + 101;
-	} else if (abs(obstaclesTransformData[1]->position.x - Game::SCREEN_WIDTH) >= 900 && obstaclesTransformData[0]->position.x == Game::SCREEN_WIDTH + 102) {
-		obstaclesTransformData[0]->position.x = Game::SCREEN_WIDTH + 101;
+	if (abs(mObstaclesTransformData[0]->mPosition.x - Game::SCREEN_WIDTH) >= 900 && mObstaclesTransformData[1]->mPosition.x == Game::SCREEN_WIDTH + 102) {
+		
+		mObstaclesTransformData[1]->mPosition.x = Game::SCREEN_WIDTH + 101;
+	
+	} else if (abs(mObstaclesTransformData[1]->mPosition.x - Game::SCREEN_WIDTH) >= 900 && mObstaclesTransformData[0]->mPosition.x == Game::SCREEN_WIDTH + 102) {
+		
+		mObstaclesTransformData[0]->mPosition.x = Game::SCREEN_WIDTH + 101;
+	
 	}
+}
+
+void ObstacleManager::updateGameOverAnimation() {
+	mObstacles[mJustCollidedIndex]->update();
+	mObstacles[mJustCollidedIndex]->draw();
+
+	mObstaclesTransformData[mJustCollidedIndex]->mVelocity.x = (float)(- 0.4);
+
+	if (mObstaclesTransformData[mJustCollidedIndex]->mPosition.x <= (Game::SCREEN_WIDTH / 4 - mObstaclesTransformData[mJustCollidedIndex]->mWidth)) {
+		mObstaclesTransformData[mJustCollidedIndex]->mPosition.x = static_cast<float>(3 * Game::SCREEN_WIDTH / 4);
+	}
+}
+
+void ObstacleManager::initGameOverAnimation() {
+	if (mObstaclesTransformData[0]->mPosition.x < mObstaclesTransformData[1]->mPosition.x) {
+		mJustCollidedIndex = 0;
+	}
+	else {
+		mJustCollidedIndex = 1;
+	}
+
+	SpriteComponent* spriteComponent = &mObstacles[mJustCollidedIndex]->getComponent<SpriteComponent>();
+
+	spriteComponent->getSprite()->setTransform(static_cast<float>(3 * Game::SCREEN_WIDTH / 4), static_cast<float>(Game::SCREEN_HEIGHT / 4), 273, 275);
 }

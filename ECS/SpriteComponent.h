@@ -4,26 +4,27 @@
 #include "TextureManager.h"
 
 #include <cstdarg>
-#include <map>
 
 class Sprite;
 
 class SpriteComponent : public Component {
-	SDL_Texture* texture;
-	const char* pathToTexture;
+	SDL_Texture* mTexture;
+	
+	const char* mPathToTexture;
+
+	std::unique_ptr<Sprite> mSprite;
+
 public:
-	std::unique_ptr<Sprite> sprite;
-
-	SpriteComponent(const char* pathToTexture, std::unique_ptr<Sprite> sprite, bool isAnimated, int x, int y, int w, int h);
+	SpriteComponent(const char* pathToTexture, std::unique_ptr<Sprite> sprite, int x, int y, int w, int h);
 	SpriteComponent(const char* pathToTexture);
-
 	~SpriteComponent();
 
-	void setTexture(const char* pathToTexture);
-
 	void init() override;
-
 	void update() override;
-
 	void draw() override;
+
+	void setTexture(const char* pathToTexture);
+	
+	void setSprite(std::unique_ptr<Sprite> sprite);
+	std::unique_ptr<Sprite>& getSprite();
 };

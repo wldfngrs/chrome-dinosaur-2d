@@ -1,23 +1,39 @@
 #include "Sprites.h"
+#include "Score.h"
 
 void Background::init() {
-	if (animated) {
-		setAnimation(1, 2, 500);
-	}
+	setAnimation(1, 2, 500);
 }
 
 void Background::update() {
-	if (animated) {
-		srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
-		srcRect.y = animIndex * srcRect.h;
+	static int animationIndex = 1;
+	
+	if (Score::getCurrentScore() % 700 == 0) {
+		switch (animationIndex) {
+		case 0:
+			setAnimation(1, 2, 500);
+			animationIndex = 1;
+			break;
+		case 1:
+			setAnimation(0, 2, 500);
+			animationIndex = 0;
+			break;
+		}
 	}
+	
+	SDL_Rect& rSrcRect = getSrcRect();
+
+	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+	rSrcRect.y = getSheetIndex() * rSrcRect.h;
 }
 
 void CelestialBody::update() {
-	transform->velocity.x = -3;
+	TransformComponent& rTransform = getTransform();
 
-	if (transform->position.x <= -transform->width) {
-		transform->position.x = Game::SCREEN_WIDTH;
+	rTransform.mVelocity.x = -3;
+
+	if (rTransform.mPosition.x <= -rTransform.mWidth) {
+		rTransform.mPosition.x = Game::SCREEN_WIDTH;
 	}
 }
 
@@ -26,8 +42,8 @@ void Ground::init() {
 }
 
 void Ground::update() {
-	if (animated) {
-		srcRect.y = srcRect.h * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
-		srcRect.x = animIndex * srcRect.w;
-	}
+	SDL_Rect& rSrcRect = getSrcRect();
+
+	rSrcRect.y = rSrcRect.h * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+	rSrcRect.x = getSheetIndex() * rSrcRect.w;
 }

@@ -4,197 +4,213 @@
 const int obstacleVelocity = -15;
 
 void DyingTree1::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!\nWriggle out for your next run?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Sh*t! caught in the Dying Trees!\nWriggle out for your next run?");
 
 	setSrcRect(0, 0, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void DyingTree1::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
 
-		setCollider(0, transform->position.x + 89, transform->position.y + 8, 166, 264);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 89, rTransform.mPosition.y + 8, 166, 264);
 	}
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
 
 void DyingTree2::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Sh*t! caught in the Dying Trees!\nWriggle out for your next run?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Sh*t! caught in the Dying Trees!\nWriggle out for your next run?");
 	
 
 	setSrcRect(32, 0, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void DyingTree2::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
 
-		setCollider(0, transform->position.x + 72, transform->position.y + 93, 140, 187);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 72, rTransform.mPosition.y + 93, 140, 187);
 	}
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
 
 void Bucket::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Danmit! You've kicked The Bucket\nDid I mention you have nine (ahem) lives?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Danmit! You've kicked The Bucket\nDid I mention you have nine (ahem) lives?");
 
 	setSrcRect(64, 0, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void Bucket::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
 
-		setCollider(0, transform->position.x + 105, transform->position.y + 51, 106, 221);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 105, rTransform.mPosition.y + 51, 106, 221);
 	}
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
 
 void TreeStump::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Oof! crashed right into a Tree Stump!\nWatch your path, Rex.";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Oof! crashed right into a Tree Stump!\nWatch your path, Rex!");
 
 	setSrcRect(0, 32, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void TreeStump::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
 
-		setCollider(0, transform->position.x + 123, transform->position.y + 162, 81, 110);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 123, rTransform.mPosition.y + 162, 81, 110);
 	}
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
 
 void Stalker::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Hehe, the one-eyed Stalker...\nLook away next time, okay?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Hehe, the one-eyed Stalker...\nLook away next time, okay?");
 
 	setAnimation(1, 2, 200);
 	setSrcRect(32, 32, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void Stalker::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
+	SDL_Rect& rSrcRect = getSrcRect();
 
-		setCollider(0, transform->position.x + 115, transform->position.y + 8, 123, 255);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 115, rTransform.mPosition.y + 8, 123, 255);
 	}
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
-	srcRect.x = 32 + (srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount));
-	srcRect.y = animIndex * srcRect.h;
+	rSrcRect.x = 32 + (rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount()));
+	rSrcRect.y = getSheetIndex() * rSrcRect.h;
 }
 
 
 
 void Brute::init() {
-	transform->entity->collidable = true;
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Ouch, crushed by the merciless Brute!\nOh well, you're not THAT hurt, go again?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Ouch, crushed by the merciless Brute!\nOh well, you're not THAT hurt, go again?");
 
 	setAnimation(2, 2, 200);
 	setSrcRect(0, 64, 32, 32);
-	setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
+	setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 355, 273, 275);
 }
 
 void Brute::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
+	SDL_Rect& rSrcRect = getSrcRect();
 
-		setCollider(0, transform->position.x + 72, transform->position.y + 59, 191, 213);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 72, rTransform.mPosition.y + 59, 191, 213);
 	}
 
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
-	srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
-	srcRect.y = animIndex * srcRect.h;
+	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+	rSrcRect.y = getSheetIndex() * rSrcRect.h;
 }
 
 
 void StalkerPup::init() {
-	transform->entity->collidable = true;
-
-	auto upordown = std::rand() % 10;
+	auto upmiddown = std::rand() % 15;
 
 	setAnimation(3, 2, 200);
 	setSrcRect(0, 96, 32, 32);
 	
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Yikes, Stalker Pups...\nNothing to see or say here, Rex, run again?";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Yikes, Stalker Pups...\nNothing to see or say here, Rex, run again?");
 
-	if (upordown >= 5) {
-		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);
+	if (upmiddown <= 5) {
+		setTransform(Game::SCREEN_WIDTH + 102, 150, 173, 175);
+	}
+	else if (upmiddown > 6 <= 10) {
+		setTransform(Game::SCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
-		setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
+		setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
 	}
 }
 
 void StalkerPup::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
+	SDL_Rect& rSrcRect = getSrcRect();
 
-		setCollider(0, transform->position.x + 64, transform->position.y, 109, 175);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
 	}
 
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
 
-	srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
-	srcRect.y = animIndex * srcRect.h;
+	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+	rSrcRect.y = getSheetIndex() * rSrcRect.h;
 }
 
 
 
 void Gale::init() {
-	transform->entity->collidable = true;
-
-	auto upordown = std::rand() % 10;
+	auto upmiddown = std::rand() % 15;
 
 	setAnimation(4, 2, 200);
 	setSrcRect(0, 128, 32, 32);
 
-	collider.colliderRects.resize(1);
-	collider.tagOnCollision = "Whoaa, you let the Night Gale sweep you away?\nHold on tight next run!";
+	getCollider().resize(1);
+	getCollider().setCollisionTag("Whoaa, you let the Night Gale sweep you away?\nHold on tight next run!");
 
-	if (upordown >= 5) {
-		setDestRect(Game::SCREEN_WIDTH + 102, 280, 173, 175);
+	if (upmiddown <= 5) {
+		setTransform(Game::SCREEN_WIDTH + 102, 150, 173, 175);
+	}
+	else if (upmiddown > 6 <= 10) {
+		setTransform(Game::SCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
-		setDestRect(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
+		setTransform(Game::SCREEN_WIDTH + 102, Game::SCREEN_HEIGHT - 300, 173, 175);
 	}
 }
 
 void Gale::update() {
-	if (transform->position.x <= Game::SCREEN_WIDTH + 101) {
-		transform->velocity.x = obstacleVelocity;
+	TransformComponent& rTransform = getTransform();
+	SDL_Rect& rSrcRect = getSrcRect();
 
-		setCollider(0, transform->position.x + 64, transform->position.y, 109, 175);
+	if (rTransform.mPosition.x <= Game::SCREEN_WIDTH + 101) {
+		rTransform.mVelocity.x = obstacleVelocity;
+
+		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
 	}
 
-	if (transform->position.x <= -transform->width) transform->velocity.zero();
+	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
-	srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / framesSpeed) % framesCount);
-	srcRect.y = animIndex * srcRect.h;
+	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+	rSrcRect.y = getSheetIndex() * rSrcRect.h;
 }

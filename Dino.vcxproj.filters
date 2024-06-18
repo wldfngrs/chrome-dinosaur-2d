@@ -62,9 +62,6 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\Components.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ECS\EntityComponentSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>

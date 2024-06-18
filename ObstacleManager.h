@@ -3,23 +3,25 @@
 #include <vector>
 
 class SpriteComponent;
-class TransformComponent;
+struct TransformComponent;
 class Entity;
 
 class ObstacleManager {
-	std::vector<Entity*> obstacles;
-	std::vector<TransformComponent*> obstaclesTransformData;
-	std::vector<SpriteComponent*> obstaclesSpriteData;
+	int mJustCollidedIndex;
+
+	std::vector<Entity*> mObstacles;
+	std::vector<TransformComponent*> mObstaclesTransformData;
+	std::vector<SpriteComponent*> mObstaclesSpriteData;
 
 	void loadObstacles();
 	void fieldObstacle();
 	void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
 
-
 public:
-	ObstacleManager();
-
 	void init();
 	void reset();
 	void update();
+
+	void updateGameOverAnimation();
+	void initGameOverAnimation();
 };

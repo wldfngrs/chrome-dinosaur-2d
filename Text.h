@@ -4,36 +4,34 @@
 
 #include <map>
 #include <string>
-#include <vector>
 
-//
-// Basically, newlines and Obstacle names (as strings) are segment delimiters.
-//
-//
-
-enum position {
+enum xPosition {
 	CENTERED,
-	NOTCENTERED,
+	LEFT,
+	RIGHT,
 };
 
 class TextManager {
-	std::map<std::string, SDL_Texture*> textCache;
+	std::map<std::string, SDL_Texture*> mTextCache;
 
-	void extractTextSegments(std::vector<std::string>& segments, std::vector<int>& lineLen, std::string text);
+	void addToTextCache_NonStatic(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);
+	void addToTextCache_Static(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);
 
-	void drawTextSegments(std::vector<std::string> segments, std::vector<int> lineLen, int x, int y, int letterWidth, int letterHeight);
-
-	void addToTextCache(std::string text, const char* fontPath, const int fontIndex, SDL_Color color, bool isStatic);
+	int mErrorCode = 0;
 
 public:
-	int errorCode = 0;
-	std::string errorMessage;
 
 	TextManager();
 
 	~TextManager();
 
 	void init();
-	void update();
-	void drawText(std::string t, int x, int y, int letterWidth, int letterHeight, bool isStatic);
+
+	void drawText_Static_NonStatic(std::string text1, std::string text2, xPosition xpos, int y, size_t letterWidth, size_t letterHeight);
+	void drawText_Static(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight);
+	void drawText_Static(std::string text, int x, int y, size_t letterWidth, size_t letterHeight);
+	void drawText_NonStatic(std::string text, xPosition x, int y, size_t letterWidth, size_t letterHeight);
+	void drawText_NonStatic(std::string text, int x, int y, size_t letterWidth, size_t letterHeight);
+
+	int getErrorCode() const;
 };

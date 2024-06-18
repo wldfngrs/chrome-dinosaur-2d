@@ -5,19 +5,18 @@
 #include "Collision.h"
 
 class Sprite {
+	int mFramesCount;
+	int mFramesSpeed;
+	int mSheetIndex = 0;
+
+	Collider mCollider;
+
+	SDL_Rect mSrcRect{ 0, 0, 0, 0 };
+	SDL_Rect mDestRect{ 0, 0, 0, 0 };
+
+	TransformComponent* mTransform;
+
 public:
-	Collider collider;
-
-	TransformComponent* transform;
-
-	SDL_Rect srcRect, destRect;
-
-	bool animated;
-	int framesCount;
-	int framesSpeed;
-
-	int animIndex = 0;
-
 	virtual void init() {}
 	virtual void update() {}
 	virtual void press_UP_key() {}
@@ -25,55 +24,91 @@ public:
 	virtual void release_DOWN_key() {}
 
 	void setAnimation(int index, int nFrames, int mSpeed) {
-		animIndex = index;
-		framesCount = nFrames;
-		framesSpeed = mSpeed;
+		mSheetIndex = index;
+		mFramesCount = nFrames;
+		mFramesSpeed = mSpeed;
+	}
+
+	int getFramesCount() const {
+		return mFramesCount;
+	}
+
+	int getFramesSpeed() const {
+		return mFramesSpeed;
+	}
+
+	int getSheetIndex() const {
+		return mSheetIndex;
 	}
 
 	void setSrcRect(int x, int y, int w, int h) {
-		srcRect.x = x;
-		srcRect.y = y;
-		srcRect.h = h;
-		srcRect.w = w;
+		mSrcRect.x = x;
+		mSrcRect.y = y;
+		mSrcRect.h = h;
+		mSrcRect.w = w;
 	}
 
-	virtual void setDestRect(float x, float y, int w, int h) {
-		transform->height = h;
-		transform->width = w;
-		transform->position.x = x;
-		transform->position.y = y;
+	SDL_Rect& getSrcRect() {
+		return mSrcRect;
 	}
 
-	void setCollider(int colliderIndex, float x, float y, int w, int h) {
-		collider.colliderRects[colliderIndex].x = static_cast<int>(x);
-		collider.colliderRects[colliderIndex].y = static_cast<int>(y);
-		collider.colliderRects[colliderIndex].w = w;
-		collider.colliderRects[colliderIndex].h = h;
+	SDL_Rect& getDestRect() {
+		return mDestRect;
+	}
+
+	void initTransform(TransformComponent* transform) {
+		mTransform = transform;
+	}
+
+	virtual void setTransform(float x, float y, int w, int h) {
+		mTransform->mPosition.x = x;
+		mTransform->mPosition.y = y;
+		mTransform->mWidth = w;
+		mTransform->mHeight = h;
+	}
+
+	TransformComponent& getTransform() {
+		return *mTransform;
+	}
+
+	Collider& getCollider() {
+		return mCollider;
 	}
 };
 
 class DinoState;
 
 class Dino : public Sprite {
-public:
-	DinoState* state;
+	DinoState* mState = nullptr;
 
-	bool jump = false;
-	bool duck = false;
-
-	const int jumpHeight = 290;
-
-	void init() override;
-
-	void update() override;
+	bool mJumping = false;
+	bool mDucking = false;
+	bool mRunning = false;
 
 	void press_UP_key() override;
-
 	void press_DOWN_key() override;
-
 	void release_DOWN_key() override;
 
-	void setDestRect(float x, float y, int w, int h) override;
+public:
+	const int mVerticalJumpDistance = 290;
+
+	~Dino();
+
+	void startDuck();
+	void stopDuck();
+	
+	void startJump();
+	void stopJump();
+
+	void startRun();
+	void stopRun();
+
+	void setState(DinoState* state);
+	DinoState* getState() const;
+	void clearState();
+
+	void init() override;
+	void update() override;
 };
 
 class Background : public Sprite {

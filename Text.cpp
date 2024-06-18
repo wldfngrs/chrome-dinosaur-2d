@@ -5,21 +5,12 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <vector>
 #include <string>
 #include <map>
 
-TextManager::TextManager() {}
-
-TextManager::~TextManager() {
-	for (auto& t : textCache) {
-		SDL_DestroyTexture(t.second);
-	}
-
-	textCache.clear();
-}
-
-void TextManager::extractTextSegments(std::vector<std::string>& textSegments, std::vector<int>& textLineLen, std::string text) {
-	int delimitingIndex;
+static void extractTextSegments(std::vector<std::string>& textSegments, std::vector<size_t>& textLineLen, std::string text) {
+	size_t delimitingIndex;
 	std::string delimitingText;
 	if ((delimitingIndex = text.find("Dying Trees")) != std::string::npos) {
 		delimitingText = "Dying Trees";
@@ -59,10 +50,10 @@ void TextManager::extractTextSegments(std::vector<std::string>& textSegments, st
 		textSegments.push_back(delimitingText);
 	}
 
-	auto start = delimitingIndex + delimitingText.size();
-	auto next = start;
+	size_t start = delimitingIndex + delimitingText.size();
+	size_t next = start;
 
-	auto lineindex = 0;
+	size_t lineindex = 0;
 
 	for (; ;) {
 		if ((next = text.find('\n', start)) == std::string::npos) {
@@ -74,84 +65,189 @@ void TextManager::extractTextSegments(std::vector<std::string>& textSegments, st
 			textSegments.push_back(std::string(text, start, next - start));
 			textSegments.push_back("\\n");
 			textLineLen.push_back(next - lineindex);
-			
+
 			start = next + 1;
 			lineindex = next;
 		}
 	}
 }
 
-void TextManager::drawTextSegments(std::vector<std::string> segments, std::vector<int> lineLen, int x, int y, int letterWidth, int letterHeight) {
-	auto spacing = 0;
-	auto lineLenIndex = 0;
+TextManager::TextManager() {}
 
-	int w = segments[0].size() * letterWidth;
-	int h = letterHeight;
+TextManager::~TextManager() {
+	for (auto& t : mTextCache) {
+		SDL_DestroyTexture(t.second);
+	}
 
-	if (x == CENTERED) x = Game::SCREEN_WIDTH / 2 - lineLen[lineLenIndex++] * letterWidth / 2;
+	mTextCache.clear();
+}
+
+static void setXpos(xPosition xpos, int& x, size_t lineLen, size_t letterWidth) {
+	switch (xpos) {
+	case CENTERED:
+		x = static_cast<int>(Game::SCREEN_WIDTH / 2 - lineLen * letterWidth / 2);
+		break;
+	case RIGHT:
+		x = static_cast<int>(Game::SCREEN_WIDTH - lineLen * letterWidth);
+		break;
+	case LEFT:
+		x = 0;
+	}
+}
+
+void TextManager::drawText_Static(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
+	std::vector<std::string> textSegments;
+	std::vector<size_t> lineLen;
 	
-	TextureManager::drawText(textCache[segments[0]], x, y, w, h);
+	extractTextSegments(textSegments, lineLen, text);
 
-	for (auto i = 1; i < segments.size(); i++) {
-		if (segments[i] == "\\n") {
-			y += (h + 2);
-			x = Game::SCREEN_WIDTH /2 - lineLen[lineLenIndex++] * letterWidth / 2;
-			w = segments[++i].size() * letterWidth;
-			TextureManager::drawText(textCache[segments[i]], x, y, w, h);
+	int lineLenIndex = 0;
+
+	int x = 0;
+
+	size_t w = textSegments[0].size() * letterWidth;
+	size_t h = letterHeight;
+
+	setXpos(xpos, x, lineLen[lineLenIndex++], letterWidth);
+
+	TextureManager::drawText(mTextCache[textSegments[0]], x, y, w, h);
+
+	for (size_t i = 1; i < textSegments.size(); i++) {
+		if (textSegments[i] == "\\n") {
+			y += static_cast<int>(h + 2);
+			setXpos(xpos, x, lineLen[lineLenIndex++], letterWidth);
+			w = textSegments[++i].size() * letterWidth;
+			TextureManager::drawText(mTextCache[textSegments[i]], x, y, w, h);
 		}
 		else {
-			x += w;
-			w = segments[i].size() * letterWidth;
-			TextureManager::drawText(textCache[segments[i]], x, y, w, h);
+			x += static_cast<int>(w);
+			w = textSegments[i].size() * letterWidth;
+			TextureManager::drawText(mTextCache[textSegments[i]], x, y, w, h);
 		}
 	}
 }
 
-void TextManager::drawText(std::string text, int x, int y, int letterWidth, int letterHeight, bool isStatic) {
-	if (isStatic) {
-		std::vector<std::string> textSegments;
-		std::vector<int> textLineLen;
-		extractTextSegments(textSegments, textLineLen, text);
+void TextManager::drawText_Static(std::string text, int x, int y, size_t letterWidth, size_t letterHeight) {
+	std::vector<std::string> textSegments;
+	std::vector<size_t> lineLen;
 
-		drawTextSegments(textSegments, textLineLen, x, y, letterWidth, letterHeight);
-	}
-	else {
-		auto numSpaces = 8 - text.size();
-		int spacing = 1;
+	extractTextSegments(textSegments, lineLen, text);
 
-		for (auto i = 0; i < numSpaces; i++) {
-			TextureManager::drawText(textCache[" "], x, y, letterWidth, letterHeight);
-			x = x + letterWidth + spacing;
+	int lineLenIndex = 0;
+
+	size_t w = textSegments[0].size() * letterWidth;
+	size_t h = letterHeight;
+
+	TextureManager::drawText(mTextCache[textSegments[0]], x, y, w, h);
+
+	for (size_t i = 1; i < textSegments.size(); i++) {
+		if (textSegments[i] == "\\n") {
+			y += static_cast<int>(h + 2);
+			w = textSegments[++i].size() * letterWidth;
+			TextureManager::drawText(mTextCache[textSegments[i]], x, y, w, h);
 		}
-
-		for (auto t : text) {
-			std::string txt;
-			txt += text[0];
-			TextureManager::drawText(textCache[txt], x, y, letterWidth, letterHeight);
-			x = x + letterWidth + spacing;
+		else {
+			x += static_cast<int>(w);
+			w = textSegments[i].size() * letterWidth;
+			TextureManager::drawText(mTextCache[textSegments[i]], x, y, w, h);
 		}
 	}
 }
 
-void TextManager::addToTextCache(std::string text, const char* fontPath, const int fontIndex, SDL_Color color, bool isStatic) {
+void TextManager::drawText_NonStatic(std::string text, int x, int y, size_t letterWidth, size_t letterHeight) {
+	size_t spaces = 7 - text.size();
+
+	for (size_t i = 0; i < spaces; i++) {
+		TextureManager::drawText(mTextCache[" "], x, y, letterWidth, letterHeight);
+		x += static_cast<int>(letterWidth + 1);
+	}
+
+	for (size_t i = 0; i < text.size(); i++) {
+		std::string txt;
+		txt += text[i];
+
+		TextureManager::drawText(mTextCache[txt], x, y, letterWidth, letterHeight);
+		
+		x += static_cast<int>(letterWidth + 1);
+	}
+}
+
+void TextManager::drawText_NonStatic(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
+	size_t spaces = 7 - text.size();
+
+	int x = 0;
+
+	setXpos(xpos, x, text.size(), letterWidth);
+
+	for (size_t i = 0; i < spaces; i++) {
+		TextureManager::drawText(mTextCache[" "], x, y, letterWidth, letterHeight);
+		x += static_cast<int>(letterWidth + 1);
+	}
+
+	for (size_t i = 0; i < text.size(); i++) {
+		std::string txt;
+		txt += text[i];
+
+		TextureManager::drawText(mTextCache[txt], x, y, letterWidth, letterHeight);
+
+		x += static_cast<int>(letterWidth + 1);
+	}
+}
+
+void TextManager::drawText_Static_NonStatic(std::string text1, std::string text2, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
+	size_t textlen = text1.size() + text2.size();
+
+	int x = 0;
+	setXpos(xpos, x, textlen, letterWidth);
+	size_t w = text1.size() * letterWidth;
+	TextureManager::drawText(mTextCache[text1], x, y, w, letterHeight);
+
+	x += static_cast<int>(w + 1);
+
+	w = text2.size() * letterWidth;
+	for (size_t i = 0; i < text2.size(); i++) {
+		std::string txt;
+		txt += text2[i];
+
+		TextureManager::drawText(mTextCache[txt], x, y, letterWidth, letterHeight);
+
+		x += static_cast<int>(letterWidth + 1);
+	}
+}
+
+void TextManager::addToTextCache_Static(std::string text, const char* fontPath, const int fontIndex, SDL_Color color) {
 	TTF_Font* font = TTF_OpenFont(fontPath, fontIndex);
 
 	if (font == nullptr) {
 		std::stringstream ss;
 		ss << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError();
-		errorMessage = ss.str();
-		errorCode = -1;
+		Game::errorMessage = ss.str();
+		mErrorCode = -1;
+
+		return;
 	}
 
-	if (isStatic) {
-		textCache[text] = TextureManager::loadTextTexture(text, font, color);
+	mTextCache[text] = TextureManager::loadTextTexture(text, font, color);
+
+	TTF_CloseFont(font);
+}
+
+void TextManager::addToTextCache_NonStatic(std::string text, const char* fontPath, const int fontIndex, SDL_Color color) {
+	TTF_Font* font = TTF_OpenFont(fontPath, fontIndex);
+	
+	if (font == nullptr) {
+		std::stringstream ss;
+		ss << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError();
+		Game::errorMessage = ss.str();
+		mErrorCode = -1;
+
+		return;
 	}
-	else {
-		for (auto t : text) {
-			std::string txt;
-			txt += t;
-			textCache[txt] = TextureManager::loadTextTexture(txt, font, color);
-		}
+
+	for (size_t i = 0; i < text.size(); i++) {
+		std::string txt;
+		txt += text[i];
+		mTextCache[txt] = TextureManager::loadTextTexture(txt, font, color);
 	}
 
 	TTF_CloseFont(font);
@@ -160,108 +256,49 @@ void TextManager::addToTextCache(std::string text, const char* fontPath, const i
 void TextManager::init() {
 	SDL_Color dinoRed = { 184, 37, 53 };
 	SDL_Color snowWhite = { 255, 255, 255 };
-	addToTextCache("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed, true);
-	addToTextCache("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 36, snowWhite, true);
 
-	addToTextCache("HIGH SCORE", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
-	addToTextCache("CURRENT SCORE", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
-	addToTextCache("0123456789", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, false);
-	addToTextCache(" ", "assets\\fonts\\ALBA____.TTF", 12, snowWhite, true);
+	addToTextCache_Static("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed);
+	addToTextCache_Static("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_Static("press [SPACE] to run again!", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
 
-	addToTextCache("Sh*t! caught in the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Dying Trees", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	addToTextCache("!", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Wriggle out for your next run?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("HIGH SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_Static("CURRENT SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_NonStatic("0123456789", "assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_NonStatic(" ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
 
-	addToTextCache("Danmit! You've kicked ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("The Bucket", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	addToTextCache("Did I mention you have nine (ahem) lives?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("Sh*t! caught in the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Dying Trees", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Wriggle out for your next run?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+  
+	addToTextCache_Static("Danmit! You've kicked ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("The Bucket", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("Did I mention you have nine (ahem) lives?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache("Oof! crashed right into a ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Tree Stump", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	//addToTextCache("!", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Watch your path, Rex.", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("Oof! crashed right into a ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Tree Stump", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("Watch your path, Rex!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache("Hehe, the one-eyed ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Stalker", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	addToTextCache("...", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Look away next time, okay?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("Hehe, the one-eyed ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Stalker", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("...", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Look away next time, okay?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache("Yikes, ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Stalker Pups", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	//addToTextCache("...", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Nothing to see or say here, Rex, run again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("Yikes, ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Stalker Pups", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("Nothing to see or say here, Rex, run again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache("Ouch, crushed by the merciless ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Brute", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	addToTextCache("Oh well, you're not THAT hurt, go again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
+	addToTextCache_Static("Ouch, crushed by the merciless ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Brute", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static("Oh well, you're not THAT hurt, go again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
 
-	addToTextCache("Whoaa, you let the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Night Gale", "assets\\fonts\\adrip1.ttf", 72, dinoRed, true);
-	addToTextCache(" sweep you away?", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-	addToTextCache("Hold on tight next run!", "assets\\fonts\\adrip1.ttf", 72, snowWhite, true);
-
+	addToTextCache_Static("Whoaa, you let the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Night Gale", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_Static(" sweep you away?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_Static("Hold on tight next run!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 }
 
-void TextManager::update() {}
-
-//void TextManager::drawAtStandardPosition(std::string text, int position, int w, int h, bool isStatic) {
-////	   .__________________________________________________________.
-////	   |LEFT & UP			    UP & CENTER				RIGHT & UP|
-////	   |														  |
-////	   |														  |
-////	   |LEFT & CENTER			 CENTER				RIGHT & CENTER|
-////	   |														  |
-////	   |														  |
-////	   |LEFT & DOWN_____________UP & DOWN_____________RIGHT & DOWN|
-//
-//	int x(0), y(0);
-//
-//	if (((position & LEFT) && (position & RIGHT)) || ((position & UP) && (position & DOWN)) || ((position & LEFT) && (position & UP))) {
-//		x = 0;
-//		y = 0;
-//	}
-//
-//	else if ((position & LEFT) && (position & CENTER)) {
-//		x = 0;
-//		y = Game::SCREEN_HEIGHT / 2 - h/2;
-//	}
-//
-//	else if ((position & LEFT) && (position & DOWN)) {
-//		x = 0;
-//		y = Game::SCREEN_HEIGHT - h;
-//	}
-//
-//	else if ((position & UP) && (position & CENTER)) {
-//		x = Game::SCREEN_WIDTH / 2 - w/2;
-//		y = 0;
-//	}
-//
-//	else if ((position & DOWN) && (position & CENTER)) {
-//		x = Game::SCREEN_WIDTH / 2 - w/2;
-//		y = Game::SCREEN_HEIGHT;
-//	}
-//
-//	else if ((position & RIGHT) && (position & UP)) {
-//		x = Game::SCREEN_WIDTH - w;
-//		y = 0;
-//	}
-//
-//	else if ((position & RIGHT) && (position & CENTER)) {
-//		x = Game::SCREEN_WIDTH - w;
-//		y = Game::SCREEN_HEIGHT / 2 - h/2;
-//	}
-//
-//	else if ((position & RIGHT) && (position & DOWN)) {
-//		x = Game::SCREEN_WIDTH - w;
-//		y = Game::SCREEN_HEIGHT - h;
-//	}
-//
-//	else if ((position & CENTER)) {
-//		x = Game::SCREEN_WIDTH / 2 - w / 2;
-//		y = Game::SCREEN_HEIGHT / 2 - h / 2;
-//	}
-//
-//	draw(text, x, y, w, h, isStatic);
-//}
+int TextManager::getErrorCode() const {
+	return mErrorCode;
+}

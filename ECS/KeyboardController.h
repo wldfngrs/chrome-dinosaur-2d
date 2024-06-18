@@ -6,11 +6,11 @@
 #include "Sprites.h"
 
 class KeyboardController : public Component {
-public:
-	SpriteComponent* spriteComponent;
+	SpriteComponent* mSpriteComponent;
 
+public:
 	void init() override {
-		spriteComponent = &entity->getComponent<SpriteComponent>();
+		mSpriteComponent = &mEntity->getComponent<SpriteComponent>();
 	}
 
 	void update() override {
@@ -18,11 +18,11 @@ public:
 			switch (Game::event.key.keysym.sym) {
 			case SDLK_UP:
 			case SDLK_SPACE:
-				spriteComponent->sprite->press_UP_key();
+				mSpriteComponent->getSprite()->press_UP_key();
 				break;
 
 			case SDLK_DOWN:
-				spriteComponent->sprite->press_DOWN_key();
+				mSpriteComponent->getSprite()->press_DOWN_key();
 				break;
 			}
 		}
@@ -30,7 +30,7 @@ public:
 		if (Game::event.type == SDL_KEYUP) {
 			switch (Game::event.key.keysym.sym) {
 			case SDLK_DOWN:
-				spriteComponent->sprite->release_DOWN_key();
+				mSpriteComponent->getSprite()->release_DOWN_key();
 				break;
 			}
 		}

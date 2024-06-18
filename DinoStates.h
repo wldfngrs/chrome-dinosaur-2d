@@ -5,156 +5,144 @@
 
 class RunningState : public DinoState {
 	void enter(Dino& dino) override {
-		if (!dino.jump && !dino.duck) {
-			dino.setSrcRect(0, 0, 32, 32);
+		dino.setSrcRect(0, 0, 32, 32);
 
-			dino.setDestRect
-			(
-				dino.transform->position.x,
-				dino.transform->position.y + dino.jumpHeight,
-				dino.transform->width,
-				dino.transform->height
-			);
+		Collider& rCollider = dino.getCollider();
+		TransformComponent& rTransform = dino.getTransform();
 
-			dino.collider.colliderRects.resize(1);
-			dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 59, 221, 213);
+		rTransform.mPosition.y = Game::SCREEN_HEIGHT - 355;
 
-			dino.setAnimation(0, 2, 150);
-		}
+		rCollider.resize(1);
+		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 59, 221, 213);
+		
+		dino.setAnimation(0, 2, 150);
+
+		dino.startRun();
 	}
 
 	void update(Dino& dino) override {
-		if (dino.animated) {
-			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.framesSpeed) % dino.framesCount);
-			dino.srcRect.y = dino.animIndex * dino.srcRect.h;
-		}
+		SDL_Rect& rSrcRect = dino.getSrcRect();
+
+		rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / dino.getFramesSpeed()) % dino.getFramesCount());
+		rSrcRect.y = dino.getSheetIndex() * rSrcRect.h;
 	}
 
-	void leave(Dino& dino) override {}
+	void leave(Dino& dino) override {
+		dino.stopRun();
+	}
 };
 
 class DuckingState : public DinoState {
 	void enter(Dino& dino) override {
-		if (!dino.duck && !dino.jump) {
-			dino.setSrcRect(0, 64, 32, 32);
+		dino.setSrcRect(0, 64, 32, 32);
 
-			dino.setDestRect
-			(
-				dino.transform->position.x,
-				dino.transform->position.y + dino.jumpHeight,
-				dino.transform->width,
-				dino.transform->height
-			);
+		Collider& rCollider = dino.getCollider();
+		TransformComponent& rTransform = dino.getTransform();
 
-			dino.collider.colliderRects.resize(1);
-			dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 136, 273, 136);
+		rTransform.mPosition.y = Game::SCREEN_HEIGHT - 355;
 
-			dino.duck = true;
+		rCollider.resize(1);
+		rCollider.setColliderRect(0, rTransform.mPosition.y, rTransform.mPosition.y + 136, 273, 136);
 
-			dino.setAnimation(2, 2, 200);
-		}
+		dino.setAnimation(2, 2, 200);
+		dino.startDuck();
 	}
 
 	void update(Dino& dino) override {
-		if (dino.animated) {
-			dino.srcRect.x = dino.srcRect.w * static_cast<int>((SDL_GetTicks() / dino.framesSpeed) % dino.framesCount);
-			dino.srcRect.y = dino.animIndex * dino.srcRect.h;
-		}
+		SDL_Rect& rSrcRect = dino.getSrcRect();
+
+		rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / dino.getFramesSpeed()) % dino.getFramesCount());
+		rSrcRect.y = dino.getSheetIndex() * rSrcRect.h;
 	}
 
 	void leave(Dino& dino) override {
-		if (dino.duck) dino.duck = false;
+		dino.stopDuck();
 	}
 };
 
 class JumpingState : public DinoState {
-	bool charging = false;
-	int chargeTime = 0;
-	const int MAX_CHARGETIME = 5;
+	bool mCharging = false;
+	int mChargeTime = 0;
+	const int mMAX_CHARGETIME = 5;
 
-	bool landing = false;
-	int landTime = 0;
-	const int MAX_LANDTIME = 13;
+	bool mLanding = false;
+	int mLandTime = 0;
+	const int mMAX_LANDTIME = 13;
 
-	bool jumping = false;
-	int jumpTime = 0;
-	const int MAX_JUMPTIME = 30;
+	bool mJumping = false;
+	int mJumpTime = 0;
+	const int mMAX_JUMPTIME = 30;
 
 public:
 	void enter(Dino& dino) override {
-		dino.jump = true;
-		if (!dino.duck) {
-			dino.setSrcRect(0, 32, 32, 32);
+		dino.setSrcRect(0, 32, 32, 32);
 
-			dino.collider.colliderRects.resize(1);
-			dino.setCollider(0, dino.transform->position.x + 8, dino.transform->position.y + 76, 230, 196);
+		TransformComponent& rTransform = dino.getTransform();
+		Collider& rCollider = dino.getCollider();
 
-			charging = true;
-		}
+		rCollider.resize(1);
+		rCollider.setColliderRect(0, rTransform.mPosition.x + 8, rTransform.mPosition.y + 76, 230, 196);
+
+		mCharging = true;
+		dino.startJump();
 	}
 
 	void update(Dino& dino) override {
-		if (charging) {
-			chargeTime++;
+		if (mCharging) {
+			mChargeTime++;
 
-			if (chargeTime >= MAX_CHARGETIME) {
-				chargeTime = 0;
-				charging = false;
-				jumping = true;
+			if (mChargeTime >= mMAX_CHARGETIME) {
+				mChargeTime = 0;
+				mCharging = false;
+				mJumping = true;
+
+				TransformComponent& rTransform = dino.getTransform();
+				Collider& rCollider = dino.getCollider();
+
 				dino.setSrcRect(32, 32, 32, 32);
 
-				dino.setDestRect
-				(
-					dino.transform->position.x,
-					dino.transform->position.y - dino.jumpHeight,
-					dino.transform->width,
-					dino.transform->height
-				);
+				rTransform.mPosition.y -= dino.mVerticalJumpDistance;
 
-				dino.collider.colliderRects.resize(1);
-				dino.setCollider(0, -1, -1, -1, -1);
+				rCollider.resize(1);
+				rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 64, 224, 168);
 			}
 		}
 
 
-		if (jumping) {
-			jumpTime++;
+		if (mJumping) {
+			mJumpTime++;
 
-			if (jumpTime >= MAX_JUMPTIME) {
-				jumpTime = 0;
-				jumping = false;
-				landing = true;
+			if (mJumpTime >= mMAX_JUMPTIME) {
+				mJumpTime = 0;
+				mJumping = false;
+				mLanding = true;
 				dino.setSrcRect(64, 32, 32, 32);
 
-				dino.setDestRect
-				(
-					dino.transform->position.x,
-					dino.transform->position.y + dino.jumpHeight,
-					dino.transform->width,
-					dino.transform->height
-				);
+				TransformComponent& rTransform = dino.getTransform();
+				Collider& rCollider = dino.getCollider();
 
-				dino.collider.colliderRects.resize(1);
-				dino.setCollider(0, dino.transform->position.x, dino.transform->position.y + 315, 255, 119);
+				rTransform.mPosition.y += dino.mVerticalJumpDistance;
+
+				rCollider.resize(1);
+				rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 315, 255, 119);
 			}
 		}
 
-		if (landing) {
-			landTime++;
+		if (mLanding) {
+			mLandTime++;
 
-			if (landTime >= MAX_LANDTIME) {
-				landing = false;
-				landTime = 0;
+			if (mLandTime >= mMAX_LANDTIME) {
+				mLanding = false;
+				mLandTime = 0;
 				leave(dino);
 			}
 		}
 	}
 
 	void leave(Dino& dino) override {
-		if (dino.state != nullptr) delete dino.state;
-
-		dino.jump = false;
-		dino.state = new RunningState();
-		dino.state->enter(dino);
+		dino.stopJump();
+		dino.clearState();
+		dino.setState(new RunningState());
+		dino.getState()->enter(dino);
 	}
 };

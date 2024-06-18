@@ -158,7 +158,6 @@
   <ItemGroup>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="DinoStates.h" />
-    <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\EntityComponentSystem.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />

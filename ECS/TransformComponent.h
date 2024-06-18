@@ -4,39 +4,39 @@
 #include "Vector2D.h"
 
 struct TransformComponent : public Component {
-	Vector2D position;
-	Vector2D velocity;
+	Vector2D mPosition;
+	Vector2D mVelocity;
 
-	int height = 1;
-	int width = 1;
+	int mHeight = 1;
+	int mWidth = 1;
 
 	TransformComponent() {
-		position.zero();
-		velocity.zero();
+		mPosition.zero();
+		mVelocity.zero();
 	}
 
 	TransformComponent(int scale) {
-		position.zero();
-		velocity.zero();
+		mPosition.zero();
+		mVelocity.zero();
 	}
 
 	TransformComponent(float x, float y) {
-		position.x = x;
-		position.y = y;
-		velocity.zero();
+		mPosition.x = x;
+		mPosition.y = y;
+		mVelocity.zero();
 	}
 
 	TransformComponent(float x, float y, int w, int h) {
-		position.x = x;
-		position.y = y;
-		height = h;
-		width = w;
+		mPosition.x = x;
+		mPosition.y = y;
+		mHeight = h;
+		mWidth = w;
 	}
 
 	void init() override {}
 
 	void update() override {
-		position.x += velocity.x;
-		position.y += velocity.y;
+		mPosition.x += mVelocity.x;
+		mPosition.y += mVelocity.y;
 	}
 };

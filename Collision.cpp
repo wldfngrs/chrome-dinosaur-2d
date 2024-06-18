@@ -14,7 +14,6 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collision
 		&&
 		B.y + B.h >= A.y)
 	{
-		//std::cout << collisionTag << std::endl;
 		Game::gameOverTag = collisionTag;
 		Game::playerFail = true;
 		return true;
@@ -23,12 +22,12 @@ bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collision
 	return false;
 }
 
-void Collision::checkForCollision(Collider collider) {
-	std::vector<SDL_Rect> dinoColliders = Game::dino.getComponent<SpriteComponent>().sprite->collider.colliderRects;
+void Collision::checkForCollision(Collider otherCollider) {
+	Collider& dinoCollider = Game::dino.getComponent<SpriteComponent>().getSprite()->getCollider();
 		
-	for (auto& p : dinoColliders) {
-		for (auto& c : collider.colliderRects) {
-			if (AABB(p, c, collider.tagOnCollision)) {
+	for (auto& p : dinoCollider.getColliderRects()) {
+		for (auto& c : otherCollider.getColliderRects()) {
+			if (AABB(p, c, otherCollider.getCollisionTag())) {
 				return;
 			}
 		}
@@ -42,8 +41,8 @@ void Collision::checkForCollisions() {
 	/* Check for collision between Game::dino and the other game entities, only if they are collidable i.e Obstacles */
 
 	for (auto& e : entities) {
-		if (e->isActive() && e->collidable && (Game::dino.entityIndex != e->entityIndex)) {
-			checkForCollision(e->getComponent<SpriteComponent>().sprite->collider);
+		if (e->isActive() && (Game::dino.mEntityIndex != e->mEntityIndex)) {
+			checkForCollision(e->getComponent<SpriteComponent>().getSprite()->getCollider());
 		}
 	}
 }

@@ -40,11 +40,7 @@ SDL_Texture* TextureManager::loadTextTexture(std::string textureText, TTF_Font* 
 	return texture;
 }
 
-void TextureManager::getTextureWidthHeight(SDL_Texture* texture, int* width, int* height) {
-	SDL_QueryTexture(texture, NULL, NULL, width, height);
-}
-
-void TextureManager::drawText(SDL_Texture* texture, int x, int y, int w, int h) {
-	SDL_Rect dest = { x, y, w, h };
+void TextureManager::drawText(SDL_Texture* texture, int x, int y, size_t w, size_t h) {
+	SDL_Rect dest = { x, y, static_cast<int>(w), static_cast<int>(h) };
 	SDL_RenderCopy(Game::gameRenderer, texture, NULL, &dest);
 }

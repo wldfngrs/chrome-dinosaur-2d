@@ -2,63 +2,101 @@
 #include "KeyboardController.h"
 #include "DinoStates.h"
 
-void Dino::init() {
-	if (!animated) {
-		animated = true;
-	}
-	
-	transform->entity->collidable = true;
+Dino::~Dino() {
+	clearState();
+}
 
-	state = new RunningState();
-	state->enter(*this);
+void Dino::init() {
+	clearState();
+	setState(new RunningState());
+	mState->enter(*this);
 }
 
 void Dino::update() {
-	state->update(*this);
+	mState->update(*this);
 }
 
+// IF STATEMENT CHECK TO PREVENT LEAVING AND RE-ENTERING STATE IF ALREADY IN STATE
+// ALSO PREVENT SITUATIONS SUCH AS, ENTERING DUCK STATE WHEN IN JUMP STATE, OR ENTERING RUN STATE WHEN IN JUMP STATE
+
 void Dino::press_UP_key() {
-	if (!jump) {
-		state->leave(*this);
-
-		if (state != nullptr) delete state;
-
-		state = new JumpingState();
-
-		state->enter(*this);
+	if (!mJumping) {
+		mState->leave(*this);
+		clearState();
+		setState(new JumpingState());
+		mState->enter(*this);
 	}
+
+	//mState->leave(*this);
+	//clearState();
+	//setState(new JumpingState());
+	//mState->enter(*this);
 }
 
 void Dino::press_DOWN_key() {
-	if (!duck) {
-		state->leave(*this);
-
-		if (state != nullptr) delete state;
-
-		state = new DuckingState();
-
-		state->enter(*this);
+	if (!mDucking) {
+		mState->leave(*this);
+		clearState();
+		setState(new DuckingState());
+		mState->enter(*this);
 	}
+
+	//mState->leave(*this);
+	//clearState();
+	//setState(new DuckingState());
+	//mState->enter(*this);
 }
 
 void Dino::release_DOWN_key() {
-	state->leave(*this);
+	if (!mRunning) {
+		mState->leave(*this);
+		clearState();
+		setState(new RunningState());
+		mState->enter(*this);
+	}
 
-	if (state != nullptr) delete state;
-
-	state = new RunningState();
-	
-	state->enter(*this);
+	//mState->leave(*this);
+	//clearState();
+	//setState(new RunningState());
+	//mState->enter(*this);
 }
 
-void Dino::setDestRect(float x, float y, int w, int h) {
-	transform->height = h;
-	transform->width = w;
-	transform->position.x = x;
+DinoState* Dino::getState() const {
+	return mState;
+}
+void Dino::setState(DinoState* state) {
+	mState = state;
+}
 
-	if (y > (Game::SCREEN_HEIGHT - 355)) {
-		transform->position.y = Game::SCREEN_HEIGHT - 355;
-	} else {
-		transform->position.y = y;
+void Dino::clearState() {
+	if (mState != nullptr) {
+		delete mState;
 	}
+}
+
+void Dino::startDuck() {
+	mDucking = true;
+	mJumping = false;
+	mRunning = false;
+}
+void Dino::stopDuck() {
+	mDucking = false;
+}
+
+void Dino::startJump() {
+	mJumping = true;
+	mDucking = false;
+	mRunning = false;
+}
+void Dino::stopJump() {
+	mJumping = false;
+}
+
+void Dino::startRun() {
+	mRunning = true;
+	mDucking = false;
+	mJumping = false;
+}
+void Dino::stopRun() {
+	mRunning = false;
 }

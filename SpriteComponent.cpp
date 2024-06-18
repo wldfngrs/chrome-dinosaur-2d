@@ -5,14 +5,10 @@
 #include "KeyboardController.h"
 #include "Sprites.h"
 
-SpriteComponent::SpriteComponent(const char* pathToTexture, std::unique_ptr<Sprite> sp, bool isAnimated, int x, int y, int w, int h)
-	: sprite(std::move(sp))
-{
-	sprite->animated = isAnimated;
-	sprite->srcRect.x = x;
-	sprite->srcRect.y = y;
-	sprite->srcRect.h = h;
-	sprite->srcRect.w = w;
+SpriteComponent::SpriteComponent(const char* pathToTexture, std::unique_ptr<Sprite> sprite, int x, int y, int w, int h) {
+	setSprite(std::move(sprite));
+
+	mSprite->setSrcRect(x, y, w, h);
 
 	setTexture(pathToTexture);
 }
@@ -22,34 +18,50 @@ SpriteComponent::SpriteComponent(const char* pathToTexture) {
 }
 
 SpriteComponent::~SpriteComponent() {
-	SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(mTexture);
 }
 
 void SpriteComponent::setTexture(const char* path) {
-	texture = TextureManager::loadSpriteTexture(path);
-	pathToTexture = const_cast<char*>(path);
+	mTexture = TextureManager::loadSpriteTexture(path);
+	mPathToTexture = const_cast<char*>(path);
 }
 
 void SpriteComponent::init() {
-	if (sprite == nullptr) return;
-
-	if (!entity->hasComponent<TransformComponent>()) {
-		entity->addComponent<TransformComponent>();
+	if (mSprite == nullptr) return;
+	
+	if (!mEntity->hasComponent<TransformComponent>()) {
+		mEntity->addComponent<TransformComponent>();
 	}
+	
+	mSprite->initTransform(&mEntity->getComponent<TransformComponent>());
 
-	sprite->transform = &entity->getComponent<TransformComponent>();
-	sprite->init();
+	mSprite->init();
 }
 
 void SpriteComponent::update() {
-	sprite->update();
+	mSprite->update();
 
-	sprite->destRect.x = static_cast<int>(sprite->transform->position.x);
-	sprite->destRect.y = static_cast<int>(sprite->transform->position.y);
-	sprite->destRect.w = sprite->transform->width;
-	sprite->destRect.h = sprite->transform->height;
+	SDL_Rect& rDestRect = mSprite->getDestRect();
+	TransformComponent& rTransform = mSprite->getTransform();
+
+	rDestRect.w = rTransform.mWidth;
+	rDestRect.h = rTransform.mHeight;
+	rDestRect.x = static_cast<int>(rTransform.mPosition.x);
+	rDestRect.y = static_cast<int>(rTransform.mPosition.y);
 }
 
 void SpriteComponent::draw() {
-	TextureManager::drawSprite(pathToTexture, texture, sprite->srcRect, sprite->destRect);
+	TextureManager::drawSprite(mPathToTexture, mTexture, mSprite->getSrcRect(), mSprite->getDestRect());
+}
+
+void SpriteComponent::setSprite(std::unique_ptr<Sprite> sprite) {
+	if (mSprite != nullptr) {
+		mSprite.reset();
+	}
+
+	mSprite = std::move(sprite);
+}
+
+std::unique_ptr<Sprite>& SpriteComponent::getSprite() {
+	return mSprite;
 }

@@ -15,19 +15,20 @@ void Score::reset() {
 }
 
 void Score::update() {
-	if (Game::tick % 7 == 0) mCurrentscore++;
+	if (Game::mTick % 7 == 0) mCurrentscore++;
 }
 
-void Score::draw() {
-	int digitsXPosition = Game::SCREEN_WIDTH - 8 * 18;
-	int highScoreXPosition = Game::SCREEN_WIDTH - (12 * 18 + 8 * 18);
+void Score::draw(Game& game) {
+	int digitsXPosition = Game::mSCREEN_WIDTH - 8 * 18;
+	int highScoreXPosition = Game::mSCREEN_WIDTH - (12 * 18 + 8 * 18);
 	int currentScoreXPosition = highScoreXPosition - 55;
 
+	TextManager& rTextManager = game.getTextManager();
 
-	Game::textManager.drawText_Static("HIGH SCORE: ", highScoreXPosition, 10, 18, 40);
-	Game::textManager.drawText_NonStatic(std::to_string(mHighscore), digitsXPosition, 10, 18, 40);
-	Game::textManager.drawText_Static("CURRENT SCORE: ", currentScoreXPosition, 60, 18, 40);
-	Game::textManager.drawText_NonStatic(std::to_string(mCurrentscore), digitsXPosition, 60, 18, 40);
+	rTextManager.drawText_Static("HIGH SCORE: ", highScoreXPosition, 10, 18, 40);
+	rTextManager.drawText_NonStatic(std::to_string(mHighscore), digitsXPosition, 10, 18, 40);
+	rTextManager.drawText_Static("CURRENT SCORE: ", currentScoreXPosition, 60, 18, 40);
+	rTextManager.drawText_NonStatic(std::to_string(mCurrentscore), digitsXPosition, 60, 18, 40);
 }
 
 void Score::setHighScore(int highscore) {

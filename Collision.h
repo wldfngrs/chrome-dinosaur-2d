@@ -32,8 +32,12 @@ public:
 };
 
 class Collision {
+	static char* mTag;
+	static bool checkForCollision(Collider collider);
+
 public:
-	static bool AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collisionTag);
-	static void checkForCollision(Collider collider);
-	static void checkForCollisions();
+	static bool checkForCollisions();
+	static char* getTag();
+
+	static bool mCollided;
 };

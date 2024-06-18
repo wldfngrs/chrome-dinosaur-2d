@@ -5,44 +5,47 @@
 #include "Sprites.h"
 #include "SpriteComponent.h"
 
-bool Collision::AABB(const SDL_Rect& A, const SDL_Rect& B, const char* collisionTag) {
-	if (A.x + A.w >= B.x
-		&&
-		B.x + B.w >= A.x
-		&&
-		A.y + A.h >= B.y
-		&&
-		B.y + B.h >= A.y)
-	{
-		Game::gameOverTag = collisionTag;
-		Game::playerFail = true;
-		return true;
-	}
-	
-	return false;
-}
+char* Collision::mTag;
+bool Collision::mCollided;
 
-void Collision::checkForCollision(Collider otherCollider) {
-	Collider& dinoCollider = Game::dino.getComponent<SpriteComponent>().getSprite()->getCollider();
+bool Collision::checkForCollision(Collider otherCollider) {
+	Collider& dinoCollider = Game::mDino.getComponent<SpriteComponent>().getSprite()->getCollider();
 		
-	for (auto& p : dinoCollider.getColliderRects()) {
-		for (auto& c : otherCollider.getColliderRects()) {
-			if (AABB(p, c, otherCollider.getCollisionTag())) {
-				return;
+	for (auto& A : dinoCollider.getColliderRects()) {
+		for (auto& B : otherCollider.getColliderRects()) {
+			if (A.x + A.w >= B.x
+				&&
+				B.x + B.w >= A.x
+				&&
+				A.y + A.h >= B.y
+				&&
+				B.y + B.h >= A.y)
+			{
+				mCollided = true;
+				mTag = const_cast<char*>(otherCollider.getCollisionTag());
+
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
-void Collision::checkForCollisions() {
-	EntityManager& eManager = Game::dino.getEntityManager();
-	std::vector<std::unique_ptr<Entity>>& entities = eManager.getEntities();
-	
-	/* Check for collision between Game::dino and the other game entities, only if they are collidable i.e Obstacles */
+bool Collision::checkForCollisions() {
+	std::vector<std::unique_ptr<Entity>>& entities = Game::mEntityManager.getEntities();
 
 	for (auto& e : entities) {
-		if (e->isActive() && (Game::dino.mEntityIndex != e->mEntityIndex)) {
-			checkForCollision(e->getComponent<SpriteComponent>().getSprite()->getCollider());
+		if (e->isActive() && (Game::mDino.mEntityIndex != e->mEntityIndex)) {
+			if (checkForCollision(e->getComponent<SpriteComponent>().getSprite()->getCollider())) {
+				break;
+			}
 		}
 	}
+
+	return mCollided;
+}
+
+char* Collision::getTag() {
+	return mTag;
 }

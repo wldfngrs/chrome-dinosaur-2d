@@ -91,10 +91,6 @@ public:
 		auto ptr(mComponentArray[getComponentTypeID<T>()]);
 		return *static_cast<T*>(ptr);
 	}
-
-	EntityManager& getEntityManager() const {
-		return mEntityManager;
-	}
 };
 
 class EntityManager {

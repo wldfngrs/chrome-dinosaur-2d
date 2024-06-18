@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include <map>
@@ -85,10 +84,10 @@ TextManager::~TextManager() {
 static void setXpos(xPosition xpos, int& x, size_t lineLen, size_t letterWidth) {
 	switch (xpos) {
 	case CENTERED:
-		x = static_cast<int>(Game::SCREEN_WIDTH / 2 - lineLen * letterWidth / 2);
+		x = static_cast<int>(Game::mSCREEN_WIDTH / 2 - lineLen * letterWidth / 2);
 		break;
 	case RIGHT:
-		x = static_cast<int>(Game::SCREEN_WIDTH - lineLen * letterWidth);
+		x = static_cast<int>(Game::mSCREEN_WIDTH - lineLen * letterWidth);
 		break;
 	case LEFT:
 		x = 0;
@@ -219,11 +218,7 @@ void TextManager::addToTextCache_Static(std::string text, const char* fontPath, 
 	TTF_Font* font = TTF_OpenFont(fontPath, fontIndex);
 
 	if (font == nullptr) {
-		std::stringstream ss;
-		ss << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError();
-		Game::errorMessage = ss.str();
-		mErrorCode = -1;
-
+		std::cerr << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError() << "\n\n";
 		return;
 	}
 
@@ -236,11 +231,7 @@ void TextManager::addToTextCache_NonStatic(std::string text, const char* fontPat
 	TTF_Font* font = TTF_OpenFont(fontPath, fontIndex);
 	
 	if (font == nullptr) {
-		std::stringstream ss;
-		ss << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError();
-		Game::errorMessage = ss.str();
-		mErrorCode = -1;
-
+		std::cerr << "[Error] TextManager::init(): '" << fontPath << "' TTF_OpenFont() failed!\nDetails: " << TTF_GetError() << "\n\n";
 		return;
 	}
 
@@ -297,8 +288,4 @@ void TextManager::init() {
 	addToTextCache_Static("Night Gale", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
 	addToTextCache_Static(" sweep you away?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 	addToTextCache_Static("Hold on tight next run!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-}
-
-int TextManager::getErrorCode() const {
-	return mErrorCode;
 }

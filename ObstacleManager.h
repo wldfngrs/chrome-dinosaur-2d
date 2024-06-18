@@ -10,8 +10,8 @@ class ObstacleManager {
 	int mJustCollidedIndex;
 
 	std::vector<Entity*> mObstacles;
-	std::vector<TransformComponent*> mObstaclesTransformData;
-	std::vector<SpriteComponent*> mObstaclesSpriteData;
+	std::vector<TransformComponent*> mObstaclesTransformCache;
+	std::vector<SpriteComponent*> mObstaclesSpriteCache;
 
 	void loadObstacles();
 	void fieldObstacle();

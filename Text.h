@@ -17,8 +17,6 @@ class TextManager {
 	void addToTextCache_NonStatic(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);
 	void addToTextCache_Static(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);
 
-	int mErrorCode = 0;
-
 public:
 
 	TextManager();
@@ -32,6 +30,4 @@ public:
 	void drawText_Static(std::string text, int x, int y, size_t letterWidth, size_t letterHeight);
 	void drawText_NonStatic(std::string text, xPosition x, int y, size_t letterWidth, size_t letterHeight);
 	void drawText_NonStatic(std::string text, int x, int y, size_t letterWidth, size_t letterHeight);
-
-	int getErrorCode() const;
 };

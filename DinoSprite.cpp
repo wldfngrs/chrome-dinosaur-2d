@@ -17,7 +17,6 @@ void Dino::update() {
 }
 
 // IF STATEMENT CHECK TO PREVENT LEAVING AND RE-ENTERING STATE IF ALREADY IN STATE
-// ALSO PREVENT SITUATIONS SUCH AS, ENTERING DUCK STATE WHEN IN JUMP STATE, OR ENTERING RUN STATE WHEN IN JUMP STATE
 
 void Dino::press_UP_key() {
 	if (!mJumping) {
@@ -26,11 +25,6 @@ void Dino::press_UP_key() {
 		setState(new JumpingState());
 		mState->enter(*this);
 	}
-
-	//mState->leave(*this);
-	//clearState();
-	//setState(new JumpingState());
-	//mState->enter(*this);
 }
 
 void Dino::press_DOWN_key() {
@@ -40,11 +34,6 @@ void Dino::press_DOWN_key() {
 		setState(new DuckingState());
 		mState->enter(*this);
 	}
-
-	//mState->leave(*this);
-	//clearState();
-	//setState(new DuckingState());
-	//mState->enter(*this);
 }
 
 void Dino::release_DOWN_key() {
@@ -54,11 +43,6 @@ void Dino::release_DOWN_key() {
 		setState(new RunningState());
 		mState->enter(*this);
 	}
-
-	//mState->leave(*this);
-	//clearState();
-	//setState(new RunningState());
-	//mState->enter(*this);
 }
 
 DinoState* Dino::getState() const {

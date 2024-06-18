@@ -10,7 +10,7 @@ class RunningState : public DinoState {
 		Collider& rCollider = dino.getCollider();
 		TransformComponent& rTransform = dino.getTransform();
 
-		rTransform.mPosition.y = Game::SCREEN_HEIGHT - 355;
+		rTransform.mPosition.y = Game::mSCREEN_HEIGHT - 355;
 
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 59, 221, 213);
@@ -39,7 +39,7 @@ class DuckingState : public DinoState {
 		Collider& rCollider = dino.getCollider();
 		TransformComponent& rTransform = dino.getTransform();
 
-		rTransform.mPosition.y = Game::SCREEN_HEIGHT - 355;
+		rTransform.mPosition.y = Game::mSCREEN_HEIGHT - 355;
 
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.y, rTransform.mPosition.y + 136, 273, 136);

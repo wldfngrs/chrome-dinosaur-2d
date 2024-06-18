@@ -16,9 +16,9 @@ class Entity;
 class Game {
 	int initSDL();
 	int initFonts();
-	int initDinoEntity();
-	int initNonDinoEntities();
-	int initObstacles();
+	void initDinoEntity();
+	void initNonDinoEntities();
+	void initObstacles();
 
 	void resetNonDinoEntities();
 	void resetDinoEntity();
@@ -28,9 +28,19 @@ class Game {
 	void showTitleScreen();
 	void showGameOverScreen();
 
-	bool inLobby;
+	void handleEvents();
 
-	SDL_Window* gameWindow;
+	bool mInLobby;
+	bool mPlayerQuit;
+	bool mPlayerFail;
+	bool mInitDone;
+
+	std::string mGameOverMessage;
+	std::string mInitErrorMessage;
+
+	SDL_Window* mGameWindow;
+	ObstacleManager mObstacleManager;
+	TextManager mTextManager;
 
 public:
 	Game();
@@ -38,31 +48,20 @@ public:
 
 	void render();
 	void update();
-	void inGameLoop();
-	void handleEvents();
+	void loop();
 
-	static const int SCREEN_WIDTH = 1280;
-	static const int SCREEN_HEIGHT = 720;
+	bool initializationDone() const;
+	bool playerHasQuit() const;
 
-	static std::string gameOverTag;
+	TextManager& getTextManager();
 
-	bool initDone;
-
-	static bool quit;
-	static bool playerFail;
-
-	static int tick;
-
-	static std::string errorMessage;
-
-	static SDL_Renderer* gameRenderer;
-
+	static int mTick;
+	static int scale;
 	static SDL_Event event;
+	static SDL_Renderer* mGameRenderer;
+	static EntityManager mEntityManager;
 
-	static EntityManager entityManager;
-	static Entity& dino;
-
-	static TextManager textManager;
-
-	ObstacleManager obstacleManager;
+	static const int mSCREEN_WIDTH = 1280;
+	static const int mSCREEN_HEIGHT = 720;
+	static Entity& mDino;
 };

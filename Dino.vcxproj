@@ -145,7 +145,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Score.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObstacleManager.cpp" />
     <ClCompile Include="ObstacleSprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
@@ -162,8 +162,8 @@
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
-    <ClInclude Include="Text.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ObstacleManager.h" />
     <ClInclude Include="States.h" />

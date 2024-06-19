@@ -45,6 +45,18 @@ void ObstacleManager::update() {
 	loadObstacles();
 }
 
+void ObstacleManager::setDistanceBetweenObstacles(int seed) {
+	if (seed <= 2) {
+		mDistanceBetweenObstacles = 1000;
+	}
+	else if (seed <= 5) {
+		mDistanceBetweenObstacles = 900;
+	}
+	else if (seed <= 7) {
+		mDistanceBetweenObstacles = 800;
+	}
+}
+
 void ObstacleManager::hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType) {
 	switch (sType) {
 	case 0:
@@ -88,6 +100,7 @@ void ObstacleManager::loadObstacles() {
 			hotSwapObstacleSprite(spriteComponent, distr(gen));
 
 			mObstacles[i]->wakeUp();
+			setDistanceBetweenObstacles(distr(gen));
 		}
 	}
 }
@@ -95,8 +108,10 @@ void ObstacleManager::loadObstacles() {
 void ObstacleManager::fieldObstacle() {
 	for (size_t i = 0; i < mObstacles.size(); i++) {
 		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
+			
 			mObstacles[i]->destroy();
 			return;
+		
 		}
 	}
 
@@ -106,11 +121,11 @@ void ObstacleManager::fieldObstacle() {
 	
 	}
 	
-	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= 900 && mObstaclesTransformCache[1]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
+	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
 		
 		mObstaclesTransformCache[1]->mPosition.x = Game::mSCREEN_WIDTH + 101;
 	
-	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= 900 && mObstaclesTransformCache[0]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
+	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
 		
 		mObstaclesTransformCache[0]->mPosition.x = Game::mSCREEN_WIDTH + 101;
 	
@@ -124,16 +139,22 @@ void ObstacleManager::updateGameOverAnimation() {
 	mObstaclesTransformCache[mJustCollidedIndex]->mVelocity.x = (float)(- 0.4);
 
 	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (Game::mSCREEN_WIDTH / 4 - mObstaclesTransformCache[mJustCollidedIndex]->mWidth)) {
+		
 		mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x = static_cast<float>(3 * Game::mSCREEN_WIDTH / 4);
+	
 	}
 }
 
 void ObstacleManager::initGameOverAnimation() {
 	if (mObstaclesTransformCache[0]->mPosition.x < mObstaclesTransformCache[1]->mPosition.x) {
+		
 		mJustCollidedIndex = 0;
+	
 	}
 	else {
+		
 		mJustCollidedIndex = 1;
+	
 	}
 
 	SpriteComponent* spriteComponent = &mObstacles[mJustCollidedIndex]->getComponent<SpriteComponent>();

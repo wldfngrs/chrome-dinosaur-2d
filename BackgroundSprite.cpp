@@ -7,16 +7,19 @@ void Background::init() {
 
 void Background::update() {
 	static int animationIndex = 1;
+	static int switchCount = 700;
 	
-	if (Score::getCurrentScore() % 700 == 0) {
+	if (Score::getCurrentScore() % switchCount == 0) {
 		switch (animationIndex) {
 		case 0:
 			setAnimation(1, 2, 500);
 			animationIndex = 1;
+			switchCount = 700;
 			break;
 		case 1:
 			setAnimation(0, 2, 500);
 			animationIndex = 0;
+			switchCount = 140;
 			break;
 		}
 	}

@@ -8,6 +8,7 @@ class Entity;
 
 class ObstacleManager {
 	int mJustCollidedIndex;
+	int mDistanceBetweenObstacles;
 
 	std::vector<Entity*> mObstacles;
 	std::vector<TransformComponent*> mObstaclesTransformCache;
@@ -16,6 +17,7 @@ class ObstacleManager {
 	void loadObstacles();
 	void fieldObstacle();
 	void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
+	void setDistanceBetweenObstacles(int seed);
 
 public:
 	void init();

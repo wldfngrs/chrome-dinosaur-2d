@@ -11,9 +11,9 @@ public:
 		mColliderRects.resize(newSize);
 	}
 
-	void setColliderRect(int colliderIndex, int x, int y, int w, int h) {
-		mColliderRects[colliderIndex].x = x;
-		mColliderRects[colliderIndex].y = y;
+	void setColliderRect(int colliderIndex, float x, float y, int w, int h) {
+		mColliderRects[colliderIndex].x = static_cast<int>(x);
+		mColliderRects[colliderIndex].y = static_cast<int>(y);
 		mColliderRects[colliderIndex].w = w;
 		mColliderRects[colliderIndex].h = h;
 	}

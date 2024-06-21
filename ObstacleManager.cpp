@@ -41,8 +41,22 @@ void ObstacleManager::reset() {
 void ObstacleManager::update() {
 	if (Game::mTick < 85) return;
 
+	updateObstaclePosition();
 	fieldObstacle();
 	loadObstacles();
+}
+
+void ObstacleManager::updateObstaclePosition() {
+	for (size_t i = 0; i < mObstacles.size(); i++) {		
+		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
+			
+			mObstaclesTransformCache[i]->mVelocity.zero();
+
+		} else if (mObstaclesTransformCache[i]->mPosition.x <= Game::mSCREEN_WIDTH + 101) {
+			
+			mObstaclesTransformCache[i]->mVelocity.x = static_cast<float>(mObstacleVelocity);
+		}
+	}
 }
 
 void ObstacleManager::setDistanceBetweenObstacles(int seed) {
@@ -122,11 +136,11 @@ void ObstacleManager::fieldObstacle() {
 	}
 	
 	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
-		
+
 		mObstaclesTransformCache[1]->mPosition.x = Game::mSCREEN_WIDTH + 101;
 	
 	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
-		
+
 		mObstaclesTransformCache[0]->mPosition.x = Game::mSCREEN_WIDTH + 101;
 	
 	}

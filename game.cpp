@@ -4,6 +4,7 @@
 #include "Collision.h"
 #include "SpriteComponent.h"
 #include "ObstacleManager.h"
+#include "DirtManager.h"
 #include "Sprites.h"
 #include "Text.h"
 #include "Score.h"
@@ -15,7 +16,6 @@ SDL_Renderer* Game::mGameRenderer;
 EntityManager Game::mEntityManager;
 
 Entity& background(Game::mEntityManager.addEntity());
-Entity& ground(Game::mEntityManager.addEntity());
 Entity& celestialBody(Game::mEntityManager.addEntity());
 Entity& Game::mDino(Game::mEntityManager.addEntity());
 
@@ -85,7 +85,7 @@ int Game::initFonts() {
 }
 
 void Game::showTitleScreen() {
-	int time = 0;
+	int visibilityTick = 0;
 	bool subtitleIsVisible = true;
 	mInLobby = true;
 
@@ -100,17 +100,17 @@ void Game::showTitleScreen() {
 
 		SDL_RenderPresent(Game::mGameRenderer);
 
-		if (++time >= 400) {
-			time = 0;
+		if (++visibilityTick >= 400) {
+			visibilityTick = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
 		}
-
-		this->handleEvents();
+		
+		handleEvents();
 	}
 }
 
 void Game::showGameOverScreen() {
-	int tick = 0;
+	int visibilityTick = 0;
 	bool subtitleIsVisible = true;
 
 	mInLobby = true;
@@ -135,17 +135,17 @@ void Game::showGameOverScreen() {
 		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, Game::mSCREEN_HEIGHT / 2 + Game::mSCREEN_HEIGHT / 5, 24, Game::mSCREEN_HEIGHT / 12);
 		
 		if (subtitleIsVisible) {
-			mTextManager.drawText_Static("press [SPACE] to run again!", CENTERED, 640, 18, 40);
+			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 640, 18, 40);
 		}
 
 		SDL_RenderPresent(Game::mGameRenderer);
 
-		if (++tick >= 400) {
-			tick = 0;
+		if (++visibilityTick >= 400) {
+			visibilityTick = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
 		}
-			
-		this->handleEvents();
+		
+		handleEvents();
 	}
 }
 
@@ -156,8 +156,7 @@ void Game::initNonDinoEntities() {
 	celestialBody.addComponent<TransformComponent>(Game::mSCREEN_WIDTH, 150, 139, 130);
 	celestialBody.addComponent<SpriteComponent>("assets\\sprites\\Moon.png", std::make_unique<CelestialBody>(), 0, 0, 28, 30);
 
-	ground.addComponent<TransformComponent>(0, Game::mSCREEN_HEIGHT - 80, Game::mSCREEN_WIDTH, 80);
-	ground.addComponent<SpriteComponent>("assets\\sprites\\GroundSheet.png", std::make_unique<Ground>(), 0, 0, 96, 16);
+	mDirtManager.init();
 }
 
 void Game::resetNonDinoEntities() {
@@ -222,6 +221,8 @@ void Game::render() {
 	SDL_RenderClear(Game::mGameRenderer);
 	
 	mEntityManager.draw();
+
+	mDirtManager.draw();
 	
 	Score::draw(*this);
 
@@ -235,6 +236,8 @@ void Game::update() {
 	
 	mEntityManager.refresh();
 	mEntityManager.update();
+
+	mDirtManager.update();
 
 	Score::update();
 

@@ -13,7 +13,7 @@ SDL_Texture* TextureManager::loadSpriteTexture(const char* pathToTexture) {
 	return texture;
 }
 
-void TextureManager::drawSprite(const char* pathToTexture, SDL_Texture* texture, SDL_Rect src, SDL_Rect dest) {
+void TextureManager::drawSprite(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest) {
 	SDL_RenderCopy(Game::mGameRenderer, texture, &src, &dest);
 }
 

@@ -40,13 +40,13 @@ void CelestialBody::update() {
 	}
 }
 
-void Ground::init() {
-	setAnimation(0, 3, 200);
-}
+//void Ground::init() {
+//	setAnimation(0, 3, 200);
+//}
 
-void Ground::update() {
-	SDL_Rect& rSrcRect = getSrcRect();
-
-	rSrcRect.y = rSrcRect.h * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
-	rSrcRect.x = getSheetIndex() * rSrcRect.w;
-}
+//void Ground::update() {
+//	SDL_Rect& rSrcRect = getSrcRect();
+//
+//	rSrcRect.y = rSrcRect.h * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
+//	rSrcRect.x = getSheetIndex() * rSrcRect.w;
+//}

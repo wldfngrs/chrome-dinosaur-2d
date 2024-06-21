@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="BackgroundSprite.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DirtManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="DinoStates.h" />
+    <ClInclude Include="DirtManager.h" />
     <ClInclude Include="ECS\EntityComponentSystem.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />

@@ -42,7 +42,7 @@ class DuckingState : public DinoState {
 		rTransform.mPosition.y = Game::mSCREEN_HEIGHT - 355;
 
 		rCollider.resize(1);
-		rCollider.setColliderRect(0, rTransform.mPosition.y, rTransform.mPosition.y + 136, 273, 136);
+		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 136, 240, 128);
 
 		dino.setAnimation(2, 2, 200);
 		dino.startDuck();

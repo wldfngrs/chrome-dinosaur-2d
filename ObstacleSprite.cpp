@@ -1,8 +1,6 @@
 #include "Sprites.h"
 #include "Game.h"
 
-const int obstacleVelocity = -15;
-
 void DyingTree1::init() {
 	getCollider().resize(1);
 	getCollider().setCollisionTag("Sh*t! caught in the Dying Trees!\nWriggle out for your next run?");
@@ -15,11 +13,10 @@ void DyingTree1::update() {
 	TransformComponent& rTransform = getTransform();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 89, rTransform.mPosition.y + 8, 166, 264);
+	
 	}
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
@@ -37,11 +34,10 @@ void DyingTree2::update() {
 	TransformComponent& rTransform = getTransform();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 72, rTransform.mPosition.y + 93, 140, 187);
+	
 	}
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
@@ -58,11 +54,10 @@ void Bucket::update() {
 	TransformComponent& rTransform = getTransform();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 105, rTransform.mPosition.y + 51, 106, 221);
+	
 	}
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
@@ -79,11 +74,10 @@ void TreeStump::update() {
 	TransformComponent& rTransform = getTransform();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 123, rTransform.mPosition.y + 162, 81, 110);
+	
 	}
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 }
 
 
@@ -102,11 +96,10 @@ void Stalker::update() {
 	SDL_Rect& rSrcRect = getSrcRect();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 115, rTransform.mPosition.y + 8, 123, 255);
+	
 	}
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
 	rSrcRect.x = 32 + (rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount()));
 	rSrcRect.y = getSheetIndex() * rSrcRect.h;
@@ -128,12 +121,10 @@ void Brute::update() {
 	SDL_Rect& rSrcRect = getSrcRect();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 72, rTransform.mPosition.y + 59, 191, 213);
+	
 	}
-
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
 	rSrcRect.y = getSheetIndex() * rSrcRect.h;
@@ -141,7 +132,7 @@ void Brute::update() {
 
 
 void StalkerPup::init() {
-	auto upmiddown = std::rand() % 15;
+	auto upMidDown = std::rand() % 15;
 
 	setAnimation(3, 2, 200);
 	setSrcRect(0, 96, 32, 32);
@@ -149,10 +140,10 @@ void StalkerPup::init() {
 	getCollider().resize(1);
 	getCollider().setCollisionTag("Yikes, Stalker Pups...\nNothing to see or say here, Rex, run again?");
 
-	if (upmiddown <= 5) {
+	if (upMidDown <= 5) {
 		setTransform(Game::mSCREEN_WIDTH + 102, 150, 173, 175);
 	}
-	else if (upmiddown > 6 <= 10) {
+	else if (upMidDown <= 10) {
 		setTransform(Game::mSCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
@@ -165,13 +156,10 @@ void StalkerPup::update() {
 	SDL_Rect& rSrcRect = getSrcRect();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
+	
 	}
-
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
-
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
 	rSrcRect.y = getSheetIndex() * rSrcRect.h;
@@ -180,7 +168,7 @@ void StalkerPup::update() {
 
 
 void Gale::init() {
-	auto upmiddown = std::rand() % 15;
+	auto upMidDown = std::rand() % 15;
 
 	setAnimation(4, 2, 200);
 	setSrcRect(0, 128, 32, 32);
@@ -188,10 +176,10 @@ void Gale::init() {
 	getCollider().resize(1);
 	getCollider().setCollisionTag("Whoaa, you let the Night Gale sweep you away?\nHold on tight next run!");
 
-	if (upmiddown <= 5) {
+	if (upMidDown <= 5) {
 		setTransform(Game::mSCREEN_WIDTH + 102, 150, 173, 175);
 	}
-	else if (upmiddown > 6 <= 10) {
+	else if (upMidDown <= 10) {
 		setTransform(Game::mSCREEN_WIDTH + 102, 280, 173, 175);
 	}
 	else {
@@ -204,12 +192,10 @@ void Gale::update() {
 	SDL_Rect& rSrcRect = getSrcRect();
 
 	if (rTransform.mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-		rTransform.mVelocity.x = obstacleVelocity;
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
+	
 	}
-
-	if (rTransform.mPosition.x <= -rTransform.mWidth) rTransform.mVelocity.zero();
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
 	rSrcRect.y = getSheetIndex() * rSrcRect.h;

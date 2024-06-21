@@ -71,8 +71,6 @@ static void extractTextSegments(std::vector<std::string>& textSegments, std::vec
 	}
 }
 
-TextManager::TextManager() {}
-
 TextManager::~TextManager() {
 	for (auto& t : mTextCache) {
 		SDL_DestroyTexture(t.second);
@@ -250,7 +248,7 @@ void TextManager::init() {
 
 	addToTextCache_Static("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed);
 	addToTextCache_Static("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
-	addToTextCache_Static("press [SPACE] to run again!", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_Static("press [SPACE] to run again, [ALT + F4] to quit...", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
 
 	addToTextCache_Static("HIGH SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
 	addToTextCache_Static("CURRENT SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);

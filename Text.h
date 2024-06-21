@@ -18,9 +18,6 @@ class TextManager {
 	void addToTextCache_Static(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);
 
 public:
-
-	TextManager();
-
 	~TextManager();
 
 	void init();

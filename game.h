@@ -5,6 +5,7 @@
 #include "SDL_ttf.h"
 #include "EntityComponentSystem.h"
 #include "ObstacleManager.h"
+#include "DirtManager.h"
 #include "Text.h"
 
 #include <iostream>
@@ -41,6 +42,7 @@ class Game {
 	SDL_Window* mGameWindow;
 	ObstacleManager mObstacleManager;
 	TextManager mTextManager;
+	DirtManager mDirtManager;
 
 public:
 	Game();

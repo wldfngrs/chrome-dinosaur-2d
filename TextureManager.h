@@ -8,5 +8,5 @@ public:
 	static SDL_Texture* loadTextTexture(std::string textureText, TTF_Font* font, SDL_Color textColor);
 	
 	static SDL_Texture* loadSpriteTexture(const char* pathToTexture);
-	static void drawSprite(const char* pathToTexture, SDL_Texture* texture, SDL_Rect src, SDL_Rect dest);
+	static void drawSprite(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest);
 };

@@ -51,7 +51,7 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::draw() {
-	TextureManager::drawSprite(mPathToTexture, mTexture, mSprite->getSrcRect(), mSprite->getDestRect());
+	TextureManager::drawSprite(mTexture, mSprite->getSrcRect(), mSprite->getDestRect());
 }
 
 void SpriteComponent::setSprite(std::unique_ptr<Sprite> sprite) {

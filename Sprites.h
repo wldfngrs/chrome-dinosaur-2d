@@ -5,8 +5,8 @@
 #include "Collision.h"
 
 class Sprite {
-	int mFramesCount;
-	int mFramesSpeed;
+	int mFramesCount = 0;
+	int mFramesSpeed = 0;
 	int mSheetIndex = 0;
 
 	Collider mCollider;
@@ -14,7 +14,7 @@ class Sprite {
 	SDL_Rect mSrcRect{ 0, 0, 0, 0 };
 	SDL_Rect mDestRect{ 0, 0, 0, 0 };
 
-	TransformComponent* mTransform;
+	TransformComponent* mTransform = nullptr;
 
 public:
 	virtual void init() {}
@@ -120,13 +120,6 @@ public:
 
 class CelestialBody : public Sprite {
 public:
-	void update() override;
-};
-
-class Ground : public Sprite {
-public:
-	void init() override;
-
 	void update() override;
 };
 

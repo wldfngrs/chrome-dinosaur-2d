@@ -4,18 +4,25 @@
 
 #include <random>
 
-bool DirtManager::isPositionOccupied(int x, int y) {
+bool DirtManager::positionIsOccupied(int i, int x, int y, int dirtWidth) {
+	int index = 0;
 	for (const auto& dirt : mDirt) {
-		if (x + dirt.mWidth >= dirt.x
+		if (i == index) {
+			continue;
+		}
+
+		if (x + dirtWidth >= dirt.x
 			&&
 			dirt.x + dirt.mWidth >= x
 			&&
-			y + dirt.mHeight >= dirt.y
+			y + mDirtHeight >= dirt.y
 			&&
-			dirt.y + dirt.mHeight >= y)
+			dirt.y + mDirtHeight >= y)
 		{
 			return true;
 		}
+
+		index++;
 	}
 
 	return false;
@@ -42,37 +49,47 @@ void DirtManager::init() {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
-	std::uniform_int_distribution<> yDistr(Game::mSCREEN_HEIGHT - 80, Game::mSCREEN_HEIGHT - 45);
-	std::uniform_int_distribution<> xDistr(0, Game::mSCREEN_WIDTH);
+	std::uniform_int_distribution<> yDistr(Game::mSCREEN_HEIGHT - 80, Game::mSCREEN_HEIGHT - 50);
+	std::uniform_int_distribution<> xDistr(0, Game::mSCREEN_WIDTH - 30);
 
-	for (int i = 0; i < (Game::mSCREEN_WIDTH / Game::mSCREEN_WIDTH) * 70; i++) {
+	for (int i = 0; i < 50; i++) {
 		int x = xDistr(gen);
 		int y = yDistr(gen);
 
 		int len = generateDirtLen(x);
 
-		if (isPositionOccupied(x, y)) {
-			i--;
+		while (positionIsOccupied(i, x, y, len)) {
+			x = xDistr(gen);
+			y = yDistr(gen);
+			len = generateDirtLen(x);
 		}
-		else {
-			mDirt.emplace_back(x, y, len, 5);
-		}
+
+		mDirt.emplace_back(x, y, len);
 	}
 }
 
 void DirtManager::update() {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-
-	std::uniform_int_distribution<> yDistr(Game::mSCREEN_HEIGHT - 80, Game::mSCREEN_HEIGHT);
+	
+	std::uniform_int_distribution<> yDistr(Game::mSCREEN_HEIGHT - 80, Game::mSCREEN_HEIGHT - 50);
+	
+	int i = 0;
 
 	for (auto& dirt : mDirt) {
-		dirt.x += mDirtVelocity;
-	
-		if (dirt.x < -dirt.mWidth) {
-			dirt.x = Game::mSCREEN_WIDTH;
-			dirt.y = yDistr(gen);
+		if (dirt.x <= -dirt.mWidth) {
+			dirt.x = Game::mSCREEN_WIDTH - dirt.mWidth;
+			int y = yDistr(gen);
+
+			while (positionIsOccupied(i, dirt.x, y, dirt.mWidth)) {
+				y = yDistr(gen);
+			}
+
+			dirt.y = y;
 		}
+
+		i++;
+		dirt.x += mDirtVelocity;
 	}
 }
 
@@ -80,7 +97,7 @@ void DirtManager::draw() {
 	TextureManager::drawSprite(mTexture, mSrcRectGround, mDestRectGround);
 
 	for (auto& dirt : mDirt) {
-		setRect(mDestRectDirt, dirt.x, dirt.y, dirt.mWidth, dirt.mHeight);
+		setRect(mDestRectDirt, dirt.x, dirt.y, dirt.mWidth, mDirtHeight);
 
 		TextureManager::drawSprite(mTexture, mSrcRectDirt, mDestRectDirt);
 	}

@@ -10,13 +10,13 @@ struct Dirt {
 	int x;
 	int y;
 	int mWidth;
-	int mHeight;
 
-	Dirt(int xpos, int ypos, int w, int h) : x(xpos), y(ypos), mWidth(w), mHeight(h) {}
+	Dirt(int xpos, int ypos, int w) : x(xpos), y(ypos), mWidth(w) {}
 };
 
 class DirtManager {
 	int mDirtVelocity = -15;
+	const int mDirtHeight = 5;
 
 	SDL_Texture* mTexture;
 
@@ -33,7 +33,7 @@ class DirtManager {
 
 	int generateDirtLen(int seed);
 
-	bool isPositionOccupied(int x, int y);
+	bool positionIsOccupied(int i, int x, int y, int dirtWidth);
 
 public:
 	void init();

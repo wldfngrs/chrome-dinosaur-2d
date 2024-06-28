@@ -10,15 +10,13 @@ class ObstacleManager {
 	int mJustCollidedIndex;
 	int mDistanceBetweenObstacles;
 
-	int mObstacleVelocity = -15;
-
 	std::vector<Entity*> mObstacles;
 	std::vector<TransformComponent*> mObstaclesTransformCache;
 	std::vector<SpriteComponent*> mObstaclesSpriteCache;
 
 	void loadObstacles();
 	void fieldObstacle();
-	void updateObstaclePosition();
+	void updateObstacleSpeed();
 	void hotSwapObstacleSprite(SpriteComponent* spriteComponent, int sType);
 	void setDistanceBetweenObstacles(int seed);
 

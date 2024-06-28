@@ -41,20 +41,20 @@ void ObstacleManager::reset() {
 void ObstacleManager::update() {
 	if (Game::mTick < 85) return;
 
-	updateObstaclePosition();
+	updateObstacleSpeed();
 	fieldObstacle();
 	loadObstacles();
 }
 
-void ObstacleManager::updateObstaclePosition() {
+void ObstacleManager::updateObstacleSpeed() {
 	for (size_t i = 0; i < mObstacles.size(); i++) {		
 		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
 			
 			mObstaclesTransformCache[i]->mVelocity.zero();
 
-		} else if (mObstaclesTransformCache[i]->mPosition.x <= Game::mSCREEN_WIDTH + 101) {
-			
-			mObstaclesTransformCache[i]->mVelocity.x = static_cast<float>(mObstacleVelocity);
+		}
+		else if (mObstaclesTransformCache[i]->mVelocity.x < 0) {
+			mObstaclesTransformCache[i]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
 		}
 	}
 }
@@ -131,17 +131,17 @@ void ObstacleManager::fieldObstacle() {
 
 	if (mObstaclesTransformCache[0]->mPosition.x == mObstaclesTransformCache[1]->mPosition.x) {
 		
-		mObstaclesTransformCache[0]->mPosition.x = Game::mSCREEN_WIDTH + 101;
+		mObstaclesTransformCache[0]->mVelocity.x = -15;
 	
 	}
 	
-	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
+	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mVelocity.x == 0) {
 
-		mObstaclesTransformCache[1]->mPosition.x = Game::mSCREEN_WIDTH + 101;
+		mObstaclesTransformCache[1]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
 	
-	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mPosition.x == Game::mSCREEN_WIDTH + 102) {
+	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mVelocity.x == 0) {
 
-		mObstaclesTransformCache[0]->mPosition.x = Game::mSCREEN_WIDTH + 101;
+		mObstaclesTransformCache[0]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
 	
 	}
 }

@@ -37,6 +37,10 @@ public:
 		return mFramesSpeed;
 	}
 
+	void setFramesSpeed(int speed) {
+		mFramesSpeed = speed;
+	}
+
 	int getSheetIndex() const {
 		return mSheetIndex;
 	}

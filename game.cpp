@@ -8,12 +8,18 @@
 #include "Sprites.h"
 #include "Text.h"
 #include "Score.h"
+
+#include "SDL_ttf.h"
+#include "SDL.h"
+
 #include <sstream>
 
 int Game::mTick = 0;
-SDL_Event Game::event;
+bool Game::mSpeedToggled = false;
+SDL_Event Game::mEvent;
 SDL_Renderer* Game::mGameRenderer;
 EntityManager Game::mEntityManager;
+SoundManager Game::mSoundManager;
 
 Entity& background(Game::mEntityManager.addEntity());
 Entity& celestialBody(Game::mEntityManager.addEntity());
@@ -25,6 +31,10 @@ Game::Game() {
 	}
 
 	if (initFonts() != 0) {
+		return;
+	}
+
+	if (initSounds() != 0) {
 		return;
 	}
 	
@@ -50,10 +60,11 @@ Game::~Game() {
 
 	SDL_Quit();
 	TTF_Quit();
+	Mix_Quit();
 }
 
 int Game::initSDL() {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		std::cerr << "[Error] Game::initSDL(): SDL_Init() failed!\nDetails: " << SDL_GetError() << "\n";
 		return -1;
 	}
@@ -75,11 +86,22 @@ int Game::initSDL() {
 
 int Game::initFonts() {
 	if (TTF_Init() < 0) {
-		std::cerr << "[Error] Game::initTTF(): TTF_Init() failed!\nDetails: " << TTF_GetError() << "\n";
+		std::cerr << "[Error] Game::initFonts(): TTF_Init() failed!\nDetails: " << TTF_GetError() << "\n";
 		return -1;
 	}
 	
 	mTextManager.init();
+
+	return 0;
+}
+
+int Game::initSounds() {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		std::cerr << "[Error] Game::initSounds() Couldn't initialize SDL Mixer!\n";
+		return -1;
+	}
+
+	mSoundManager.init();
 
 	return 0;
 }
@@ -97,6 +119,9 @@ void Game::showTitleScreen() {
 		if (subtitleIsVisible) {
 			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40);
 		}
+
+		mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game", CENTERED, 600, 12, 26);
+		mTextManager.drawText_Static("by wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26);
 
 		SDL_RenderPresent(Game::mGameRenderer);
 
@@ -135,7 +160,7 @@ void Game::showGameOverScreen() {
 		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, Game::mSCREEN_HEIGHT / 2 + Game::mSCREEN_HEIGHT / 5, 24, Game::mSCREEN_HEIGHT / 12);
 		
 		if (subtitleIsVisible) {
-			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 640, 18, 40);
+			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 660, 18, 40);
 		}
 
 		SDL_RenderPresent(Game::mGameRenderer);
@@ -196,21 +221,24 @@ void Game::resetGame() {
 	Score::reset();
 
 	mPlayerFail = false;
+	Game::mSpeedToggled = false;
+
 	mTick = 0;
 }
 
 void Game::handleEvents() {
-	SDL_PollEvent(&Game::event);
+	SDL_PollEvent(&Game::mEvent);
 
-	switch (event.type) {
+	switch (mEvent.type) {
 	case SDL_QUIT:
 		mPlayerQuit = true;
 		std::cout << "Dino 2D exited..." << std::endl;
 		exit(0);
 	case SDL_KEYDOWN:
-		if (mInLobby && Game::event.key.keysym.sym == SDLK_SPACE) {
+		if (mInLobby && Game::mEvent.key.keysym.sym == SDLK_SPACE) {
 			mInLobby = false;
 		}
+		
 		break;
 	default:
 		break;
@@ -242,6 +270,7 @@ void Game::update() {
 	Score::update();
 
 	if (Collision::checkForCollisions()) {
+		mSoundManager.playSound(SND_COLLISION, CH_DINO);
 		mPlayerFail = true;
 		Collision::mCollided = false;
 		mGameOverMessage = Collision::getTag();
@@ -254,6 +283,8 @@ void Game::loop() {
 
 	Uint32 frameStart;
 	int frameTime;
+
+	mSoundManager.playMusic(MORNING_MUSIC);
 
 	while (!mPlayerFail) {
 		frameStart = SDL_GetTicks();

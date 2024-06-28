@@ -1,4 +1,6 @@
 #include "TextureManager.h"
+#include "SDL_image.h"
+#include "Game.h"
 
 SDL_Texture* TextureManager::loadSpriteTexture(const char* pathToTexture) {
 	SDL_Surface* tempSurface = IMG_Load(pathToTexture);

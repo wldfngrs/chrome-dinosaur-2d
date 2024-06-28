@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Game.h"
+#include <string>
+
+#include "SDL_ttf.h"
 
 class TextureManager {
 public:

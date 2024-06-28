@@ -248,6 +248,8 @@ void TextManager::init() {
 
 	addToTextCache_Static("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed);
 	addToTextCache_Static("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_Static("a 2D remake of the classic Chrome dinosaur game", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_Static("by wldfngrs; https://github.com/wldfngrs", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
 	addToTextCache_Static("press [SPACE] to run again, [ALT + F4] to quit...", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
 
 	addToTextCache_Static("HIGH SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);

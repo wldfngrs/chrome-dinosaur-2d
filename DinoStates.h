@@ -2,6 +2,8 @@
 
 #include "States.h"
 #include "Sprites.h"
+#include "SoundManager.h"
+#include "Game.h"
 
 class RunningState : public DinoState {
 	void enter(Dino& dino) override {
@@ -15,7 +17,12 @@ class RunningState : public DinoState {
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 59, 221, 213);
 		
-		dino.setAnimation(0, 2, 150);
+		if (Game::mSpeedToggled) {
+			dino.setAnimation(0, 2, 150);
+		}
+		else {
+			dino.setAnimation(0, 2, 200);
+		}
 
 		dino.startRun();
 	}
@@ -44,7 +51,13 @@ class DuckingState : public DinoState {
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 136, 240, 128);
 
-		dino.setAnimation(2, 2, 200);
+		if (Game::mSpeedToggled) {
+			dino.setAnimation(2, 2, 150);
+		}
+		else {
+			dino.setAnimation(2, 2, 200);
+		}
+
 		dino.startDuck();
 	}
 
@@ -63,15 +76,15 @@ class DuckingState : public DinoState {
 class JumpingState : public DinoState {
 	bool mCharging = false;
 	int mChargeTime = 0;
-	const int mMAX_CHARGETIME = 5;
+	int mMAX_CHARGETIME = 5;
 
 	bool mLanding = false;
 	int mLandTime = 0;
-	const int mMAX_LANDTIME = 13;
+	int mMAX_LANDTIME = 13;
 
 	bool mJumping = false;
 	int mJumpTime = 0;
-	const int mMAX_JUMPTIME = 30;
+	int mMAX_JUMPTIME = 30;
 
 public:
 	void enter(Dino& dino) override {
@@ -84,6 +97,18 @@ public:
 		rCollider.setColliderRect(0, rTransform.mPosition.x + 8, rTransform.mPosition.y + 76, 230, 196);
 
 		mCharging = true;
+
+		if (Game::mSpeedToggled) {
+			mMAX_CHARGETIME = 2;
+			mMAX_LANDTIME = 7;
+			mMAX_JUMPTIME = 22;
+		}
+		else {
+			mMAX_CHARGETIME = 5;
+			mMAX_LANDTIME = 13;
+			mMAX_JUMPTIME = 30;
+		}
+
 		dino.startJump();
 	}
 
@@ -92,6 +117,8 @@ public:
 			mChargeTime++;
 
 			if (mChargeTime >= mMAX_CHARGETIME) {
+
+
 				mChargeTime = 0;
 				mCharging = false;
 				mJumping = true;

@@ -14,8 +14,8 @@ public:
 	}
 
 	void update() override {
-		if ((Game::event.type == SDL_KEYDOWN)) {
-			switch (Game::event.key.keysym.sym) {
+		if ((Game::mEvent.type == SDL_KEYDOWN)) {
+			switch (Game::mEvent.key.keysym.sym) {
 			case SDLK_UP:
 			case SDLK_SPACE:
 				mSpriteComponent->getSprite()->press_UP_key();
@@ -27,8 +27,8 @@ public:
 			}
 		}
 
-		if (Game::event.type == SDL_KEYUP) {
-			switch (Game::event.key.keysym.sym) {
+		if (Game::mEvent.type == SDL_KEYUP) {
+			switch (Game::mEvent.key.keysym.sym) {
 			case SDLK_DOWN:
 				mSpriteComponent->getSprite()->release_DOWN_key();
 				break;

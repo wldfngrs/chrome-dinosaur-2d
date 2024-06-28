@@ -69,6 +69,8 @@ void DirtManager::init() {
 }
 
 void DirtManager::update() {
+	mDirtVelocity = Game::mSpeedToggled? -20 : -15;
+
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	
@@ -78,18 +80,16 @@ void DirtManager::update() {
 
 	for (auto& dirt : mDirt) {
 		if (dirt.x <= -dirt.mWidth) {
-			dirt.x = Game::mSCREEN_WIDTH - dirt.mWidth;
-			int y = yDistr(gen);
-
-			while (positionIsOccupied(i, dirt.x, y, dirt.mWidth)) {
-				y = yDistr(gen);
+			dirt.x = Game::mSCREEN_WIDTH;
+			dirt.y = yDistr(gen);
+		}
+		else {
+			if (!positionIsOccupied(i, dirt.x - mDirtVelocity - dirt.mWidth, dirt.y, dirt.mWidth)) {
+				dirt.x += mDirtVelocity;
 			}
-
-			dirt.y = y;
 		}
 
 		i++;
-		dirt.x += mDirtVelocity;
 	}
 }
 

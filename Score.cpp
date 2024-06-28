@@ -15,7 +15,14 @@ void Score::reset() {
 }
 
 void Score::update() {
+	static int toggleSignal = 1000;
 	if (Game::mTick % 7 == 0) mCurrentscore++;
+
+	if (mCurrentscore % toggleSignal == 0) {
+		Game::mSpeedToggled = Game::mSpeedToggled ? false : true;
+
+		toggleSignal = toggleSignal == 1000 ? 50 : 1000;
+	}
 }
 
 void Score::draw(Game& game) {

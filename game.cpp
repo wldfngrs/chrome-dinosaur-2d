@@ -189,8 +189,8 @@ void Game::showGameCompletedScreen() {
 	
 	mTextManager.drawText_Static("Congratulations! You beat the game!\n"
 								 "It's no big deal, and certainly no difficult task, yet...\n\n"
-								 "I appreciate you for playing this long!\n"
-								 "I had fun working on this. I hope you had fun playing as well!\n"
+								 "I appreciate you for playing this long\n"
+								 "I had fun working on this. I hope you had fun playing as well\n"
 								 "Have a great day, anon!", CENTERED, 80, 20, 40, TYPEWRITER);
 
 	SDL_RenderPresent(Game::mGameRenderer);

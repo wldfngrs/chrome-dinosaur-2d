@@ -18,7 +18,7 @@ void Score::update() {
 	static int toggleSignal = 1000;
 	if (Game::mTick % 7 == 0) mCurrentscore++;
 
-	if (mCurrentscore == 100) {
+	if (mCurrentscore == 10) {
 		Game::mGameCompleted = true;
 		return;
 	}

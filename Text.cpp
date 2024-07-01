@@ -131,11 +131,11 @@ void TextManager::typeWriterDrawAndRender(std::string lineOfText, int x, int y, 
 
 		if (letter == "i" || letter == "!" || letter == "," || letter == "." || letter == "l" || letter == "I" || letter == "'") {
 			TextureManager::drawText(mTextCache[letter], x, y, letterWidth / 2, letterHeight);
-			x += static_cast<int>((letterWidth / 2) + 1);
+			x += static_cast<int>(letterWidth / 2);
 		}
 		else {
 			TextureManager::drawText(mTextCache[letter], x, y, letterWidth, letterHeight);
-			x += static_cast<int>(letterWidth + 1);
+			x += static_cast<int>(letterWidth);
 		}
 
 		SDL_RenderPresent(Game::mGameRenderer);
@@ -320,8 +320,8 @@ void TextManager::init() {
 
 	addToTextCache_CharByChar("Congratulations! You beat the game!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
 	addToTextCache_CharByChar("It's no big deal, and certainly no difficult task, yet...", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("I appreciate you for playing this long!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("I had fun working on this. I hope you had fun playing as well!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("I appreciate you for playing this long", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("I had fun working on this. I hope you had fun playing as well", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
 	addToTextCache_CharByChar("Have a great day, anon!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
 
 	addToTextCache_AllAtOnce("Sh*t! caught in the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);

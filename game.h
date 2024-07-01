@@ -27,6 +27,7 @@ class Game {
 
 	void showTitleScreen();
 	void showGameOverScreen();
+	void showGameCompletedScreen();
 
 	void handleEvents();
 
@@ -58,6 +59,8 @@ public:
 
 
 	static bool mSpeedToggled;
+	static bool mGameCompleted;
+
 	static int mTick;
 	static SDL_Event mEvent;
 	static SDL_Renderer* mGameRenderer;

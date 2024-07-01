@@ -7,8 +7,8 @@ struct TransformComponent;
 class Entity;
 
 class ObstacleManager {
-	int mJustCollidedIndex;
-	int mDistanceBetweenObstacles;
+	int mJustCollidedIndex = 0;
+	int mDistanceBetweenObstacles = 0;
 
 	std::vector<Entity*> mObstacles;
 	std::vector<TransformComponent*> mObstaclesTransformCache;

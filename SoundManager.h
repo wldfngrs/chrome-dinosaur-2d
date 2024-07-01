@@ -20,14 +20,15 @@ enum {
 	MORNING_MUSIC,
 	NOON_MUSIC,
 	NIGHT_MUSIC,
+	LOBBY_MUSIC
 };
 
 class SoundManager {
 	const int mChannelsCount = 8;
 	const int mSoundsCount = 3;
-	const int mMusicCount = 3;
+	const int mMusicCount = 4;
 
-	int mCurrentPlayingMusic;
+	int mCurrentPlayingMusic = 0;
 
 	std::vector<Mix_Chunk*> mSounds;
 	std::vector<Mix_Music*> mMusic;

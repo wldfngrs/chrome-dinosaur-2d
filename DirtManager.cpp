@@ -80,7 +80,7 @@ void DirtManager::update() {
 
 	for (auto& dirt : mDirt) {
 		if (dirt.x <= -dirt.mWidth) {
-			dirt.x = Game::mSCREEN_WIDTH;
+			dirt.x = Game::mSCREEN_WIDTH + 5;
 			dirt.y = yDistr(gen);
 		}
 		else {

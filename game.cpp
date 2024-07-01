@@ -16,6 +16,7 @@
 
 int Game::mTick = 0;
 bool Game::mSpeedToggled = false;
+bool Game::mGameCompleted = false;
 SDL_Event Game::mEvent;
 SDL_Renderer* Game::mGameRenderer;
 EntityManager Game::mEntityManager;
@@ -111,17 +112,18 @@ void Game::showTitleScreen() {
 	bool subtitleIsVisible = true;
 	mInLobby = true;
 
+	mSoundManager.playMusic(LOBBY_MUSIC);
+
 	while (mInLobby) {
 		SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
 		SDL_RenderClear(Game::mGameRenderer);
 
-		mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150);
+		mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150, INSTANT);
 		if (subtitleIsVisible) {
-			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40);
+			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40, INSTANT);
 		}
 
-		mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game", CENTERED, 600, 12, 26);
-		mTextManager.drawText_Static("by wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26);
+		mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game\nby wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26, INSTANT);
 
 		SDL_RenderPresent(Game::mGameRenderer);
 
@@ -137,6 +139,8 @@ void Game::showTitleScreen() {
 void Game::showGameOverScreen() {
 	int visibilityTick = 0;
 	bool subtitleIsVisible = true;
+
+	mSoundManager.playMusic(LOBBY_MUSIC);
 
 	mInLobby = true;
 
@@ -157,10 +161,10 @@ void Game::showGameOverScreen() {
 
 		mObstacleManager.updateGameOverAnimation();
 
-		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, Game::mSCREEN_HEIGHT / 2 + Game::mSCREEN_HEIGHT / 5, 24, Game::mSCREEN_HEIGHT / 12);
+		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, Game::mSCREEN_HEIGHT / 2 + Game::mSCREEN_HEIGHT / 5, 24, Game::mSCREEN_HEIGHT / 12, INSTANT);
 		
 		if (subtitleIsVisible) {
-			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 660, 18, 40);
+			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 660, 18, 40, INSTANT);
 		}
 
 		SDL_RenderPresent(Game::mGameRenderer);
@@ -171,6 +175,30 @@ void Game::showGameOverScreen() {
 		}
 		
 		handleEvents();
+	}
+}
+
+void Game::showGameCompletedScreen() {
+	int visibilityTick = 0;
+	bool subtitleIsVisible = true;
+
+	mSoundManager.playMusic(LOBBY_MUSIC);
+
+	SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(Game::mGameRenderer);
+	
+	mTextManager.drawText_Static("Congratulations! You beat the game!\n"
+								 "It's no big deal, and certainly no difficult task, yet...\n\n"
+								 "I appreciate you for playing this long!\n"
+								 "I had fun working on this. I hope you had fun playing as well!\n"
+								 "Have a great day, anon!", CENTERED, 80, 20, 40, TYPEWRITER);
+
+	SDL_RenderPresent(Game::mGameRenderer);
+
+	mInLobby = false;
+
+	while (mInLobby) {
+		;
 	}
 }
 
@@ -235,7 +263,7 @@ void Game::handleEvents() {
 		std::cout << "Dino 2D exited..." << std::endl;
 		exit(0);
 	case SDL_KEYDOWN:
-		if (mInLobby && Game::mEvent.key.keysym.sym == SDLK_SPACE) {
+		if (mInLobby && (Game::mEvent.key.keysym.sym == SDLK_SPACE || Game::mEvent.key.keysym.sym == SDLK_UP)) {
 			mInLobby = false;
 		}
 		
@@ -286,7 +314,7 @@ void Game::loop() {
 
 	mSoundManager.playMusic(MORNING_MUSIC);
 
-	while (!mPlayerFail) {
+	while (!mPlayerFail && !mGameCompleted) {
 		frameStart = SDL_GetTicks();
 		
 		handleEvents();
@@ -300,7 +328,13 @@ void Game::loop() {
 		}
 	}
 	
-	showGameOverScreen();
+	if (mPlayerFail) {
+		showGameOverScreen();
+	}
+	else if (mGameCompleted) {
+		showGameCompletedScreen();
+	}
+
 	resetGame();
 }
 

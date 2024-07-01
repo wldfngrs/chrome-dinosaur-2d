@@ -63,6 +63,6 @@ void CelestialBody::update() {
 
 	if (rTransform.mPosition.x <= -rTransform.mWidth) {
 		rTransform.mPosition.x = Game::mSCREEN_WIDTH;
-		rTransform.mVelocity.x = Game::mSpeedToggled ? -15 : -3;
+		rTransform.mVelocity.x = Game::mSpeedToggled ? (float)(- 15) : (float)(-3);
 	}
 }

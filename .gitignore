@@ -1,38 +1,20 @@
-# Visual Studio 2015 cache/options directory
-.vs/
-
 # User-specific files
+*.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
-# Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
-*.sap
+# User-specific files (Mono Auto Generated)
+mono_crash.*
 
-# Visual Studio cache files
-# files ending in .cache can be ignored
-*.[Cc]ache
-# but keep track of directories ending in .cache
-!*.[Cc]ache/
-
-# Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
-*.sap
-
-# Visual C++ cache files
-ipch/
-*.aps
-*.ncb
+# User-specific files (Windows)
+*.pdb
+*.pidb
+*.mdb
 *.opendb
-*.opensdf
-*.sdf
-*.cachefile
+*.VC.db
+*.VC.VC.opendb
 
 # Build results
 [Dd]ebug/
@@ -41,7 +23,35 @@ ipch/
 [Rr]eleases/
 x64/
 x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Ll]ogs/
+
+# Auto-generated files
+*.log
+*.vs/
+.vs/*
+*.tmp
+*.temp
+*.cache
+*.ide/
+.idea/
+.idea/*
+.idea/**/
+.idea/*.iml
+.idea/*.name
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/libraries/
+
+# Visual Studio 2019
+.vs2019/
+.vs2019/*
+
+# Visual Studio 2022
+.vs2022/
+.vs2022/*

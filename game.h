@@ -6,9 +6,7 @@
 #include "SoundManager.h"
 #include "Text.h"
 
-#include <iostream>
 #include <string>
-#include <vector>
 
 class Entity;
 
@@ -59,6 +57,7 @@ public:
 
 
 	static bool mSpeedToggled;
+	static bool mObstacleSpeedToggled;
 	static bool mGameCompleted;
 
 	static int mTick;

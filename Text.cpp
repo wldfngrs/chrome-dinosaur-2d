@@ -125,6 +125,8 @@ static int calculateXPosition(std::vector<std::string> textSegments, size_t inde
 }
 
 void TextManager::typeWriterDrawAndRender(std::string lineOfText, int x, int y, size_t letterWidth, size_t letterHeight) {
+	if (mInitDone == false) return;
+	
 	for (size_t i = 0; i < lineOfText.size(); i++) {
 		std::string letter;
 		letter += lineOfText[i];
@@ -147,6 +149,8 @@ void TextManager::typeWriterDrawAndRender(std::string lineOfText, int x, int y, 
 }
 
 void TextManager::drawText_Static(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight, renderEffect effect) {
+	if (mInitDone == false) return;
+	
 	std::vector<std::string> textSegments = extractTextSegments(text);
 
 	int x = calculateXPosition(textSegments, 0, xpos, letterWidth, effect);
@@ -179,6 +183,8 @@ void TextManager::drawText_Static(std::string text, xPosition xpos, int y, size_
 }
 
 void TextManager::drawText_Static(std::string text, int x, int y, size_t letterWidth, size_t letterHeight, renderEffect effect) {
+	if (mInitDone == false) return;
+	
 	std::vector<std::string> textSegments = extractTextSegments(text);
 
 	size_t textWidth = textSegments[0].size() * letterWidth;
@@ -210,6 +216,8 @@ void TextManager::drawText_Static(std::string text, int x, int y, size_t letterW
 }
 
 void TextManager::drawText_NonStatic(std::string text, int x, int y, size_t letterWidth, size_t letterHeight) {
+	if (mInitDone == false) return;
+	
 	size_t spaces = 7 - text.size();
 
 	for (size_t i = 0; i < spaces; i++) {
@@ -228,6 +236,8 @@ void TextManager::drawText_NonStatic(std::string text, int x, int y, size_t lett
 }
 
 void TextManager::drawText_NonStatic(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
+	if (mInitDone == false) return;
+	
 	int spaces = 7 - text.size();
 
 	std::vector<std::string> textSegments = extractTextSegments(text);
@@ -250,6 +260,8 @@ void TextManager::drawText_NonStatic(std::string text, xPosition xpos, int y, si
 }
 
 void TextManager::drawText_Static_NonStatic(std::string text1, std::string text2, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
+	if (mInitDone == false) return;
+
 	std::vector<std::string> textSegments = extractTextSegments(text1 + text2);
 
 	int x = calculateXPosition(textSegments, 0, xpos, letterWidth, INSTANT);
@@ -355,4 +367,6 @@ void TextManager::init() {
 	addToTextCache_AllAtOnce("Night Gale", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
 	addToTextCache_AllAtOnce(" sweep you away?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
 	addToTextCache_AllAtOnce("Hold on tight next run!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+
+	mInitDone = true;
 }

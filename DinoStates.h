@@ -98,16 +98,16 @@ public:
 
 		mCharging = true;
 
-		if (Game::mSpeedToggled) {
-			mMAX_CHARGETIME = 2;
-			mMAX_LANDTIME = 7;
-			mMAX_JUMPTIME = 22;
-		}
-		else {
-			mMAX_CHARGETIME = 5;
-			mMAX_LANDTIME = 13;
-			mMAX_JUMPTIME = 30;
-		}
+		//if (Game::mSpeedToggled) {
+		//	mMAX_CHARGETIME = 2;
+		//	mMAX_LANDTIME = 7;
+		//	mMAX_JUMPTIME = 22;
+		//}
+		//else {
+		//	mMAX_CHARGETIME = 5;
+		//	mMAX_LANDTIME = 13;
+		//	mMAX_JUMPTIME = 30;
+		//}
 
 		dino.startJump();
 	}

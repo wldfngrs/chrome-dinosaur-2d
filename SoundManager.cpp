@@ -29,9 +29,13 @@ void SoundManager::init() {
 	mMusic[NOON_MUSIC] = Mix_LoadMUS("assets\\sounds\\mixkit-river-atmosphere-in-a-forest-2450.wav");
 	mMusic[NIGHT_MUSIC] = Mix_LoadMUS("assets\\sounds\\mixkit-night-crickets-near-the-swamp-1782.wav");
 	mMusic[LOBBY_MUSIC] = Mix_LoadMUS("assets\\sounds\\6642267408957440.wav");
+
+	mInitDone = true;
 }
 
 void SoundManager::playSound(int id, int channel) {
+	if (mInitDone == false) return;
+
 	int loops = 0;
 	
 	Mix_PlayChannel(channel, mSounds[id], loops);
@@ -42,6 +46,8 @@ int SoundManager::getCurrentPlayingMusic() const {
 }
 
 void SoundManager::playMusic(int id) {
+	if (mInitDone == false) return;
+
 	Mix_PlayMusic(mMusic[id], -1);
 
 	mCurrentPlayingMusic = id;

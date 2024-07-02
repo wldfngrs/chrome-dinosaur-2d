@@ -16,7 +16,9 @@
 
 int Game::mTick = 0;
 bool Game::mSpeedToggled = false;
+bool Game::mObstacleSpeedToggled = false;
 bool Game::mGameCompleted = false;
+
 SDL_Event Game::mEvent;
 SDL_Renderer* Game::mGameRenderer;
 EntityManager Game::mEntityManager;
@@ -161,10 +163,10 @@ void Game::showGameOverScreen() {
 
 		mObstacleManager.updateGameOverAnimation();
 
-		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, Game::mSCREEN_HEIGHT / 2 + Game::mSCREEN_HEIGHT / 5, 24, Game::mSCREEN_HEIGHT / 12, INSTANT);
+		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, 400, 24, Game::mSCREEN_HEIGHT / 14, INSTANT);
 		
 		if (subtitleIsVisible) {
-			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 660, 18, 40, INSTANT);
+			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 600, 18, 40, INSTANT);
 		}
 
 		SDL_RenderPresent(Game::mGameRenderer);
@@ -182,6 +184,8 @@ void Game::showGameCompletedScreen() {
 	int visibilityTick = 0;
 	bool subtitleIsVisible = true;
 
+	mInLobby = true;
+
 	mSoundManager.playMusic(LOBBY_MUSIC);
 
 	SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
@@ -193,12 +197,27 @@ void Game::showGameCompletedScreen() {
 								 "I had fun working on this. I hope you had fun playing as well\n"
 								 "Have a great day, anon!", CENTERED, 80, 20, 40, TYPEWRITER);
 
-	SDL_RenderPresent(Game::mGameRenderer);
+	SDL_Rect subtitleRect = { 0, 600, 1280, Game::mSCREEN_HEIGHT - 600 };
 
-	mInLobby = false;
+	SDL_PumpEvents();
+	SDL_FlushEvent(SDL_QUIT);
+	SDL_FlushEvent(SDL_KEYDOWN);
 
 	while (mInLobby) {
-		;
+		SDL_RenderFillRect(Game::mGameRenderer, &subtitleRect);
+
+		if (subtitleIsVisible) {
+			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 600, 18, 40, INSTANT);
+		}
+
+		SDL_RenderPresent(Game::mGameRenderer);
+
+		if (++visibilityTick >= 400) {
+			visibilityTick = 0;
+			subtitleIsVisible = subtitleIsVisible ? false : true;
+		}
+
+		handleEvents();
 	}
 }
 
@@ -218,6 +237,9 @@ void Game::resetNonDinoEntities() {
 
 	SpriteComponent* spriteComponent = &background.getComponent<SpriteComponent>();
 	spriteComponent->getSprite()->setAnimation(1, 2, 500);
+
+	Background* background = (Background*)spriteComponent->getSprite().get();
+	background->resetTick();
 }
 
 void Game::initDinoEntity() {
@@ -242,14 +264,15 @@ void Game::resetObstacles() {
 }
 
 void Game::resetGame() {
+	Score::reset();
+
 	resetNonDinoEntities();
 	resetDinoEntity();
 	resetObstacles();
 
-	Score::reset();
-
 	mPlayerFail = false;
-	Game::mSpeedToggled = false;
+	mSpeedToggled = false;
+	mObstacleSpeedToggled = false;
 
 	mTick = 0;
 }
@@ -265,6 +288,7 @@ void Game::handleEvents() {
 	case SDL_KEYDOWN:
 		if (mInLobby && (Game::mEvent.key.keysym.sym == SDLK_SPACE || Game::mEvent.key.keysym.sym == SDLK_UP)) {
 			mInLobby = false;
+			mGameCompleted = false;
 		}
 		
 		break;
@@ -288,14 +312,14 @@ void Game::render() {
 void Game::update() {
 	mTick++;
 
+	Score::update();
+
 	mObstacleManager.update();
 	
 	mEntityManager.refresh();
 	mEntityManager.update();
 
 	mDirtManager.update();
-
-	Score::update();
 
 	if (Collision::checkForCollisions()) {
 		mSoundManager.playSound(SND_COLLISION, CH_DINO);

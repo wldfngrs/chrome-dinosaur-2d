@@ -116,10 +116,14 @@ public:
 };
 
 class Background : public Sprite {
+	int mAnimationIndex;
+	int mSwitchTick;
+	int mSwitchCap;
+
 public:
 	void init() override;
-
 	void update() override;
+	void resetTick();
 };
 
 class CelestialBody : public Sprite {

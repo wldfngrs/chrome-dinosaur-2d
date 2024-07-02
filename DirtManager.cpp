@@ -69,7 +69,7 @@ void DirtManager::init() {
 }
 
 void DirtManager::update() {
-	mDirtVelocity = Game::mSpeedToggled? -20 : -15;
+	mDirtVelocity = (Game::mObstacleSpeedToggled ? -25 : -15);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());

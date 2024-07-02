@@ -5,6 +5,10 @@ class Game;
 class Score {
 	static int mHighscore;
 	static int mCurrentscore;
+
+	static int mToggleTick;
+	static int mToggleSignal;
+
 public:
 	Score() = delete;
 
@@ -13,8 +17,8 @@ public:
 	static void update();
 	static void draw(Game& game);
 
-	static int& getHighScore();
-	static int& getCurrentScore();
+	static int getHighScore();
+	static int getCurrentScore();
 
 	static void setHighScore(int highscore);
 };

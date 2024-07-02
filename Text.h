@@ -17,6 +17,8 @@ enum renderEffect {
 };
 
 class TextManager {
+	bool mInitDone = false;
+
 	std::map<std::string, SDL_Texture*> mTextCache;
 
 	void addToTextCache_CharByChar(std::string text, const char* fontPath, const int fontIndex, SDL_Color color);

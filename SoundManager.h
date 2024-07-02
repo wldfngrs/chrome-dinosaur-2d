@@ -30,6 +30,8 @@ class SoundManager {
 
 	int mCurrentPlayingMusic = 0;
 
+	bool mInitDone = false;
+
 	std::vector<Mix_Chunk*> mSounds;
 	std::vector<Mix_Music*> mMusic;
 

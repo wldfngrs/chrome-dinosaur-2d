@@ -4,6 +4,7 @@
 #include "EntityComponentSystem.h"
 #include "Sprites.h"
 #include "Game.h"
+#include "Score.h"
 
 #include <random>
 
@@ -35,15 +36,34 @@ void ObstacleManager::reset() {
 		obstacle.getComponent<TransformComponent>().mVelocity.zero();
 	}
 
+	updateMaxObstacleSpriteIndex();
 	loadObstacles();
 }
 
 void ObstacleManager::update() {
 	if (Game::mTick < 85) return;
 
+	updateMaxObstacleSpriteIndex();
 	updateObstacleSpeed();
 	fieldObstacle();
 	loadObstacles();
+}
+
+void ObstacleManager::updateMaxObstacleSpriteIndex() {
+	int currentScore = Score::getCurrentScore();
+	
+	if (currentScore >= 700) {
+		mMaxObstacleSpriteIndex = 7;
+	} 
+	else if (currentScore >= 500) {
+		mMaxObstacleSpriteIndex = 5;
+	}
+	else if (currentScore >= 300) {
+		mMaxObstacleSpriteIndex = 3;
+	}
+	else if (currentScore < 300) {
+		mMaxObstacleSpriteIndex = 2;
+	}
 }
 
 void ObstacleManager::updateObstacleSpeed() {
@@ -53,18 +73,29 @@ void ObstacleManager::updateObstacleSpeed() {
 			mObstaclesTransformCache[i]->mVelocity.zero();
 
 		}
-		else if (mObstaclesTransformCache[i]->mVelocity.x < 0) {
-			mObstaclesTransformCache[i]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
+		else if (mObstaclesTransformCache[i]->mVelocity.x < 0 && mObstaclesTransformCache[i]->mPosition.x > Game::mSCREEN_WIDTH) {
+			if (Game::mSpeedToggled) {
+				mObstacleVelocity = -25;
+				Game::mObstacleSpeedToggled = true;
+			}
+			else {
+				mObstacleVelocity = -15;
+				Game::mObstacleSpeedToggled = false;
+			}
+
+			mObstaclesTransformCache[i]->mVelocity.x = mObstacleVelocity;
 		}
 	}
 }
 
 void ObstacleManager::setDistanceBetweenObstacles(int seed) {
+	if (Game::mSpeedToggled) seed = 2;
+
 	if (seed <= 2) {
-		mDistanceBetweenObstacles = 1000;
+		mDistanceBetweenObstacles = 1280;
 	}
 	else if (seed <= 5) {
-		mDistanceBetweenObstacles = 900;
+		mDistanceBetweenObstacles = 1000;
 	}
 	else if (seed <= 7) {
 		mDistanceBetweenObstacles = 800;
@@ -80,10 +111,10 @@ void ObstacleManager::hotSwapObstacleSprite(SpriteComponent* spriteComponent, in
 		spriteComponent->setSprite(std::make_unique<DyingTree2>());
 		break;
 	case 2:
-		spriteComponent->setSprite(std::make_unique<Bucket>());
+		spriteComponent->setSprite(std::make_unique<TreeStump>());
 		break;
 	case 3:
-		spriteComponent->setSprite(std::make_unique<TreeStump>());
+		spriteComponent->setSprite(std::make_unique<Bucket>());
 		break;
 	case 4:
 		spriteComponent->setSprite(std::make_unique<Stalker>());
@@ -107,14 +138,15 @@ void ObstacleManager::loadObstacles() {
 		if (mObstacles[i]->isInactive()) {
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> distr(0, 7);
+			std::uniform_int_distribution<> indexDistr(0, mMaxObstacleSpriteIndex);
+			std::uniform_int_distribution<> distDistr(0, 7);
 
 			SpriteComponent* spriteComponent = mObstaclesSpriteCache[i];
 
-			hotSwapObstacleSprite(spriteComponent, distr(gen));
+			hotSwapObstacleSprite(spriteComponent, indexDistr(gen));
 
 			mObstacles[i]->wakeUp();
-			setDistanceBetweenObstacles(distr(gen));
+			setDistanceBetweenObstacles(distDistr(gen));
 		}
 	}
 }
@@ -131,17 +163,17 @@ void ObstacleManager::fieldObstacle() {
 
 	if (mObstaclesTransformCache[0]->mPosition.x == mObstaclesTransformCache[1]->mPosition.x) {
 		
-		mObstaclesTransformCache[0]->mVelocity.x = -15;
+		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
 	
 	}
 	
 	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mVelocity.x == 0) {
 
-		mObstaclesTransformCache[1]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
+		mObstaclesTransformCache[1]->mVelocity.x = mObstacleVelocity;
 	
 	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mVelocity.x == 0) {
 
-		mObstaclesTransformCache[0]->mVelocity.x = Game::mSpeedToggled ? (float)(-20) : (float)(-15);
+		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
 	
 	}
 }
@@ -173,5 +205,5 @@ void ObstacleManager::initGameOverAnimation() {
 
 	SpriteComponent* spriteComponent = &mObstacles[mJustCollidedIndex]->getComponent<SpriteComponent>();
 
-	spriteComponent->getSprite()->setTransform(static_cast<float>(3 * Game::mSCREEN_WIDTH / 4), static_cast<float>(Game::mSCREEN_HEIGHT / 4), 273, 275);
+	spriteComponent->getSprite()->setTransform(static_cast<float>(3 * Game::mSCREEN_WIDTH / 4), static_cast<float>(Game::mSCREEN_HEIGHT / 7), 273, 275);
 }

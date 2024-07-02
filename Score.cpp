@@ -3,7 +3,8 @@
 
 int Score::mHighscore;
 int Score::mCurrentscore;
-
+int Score::mToggleTick = 0;
+int Score::mToggleSignal = 1000;
 
 void Score::init() {
 	mCurrentscore = 1;
@@ -12,21 +13,27 @@ void Score::init() {
 
 void Score::reset() {
 	mCurrentscore = 1;
+	mToggleTick = 0;
 }
 
 void Score::update() {
-	static int toggleSignal = 1000;
-	if (Game::mTick % 7 == 0) mCurrentscore++;
+	if (Game::mTick % 7 == 0) {
+		mCurrentscore++;
+		mToggleTick++;
+	}
 
-	if (mCurrentscore == 10) {
+	if (mCurrentscore >= 10000) {
+		mCurrentscore == 10000;
 		Game::mGameCompleted = true;
 		return;
 	}
 
-	if (mCurrentscore % toggleSignal == 0) {
-		Game::mSpeedToggled = Game::mSpeedToggled ? false : true;
+	if (mToggleTick >= mToggleSignal) {
+		mToggleTick = 0;
 
-		toggleSignal = ((toggleSignal == 1000) ? 50 : 1000);
+		Game::mSpeedToggled = Game::mSpeedToggled ? false : true;
+	
+		mToggleSignal = Game::mSpeedToggled ? 300 : 1000;
 	}
 }
 
@@ -47,9 +54,9 @@ void Score::setHighScore(int highscore) {
 	mHighscore = highscore;
 }
 
-int& Score::getHighScore() {
+int Score::getHighScore() {
 	return mHighscore;
 }
-int& Score::getCurrentScore() {
+int Score::getCurrentScore() {
 	return mCurrentscore;
 }

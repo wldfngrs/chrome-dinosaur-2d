@@ -3,47 +3,52 @@
 #include "Score.h"
 
 void Background::init() {
-	setAnimation(1, 2, 200);
+	setAnimation(1, 2, 500);
+
+	mAnimationIndex = 1;
+	mSwitchTick = 0;
+	mSwitchCap = 350;
 }
 
 void Background::update() {
-	static int animationIndex = 1;
-	static int switchCount = 350;
+	if (Game::mTick % 7 == 0) {
+		mSwitchTick++;
+	}
 	
-	if (Score::getCurrentScore() % switchCount == 0) {
-		switch (animationIndex) {
+	if (mSwitchTick >= mSwitchCap) {
+		mSwitchTick = 0;
+
+		switch (mAnimationIndex) {
 		case 0:
 			if (Game::mSpeedToggled) {
-				setAnimation(0, 2, 150);
+				setAnimation(mAnimationIndex, 2, 200);
 			}
 			else {
-				setAnimation(0, 2, 200);
+				setAnimation(mAnimationIndex, 2, 500);
 			}
 
 			Game::mSoundManager.playMusic(NIGHT_MUSIC);
 
-			animationIndex = 1;
-			switchCount = 800;
+			mAnimationIndex = 1;
+			mSwitchCap = 200;
 			break;
 		case 1:
-			setAnimation(1, 2, 200);
-
 			if (Game::mSpeedToggled) {
-				setAnimation(1, 2, 150);
+				setAnimation(mAnimationIndex, 2, 200);
 			}
 			else {
-				setAnimation(1, 2, 200);
+				setAnimation(mAnimationIndex, 2, 500);
 			}
 
 			if (Game::mSoundManager.getCurrentPlayingMusic() == NIGHT_MUSIC) {
 				Game::mSoundManager.playMusic(MORNING_MUSIC);
-				animationIndex = 1;
-				switchCount = 350;
+				mAnimationIndex = 1;
+				mSwitchCap = 350;
 			}
 			else if (Game::mSoundManager.getCurrentPlayingMusic() == MORNING_MUSIC) {
 				Game::mSoundManager.playMusic(NOON_MUSIC);
-				animationIndex = 0;
-				switchCount = 700;
+				mAnimationIndex = 0;
+				mSwitchCap = 350;
 			}
 
 			break;
@@ -54,6 +59,11 @@ void Background::update() {
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
 	rSrcRect.y = getSheetIndex() * rSrcRect.h;
+}
+
+void Background::resetTick() {
+	mSwitchTick = 0;
+	mAnimationIndex = 1;
 }
 
 void CelestialBody::update() {

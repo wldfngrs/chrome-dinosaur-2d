@@ -319,54 +319,54 @@ void TextManager::init() {
 	SDL_Color dinoRed = { 184, 37, 53 };
 	SDL_Color snowWhite = { 255, 255, 255 };
 
-	addToTextCache_AllAtOnce("DINO SAUR", "assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed);
-	addToTextCache_AllAtOnce("press [SPACE] to start", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
-	addToTextCache_AllAtOnce("a 2D remake of the classic Chrome dinosaur game", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
-	addToTextCache_AllAtOnce("by wldfngrs; https://github.com/wldfngrs", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
-	addToTextCache_AllAtOnce("press [SPACE] to run again, [ALT + F4] to quit...", "assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_AllAtOnce("DINO SAUR", "Assets\\fonts\\Marshland_Beauty.otf", 72, dinoRed);
+	addToTextCache_AllAtOnce("press [SPACE] to start", "Assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_AllAtOnce("a 2D remake of the classic Chrome dinosaur game", "Assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_AllAtOnce("by wldfngrs; https://github.com/wldfngrs", "Assets\\fonts\\ALBA____.TTF", 36, snowWhite);
+	addToTextCache_AllAtOnce("press [SPACE] to run again, [ALT + F4] to quit...", "Assets\\fonts\\ALBA____.TTF", 36, snowWhite);
 
-	addToTextCache_AllAtOnce("HIGH SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
-	addToTextCache_AllAtOnce("CURRENT SCORE: ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
-	addToTextCache_CharByChar("0123456789", "assets\\fonts\\junegull.ttf", 48, snowWhite);
-	addToTextCache_CharByChar(" ", "assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_AllAtOnce("HIGH SCORE: ", "Assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_AllAtOnce("CURRENT SCORE: ", "Assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_CharByChar("0123456789", "Assets\\fonts\\junegull.ttf", 48, snowWhite);
+	addToTextCache_CharByChar(" ", "Assets\\fonts\\junegull.ttf", 48, snowWhite);
 
-	addToTextCache_CharByChar("Congratulations! You beat the game!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("It's no big deal, and certainly no difficult task, yet...", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("I appreciate you for playing this long", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("I had fun working on this. I hope you had fun playing as well", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
-	addToTextCache_CharByChar("Have a great day, anon!", "assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("Congratulations! You beat the game!", "Assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("It's no big deal, and certainly no difficult task, yet...", "Assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("I appreciate you for playing this long", "Assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("I had fun working on this. I hope you had fun playing as well", "Assets\\fonts\\ALBA____.TTF", 48, snowWhite);
+	addToTextCache_CharByChar("Have a great day, anon!", "Assets\\fonts\\ALBA____.TTF", 48, snowWhite);
 
-	addToTextCache_AllAtOnce("Sh*t! caught in the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Dying Trees", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Wriggle out for your next run?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Sh*t! caught in the ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Dying Trees", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("!", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Wriggle out for your next run?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache_AllAtOnce("Danmit! You've kicked ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("The Bucket", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("Did I mention you have nine (ahem) lives?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Danmit! You've kicked ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("The Bucket", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("Did I mention you have nine (ahem) lives?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache_AllAtOnce("Oof! crashed right into a ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Tree Stump", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("Watch your path, Rex!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Oof! crashed right into a ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Tree Stump", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("Watch your path, Rex!", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache_AllAtOnce("Hehe, the one-eyed ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Stalker", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("...", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Look away next time, okay?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Hehe, the one-eyed ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Stalker", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("...", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Look away next time, okay?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache_AllAtOnce("Yikes, ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Stalker Pups", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("Nothing to see or say here, Rex, run again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Yikes, ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Stalker Pups", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("Nothing to see or say here, Rex, run again?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
-	addToTextCache_AllAtOnce("Ouch, crushed by the merciless ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Brute", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce("Oh well, you're not THAT hurt, go again?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Ouch, crushed by the merciless ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Brute", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce("Oh well, you're not THAT hurt, go again?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
 
-	addToTextCache_AllAtOnce("Whoaa, you let the ", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Night Gale", "assets\\fonts\\adrip1.ttf", 72, dinoRed);
-	addToTextCache_AllAtOnce(" sweep you away?", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
-	addToTextCache_AllAtOnce("Hold on tight next run!", "assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Whoaa, you let the ", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Night Gale", "Assets\\fonts\\adrip1.ttf", 72, dinoRed);
+	addToTextCache_AllAtOnce(" sweep you away?", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
+	addToTextCache_AllAtOnce("Hold on tight next run!", "Assets\\fonts\\adrip1.ttf", 72, snowWhite);
 
 	mInitDone = true;
 }

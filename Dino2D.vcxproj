@@ -22,8 +22,9 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{017b8255-5095-4a34-b965-fac23a1f6728}</ProjectGuid>
-    <RootNamespace>Dino</RootNamespace>
+    <RootNamespace>Dino2D</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Dino2D</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -112,12 +113,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Components\Sources;$(SolutionDir)\Components\Includes;$(SolutionDir)\Physics\Sources;$(SolutionDir)\Physics\Includes;$(SolutionDir);$(SolutionDir)Managers\Includes;$(SolutionDir)Managers\Sources;$(SolutionDir)Entities\Sources;$(SolutionDir)Entities\Includes;C:\Users\wldfn\source\repos\Dino\SDL2_mixer\include;C:\Users\wldfn\source\repos\Dino\SDL2_ttf\include;C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)Components, Physics\Sources;$(SolutionDir)Components, Physics\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Core;$(SolutionDir)Background;$(SolutionDir)Dino;$(SolutionDir)Physics;$(SolutionDir);$(SolutionDir)Graphics;$(SolutionDir)Text;$(SolutionDir)Sound;$(SolutionDir)Obstacle;$(SolutionDir)SDL2_mixer\include;$(SolutionDir)SDL2_ttf\include;$(SolutionDir)SDL2_image\include;$(SolutionDir)SDL2\include;$(SolutionDir)Components, Physics\Sources;$(SolutionDir)Components, Physics\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\wldfn\source\repos\Dino\SDL2_mixer\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_ttf\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2\lib\x64;C:\Users\wldfn\source\repos\Dino\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL2_mixer\lib\x64;$(SolutionDir)SDL2_ttf\lib\x64;$(SolutionDir)SDL2\lib\x64;$(SolutionDir)SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2_mixer.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -129,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Components\Sources;$(SolutionDir)\Components\Includes;$(SolutionDir)\Physics\Sources;$(SolutionDir)\Physics\Includes;$(SolutionDir);$(SolutionDir)Managers\Includes;$(SolutionDir)Managers\Sources;$(SolutionDir)Entities\Sources;$(SolutionDir)Entities\Includes;C:\Users\wldfn\source\repos\Dino\SDL2_mixer\include;C:\Users\wldfn\source\repos\Dino\SDL2_ttf\include;C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)Components\Includes;$(SolutionDir)Components\Sources;$(SolutionDir)Physics\Sources;$$(SolutionDir)Physics\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Core;$(SolutionDir)Background;$(SolutionDir)Dino;$(SolutionDir)Physics;$(SolutionDir);$(SolutionDir)Graphics;$(SolutionDir)Text;$(SolutionDir)Sound;$(SolutionDir)Obstacle;C:\Users\wldfn\source\repos\Dino\SDL2_mixer\include;C:\Users\wldfn\source\repos\Dino\SDL2_ttf\include;C:\Users\wldfn\source\repos\Dino\SDL2_image\include;C:\Users\wldfn\source\repos\Dino\SDL2\include;$(SolutionDir)Components\Includes;$(SolutionDir)Components\Sources;$(SolutionDir)Physics\Sources;$$(SolutionDir)Physics\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,38 +142,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entities\Sources\BackgroundSprite.cpp" />
-    <ClCompile Include="Physics\Sources\Collision.cpp" />
-    <ClCompile Include="Managers\Sources\DirtManager.cpp" />
+    <ClCompile Include="Background\BackgroundSprite.cpp" />
+    <ClCompile Include="Physics\Collision.cpp" />
+    <ClCompile Include="Background\DirtManager.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Managers\Sources\Score.cpp" />
+    <ClCompile Include="Core\Score.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Managers\Sources\ObstacleManager.cpp" />
-    <ClCompile Include="Entities\Sources\ObstacleSprite.cpp" />
-    <ClCompile Include="Managers\Sources\SoundManager.cpp" />
-    <ClCompile Include="Components\Sources\SpriteComponent.cpp" />
-    <ClCompile Include="Entities\Sources\DinoSprite.cpp" />
-    <ClCompile Include="Entities\Includes\Sprites.h" />
-    <ClCompile Include="Managers\Sources\Text.cpp" />
-    <ClCompile Include="Managers\Sources\TextureManager.cpp" />
-    <ClCompile Include="Physics\Sources\Vector2D.cpp" />
+    <ClCompile Include="Obstacle\ObstacleManager.cpp" />
+    <ClCompile Include="Obstacle\ObstacleSprite.cpp" />
+    <ClCompile Include="Sound\SoundManager.cpp" />
+    <ClCompile Include="Core\SpriteComponent.cpp" />
+    <ClCompile Include="Dino\DinoSprite.cpp" />
+    <ClCompile Include="Graphics\Sprites.h" />
+    <ClCompile Include="Text\Text.cpp" />
+    <ClCompile Include="Graphics\TextureManager.cpp" />
+    <ClCompile Include="Physics\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Physics\Includes\Collision.h" />
-    <ClInclude Include="Entities\Includes\DinoStates.h" />
-    <ClInclude Include="Managers\Includes\DirtManager.h" />
-    <ClInclude Include="Components\Includes\EntityComponentSystem.h" />
-    <ClInclude Include="Components\Includes\KeyboardController.h" />
-    <ClInclude Include="Components\Includes\SpriteComponent.h" />
-    <ClInclude Include="Components\Includes\TransformComponent.h" />
+    <ClInclude Include="Core\Score.h" />
+    <ClInclude Include="Dino\DinoStates.h" />
+    <ClInclude Include="Background\DirtManager.h" />
+    <ClInclude Include="Core\EntityComponentSystem.h" />
+    <ClInclude Include="Core\KeyboardController.h" />
+    <ClInclude Include="Core\SpriteComponent.h" />
+    <ClInclude Include="Core\TransformComponent.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Managers\Includes\SoundManager.h" />
-    <ClInclude Include="Managers\Includes\Text.h" />
-    <ClInclude Include="Managers\Includes\Score.h" />
-    <ClInclude Include="Managers\Includes\ObstacleManager.h" />
-    <ClInclude Include="Entities\Includes\States.h" />
-    <ClInclude Include="Managers\Includes\TextureManager.h" />
-    <ClInclude Include="Physics\Includes\Vector2D.h" />
+    <ClInclude Include="Physics\Collision.h" />
+    <ClInclude Include="Sound\SoundManager.h" />
+    <ClInclude Include="Text\Text.h" />
+    <ClInclude Include="Obstacle\ObstacleManager.h" />
+    <ClInclude Include="Dino\States.h" />
+    <ClInclude Include="Graphics\TextureManager.h" />
+    <ClInclude Include="Physics\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

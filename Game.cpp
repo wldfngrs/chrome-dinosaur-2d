@@ -226,10 +226,10 @@ void Game::showGameCompletedScreen() {
 
 void Game::initNonDinoEntities() {
 	background.addComponent<TransformComponent>(0, 0, Game::mSCREEN_WIDTH, Game::mSCREEN_HEIGHT - 80);
-	background.addComponent<SpriteComponent>("Assets\\sprites\\BackgroundSheet.png", std::make_unique<Background>(), 0, 64, 96, 64);
+	background.addComponent<SpriteComponent>("Assets\\textures\\BackgroundSheet.png", std::make_unique<Background>(), 0, 64, 96, 64);
 		
 	celestialBody.addComponent<TransformComponent>(Game::mSCREEN_WIDTH, 150, 139, 130);
-	celestialBody.addComponent<SpriteComponent>("Assets\\sprites\\Moon.png", std::make_unique<CelestialBody>(), 0, 0, 28, 30);
+	celestialBody.addComponent<SpriteComponent>("Assets\\textures\\Moon.png", std::make_unique<CelestialBody>(), 0, 0, 28, 30);
 
 	mDirtManager.init();
 }
@@ -247,7 +247,7 @@ void Game::resetNonDinoEntities() {
 
 void Game::initDinoEntity() {
 	mDino.addComponent<TransformComponent>(60, Game::mSCREEN_HEIGHT - 355, 273, 275);
-	mDino.addComponent<SpriteComponent>("Assets\\sprites\\DinoSheet.png", std::make_unique<Dino>(), 0, 0, 32, 32);
+	mDino.addComponent<SpriteComponent>("Assets\\textures\\DinoSheet.png", std::make_unique<Dino>(), 0, 0, 32, 32);
 	mDino.addComponent<KeyboardController>();
 }
 

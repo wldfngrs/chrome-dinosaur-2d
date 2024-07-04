@@ -19,7 +19,7 @@ void ObstacleManager::init() {
 		
 		Entity& obstacle = *(mObstacles[i]);
 		obstacle.addComponent<TransformComponent>();
-		obstacle.addComponent<SpriteComponent>("Assets\\sprites\\ObstacleSheet.png");
+		obstacle.addComponent<SpriteComponent>("Assets\\textures\\ObstacleSheet.png");
 
 		obstacle.destroy();
 		mObstaclesTransformCache[i] = &obstacle.getComponent<TransformComponent>();

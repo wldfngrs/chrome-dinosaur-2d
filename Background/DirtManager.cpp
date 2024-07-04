@@ -29,7 +29,7 @@ bool DirtManager::positionIsOccupied(int i, int x, int y, int dirtWidth) {
 }
 
 void DirtManager::setTexture() {
-	mTexture = TextureManager::loadSpriteTexture("assets\\sprites\\GroundSheet.png");
+	mTexture = TextureManager::loadSpriteTexture("assets\\textures\\GroundSheet.png");
 }
 
 void DirtManager::setRect(SDL_Rect& rect, int x, int y, int w, int h) {

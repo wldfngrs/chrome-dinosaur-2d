@@ -23,7 +23,7 @@ void Score::update() {
 	}
 
 	if (mCurrentscore >= 10000) {
-		mCurrentscore == 10000;
+		mCurrentscore = 10000;
 		Game::mGameCompleted = true;
 		return;
 	}

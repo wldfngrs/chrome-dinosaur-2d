@@ -66,8 +66,8 @@ public:
 	static EntityManager mEntityManager;
 	static SoundManager mSoundManager;
 
-	static const int mSCREEN_WIDTH = 1280;
-	static const int mSCREEN_HEIGHT = 720;
+	static int mSCREEN_WIDTH;
+	static int mSCREEN_HEIGHT;
 
 	static Entity& mDino;
 };

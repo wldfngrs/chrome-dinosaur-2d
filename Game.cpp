@@ -15,6 +15,9 @@
 #include <sstream>
 
 int Game::mTick = 0;
+int Game::mSCREEN_WIDTH = 1280;
+int Game::mSCREEN_HEIGHT = 720;
+
 bool Game::mSpeedToggled = false;
 bool Game::mObstacleSpeedToggled = false;
 bool Game::mGameCompleted = false;

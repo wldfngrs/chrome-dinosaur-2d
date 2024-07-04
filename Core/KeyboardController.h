@@ -14,7 +14,7 @@ public:
 	}
 
 	void update() override {
-		if ((Game::mEvent.type == SDL_KEYDOWN)) {
+		if (Game::mEvent.type == SDL_KEYDOWN) {
 			switch (Game::mEvent.key.keysym.sym) {
 			case SDLK_UP:
 			case SDLK_SPACE:

@@ -116,9 +116,9 @@ public:
 };
 
 class Background : public Sprite {
-	int mAnimationIndex;
-	int mSwitchTick;
-	int mSwitchCap;
+	int mAnimationIndex = 0;
+	int mSwitchTick = 0;
+	int mSwitchCap = 0;
 
 public:
 	void init() override;

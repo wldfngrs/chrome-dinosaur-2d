@@ -117,7 +117,12 @@ void Game::showTitleScreen() {
 	bool subtitleIsVisible = true;
 	mInLobby = true;
 
+#ifdef __EMSCRIPTEN__
+	int id = LOBBY_MUSIC
+	emscripten_async_call(playMusicWrapper, &id, 0);
+#else
 	mSoundManager.playMusic(LOBBY_MUSIC);
+#endif
 
 	while (mInLobby) {
 		SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
@@ -145,7 +150,12 @@ void Game::showGameOverScreen() {
 	int visibilityTick = 0;
 	bool subtitleIsVisible = true;
 
+#ifdef __EMSCRIPTEN__
+	int id = LOBBY_MUSIC
+	emscripten_async_call(playMusicWrapper, &id, 0);
+#else
 	mSoundManager.playMusic(LOBBY_MUSIC);
+#endif
 
 	mInLobby = true;
 
@@ -236,7 +246,7 @@ void Game::initNonDinoEntities() {
 
 void Game::resetNonDinoEntities() {
 	TransformComponent* transformComponent = &celestialBody.getComponent<TransformComponent>();
-	transformComponent->mPosition.x = Game::mSCREEN_WIDTH;
+	transformComponent->mPosition.x = static_cast<float>(Game::mSCREEN_WIDTH);
 
 	SpriteComponent* spriteComponent = &background.getComponent<SpriteComponent>();
 	spriteComponent->getSprite()->setAnimation(1, 2, 500);
@@ -325,7 +335,13 @@ void Game::update() {
 	mDirtManager.update();
 
 	if (Collision::checkForCollisions()) {
-		mSoundManager.playSound(SND_COLLISION, CH_DINO);
+		#ifdef __EMSCRIPTEN__
+			int id = SND_COLLISION
+			emscripten_async_call(playSoundWrapper, &id, 0);
+		#else
+			mSoundManager.playSound(SND_COLLISION, CH_DINO);
+		#endif
+		
 		mPlayerFail = true;
 		Collision::mCollided = false;
 		mGameOverMessage = Collision::getTag();
@@ -375,4 +391,14 @@ bool Game::playerHasQuit() const {
 
 TextManager& Game::getTextManager() {
 	return mTextManager;
+}
+
+void playMusicWrapper(void* id) {
+	int* arg = (int*)id;
+	Game::mSoundManager.playMusic(*arg);
+}
+
+void playSoundWrapper(void* id) {
+	int* arg = (int*)id;
+	Game::mSoundManager.playSound(*arg, CH_DINO);
 }

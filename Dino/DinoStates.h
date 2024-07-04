@@ -12,7 +12,7 @@ class RunningState : public DinoState {
 		Collider& rCollider = dino.getCollider();
 		TransformComponent& rTransform = dino.getTransform();
 
-		rTransform.mPosition.y = Game::mSCREEN_HEIGHT - 355;
+		rTransform.mPosition.y = static_cast<float>(Game::mSCREEN_HEIGHT - 355);
 
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 59, 221, 213);
@@ -46,7 +46,7 @@ class DuckingState : public DinoState {
 		Collider& rCollider = dino.getCollider();
 		TransformComponent& rTransform = dino.getTransform();
 
-		rTransform.mPosition.y = Game::mSCREEN_HEIGHT - 355;
+		rTransform.mPosition.y = static_cast<float>(Game::mSCREEN_HEIGHT - 355);
 
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 136, 240, 128);
@@ -97,17 +97,6 @@ public:
 		rCollider.setColliderRect(0, rTransform.mPosition.x + 8, rTransform.mPosition.y + 76, 230, 196);
 
 		mCharging = true;
-
-		//if (Game::mSpeedToggled) {
-		//	mMAX_CHARGETIME = 2;
-		//	mMAX_LANDTIME = 7;
-		//	mMAX_JUMPTIME = 22;
-		//}
-		//else {
-		//	mMAX_CHARGETIME = 5;
-		//	mMAX_LANDTIME = 13;
-		//	mMAX_JUMPTIME = 30;
-		//}
 
 		dino.startJump();
 	}

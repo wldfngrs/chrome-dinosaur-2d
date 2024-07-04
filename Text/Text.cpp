@@ -140,7 +140,7 @@ void TextManager::init() {
 static int calculateXPosition(std::vector<std::string> textSegments, size_t indexIntoTextSegments, xPosition xpos, size_t letterWidth, renderEffect effect) {
 	int x = 0;
 	int textWidth = 0;
-	int index = indexIntoTextSegments;
+	int index = static_cast<int>(indexIntoTextSegments);
 	
 	if (effect == TYPEWRITER) {
 		for (size_t i = 0; i < textSegments[index].size(); i++) {
@@ -148,10 +148,10 @@ static int calculateXPosition(std::vector<std::string> textSegments, size_t inde
 			letter += textSegments[index][i];
 
 			if (letter == "i" || letter == "!" || letter == "," || letter == "." || letter == "l" || letter == "I" || letter == "'") {
-				textWidth += letterWidth / 2;
+				textWidth += static_cast<int>(letterWidth / 2);
 			}
 			else {
-				textWidth += letterWidth;
+				textWidth += static_cast<int>(letterWidth);
 			}
 		}
 	}
@@ -161,7 +161,7 @@ static int calculateXPosition(std::vector<std::string> textSegments, size_t inde
 				break;
 			}
 
-			textWidth += textSegments[i].size() * letterWidth;
+			textWidth += static_cast<int>(textSegments[i].size() * letterWidth);
 		}
 	}
 
@@ -294,13 +294,13 @@ void TextManager::drawText_NonStatic(std::string text, int x, int y, size_t lett
 void TextManager::drawText_NonStatic(std::string text, xPosition xpos, int y, size_t letterWidth, size_t letterHeight) {
 	if (mInitDone == false) return;
 	
-	int spaces = 7 - text.size();
+	size_t spaces = 7 - text.size();
 
 	std::vector<std::string> textSegments = extractTextSegments(text);
 
 	int x = calculateXPosition(textSegments, 0, xpos, letterWidth, INSTANT);
 
-	for (int i = 0; i < spaces; i++) {
+	for (size_t i = 0; i < spaces; i++) {
 		TextureManager::drawText(mTextCache[" "], x, y, letterWidth, letterHeight);
 		x += static_cast<int>(letterWidth + 1);
 	}

@@ -71,3 +71,7 @@ public:
 
 	static Entity& mDino;
 };
+
+void playMusicWrapper(void* id);
+
+void playSoundWrapper(void* id);

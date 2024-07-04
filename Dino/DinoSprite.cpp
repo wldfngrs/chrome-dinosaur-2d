@@ -1,3 +1,4 @@
+#include "Game.h"
 #include "Sprites.h"
 #include "KeyboardController.h"
 #include "DinoStates.h"
@@ -15,8 +16,6 @@ void Dino::init() {
 void Dino::update() {
 	mState->update(*this);
 }
-
-// IF STATEMENT CHECK TO PREVENT LEAVING AND RE-ENTERING STATE IF ALREADY IN STATE
 
 void Dino::press_UP_key() {
 	if (!mJumping) {
@@ -72,12 +71,22 @@ void Dino::startJump() {
 	mDucking = false;
 	mRunning = false;
 
-	Game::mSoundManager.playSound(SND_DINO_JUMP, CH_DINO);
+	#ifdef __EMSCRIPTEN__
+		int id = SND_DINO_JUMP
+		emscripten_async_call(playSoundWrapper, &id, 0);
+	#else
+		Game::mSoundManager.playSound(SND_DINO_JUMP, CH_DINO);
+	#endif
 }
 void Dino::stopJump() {
 	mJumping = false;
 
-	Game::mSoundManager.playSound(SND_DINO_LAND, CH_DINO);
+	#ifdef __EMSCRIPTEN__
+		int id = SND_DINO_LAND
+		emscripten_async_call(playSoundWrapper, &id, 0);
+	#else
+		Game::mSoundManager.playSound(SND_DINO_LAND, CH_DINO);
+	#endif
 }
 
 void Dino::startRun() {

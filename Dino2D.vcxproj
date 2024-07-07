@@ -175,6 +175,9 @@
     <ClInclude Include="Graphics\TextureManager.h" />
     <ClInclude Include="Physics\Vector2D.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

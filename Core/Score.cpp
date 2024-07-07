@@ -5,6 +5,7 @@ int Score::mHighscore;
 int Score::mCurrentscore;
 int Score::mToggleTick = 0;
 int Score::mToggleSignal = 1000;
+const int Score::mGameCompletedScore = 10000;
 
 void Score::init() {
 	mCurrentscore = 1;
@@ -22,8 +23,8 @@ void Score::update() {
 		mToggleTick++;
 	}
 
-	if (mCurrentscore >= 10000) {
-		mCurrentscore = 10000;
+	if (mCurrentscore >= mGameCompletedScore) {
+		mCurrentscore = mGameCompletedScore;
 		Game::mGameCompleted = true;
 		return;
 	}

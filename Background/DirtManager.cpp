@@ -29,7 +29,7 @@ bool DirtManager::positionIsOccupied(int i, int x, int y, int dirtWidth) {
 }
 
 void DirtManager::setTexture() {
-	mTexture = TextureManager::loadSpriteTexture("assets\\textures\\GroundSheet.png");
+	mTexture = TextureManager::loadSpriteTexture("Assets/textures/GroundSheet.png");
 }
 
 void DirtManager::setRect(SDL_Rect& rect, int x, int y, int w, int h) {
@@ -69,7 +69,7 @@ void DirtManager::init() {
 }
 
 void DirtManager::update() {
-	mDirtVelocity = (Game::mObstacleSpeedToggled ? -25 : -15);
+	mDirtVelocity = static_cast<float>(Game::mObstacleSpeedToggled ? -25 : -15);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());

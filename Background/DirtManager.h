@@ -15,7 +15,8 @@ struct Dirt {
 };
 
 class DirtManager {
-	int mDirtVelocity = -15;
+	float mDirtVelocity = -15;
+
 	const int mDirtHeight = 5;
 
 	SDL_Texture* mTexture;

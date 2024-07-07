@@ -1,3 +1,8 @@
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
+
 #include "Game.h"
 #include "Sprites.h"
 #include "KeyboardController.h"
@@ -62,6 +67,7 @@ void Dino::startDuck() {
 	mJumping = false;
 	mRunning = false;
 }
+
 void Dino::stopDuck() {
 	mDucking = false;
 }
@@ -70,23 +76,14 @@ void Dino::startJump() {
 	mJumping = true;
 	mDucking = false;
 	mRunning = false;
-
-	#ifdef __EMSCRIPTEN__
-		int id = SND_DINO_JUMP
-		emscripten_async_call(playSoundWrapper, &id, 0);
-	#else
-		Game::mSoundManager.playSound(SND_DINO_JUMP, CH_DINO);
-	#endif
+	
+	Game::mSoundManager.playSound(SND_DINO_JUMP, CH_DINO);
 }
+
 void Dino::stopJump() {
 	mJumping = false;
 
-	#ifdef __EMSCRIPTEN__
-		int id = SND_DINO_LAND
-		emscripten_async_call(playSoundWrapper, &id, 0);
-	#else
-		Game::mSoundManager.playSound(SND_DINO_LAND, CH_DINO);
-	#endif
+	Game::mSoundManager.playSound(SND_DINO_LAND, CH_DINO);
 }
 
 void Dino::startRun() {
@@ -94,6 +91,7 @@ void Dino::startRun() {
 	mDucking = false;
 	mJumping = false;
 }
+
 void Dino::stopRun() {
 	mRunning = false;
 }

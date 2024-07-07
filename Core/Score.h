@@ -21,4 +21,6 @@ public:
 	static int getCurrentScore();
 
 	static void setHighScore(int highscore);
+
+	const static int mGameCompletedScore;
 };

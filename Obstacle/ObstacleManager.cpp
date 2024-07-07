@@ -19,7 +19,7 @@ void ObstacleManager::init() {
 		
 		Entity& obstacle = *(mObstacles[i]);
 		obstacle.addComponent<TransformComponent>();
-		obstacle.addComponent<SpriteComponent>("Assets\\textures\\ObstacleSheet.png");
+		obstacle.addComponent<SpriteComponent>("Assets/textures/ObstacleSheet.png");
 
 		obstacle.destroy();
 		mObstaclesTransformCache[i] = &obstacle.getComponent<TransformComponent>();
@@ -159,6 +159,10 @@ void ObstacleManager::fieldObstacle() {
 			return;
 		
 		}
+	}
+
+	if (Score::getCurrentScore() + 30 >= Score::mGameCompletedScore) {
+		return;
 	}
 
 	if (mObstaclesTransformCache[0]->mPosition.x == mObstaclesTransformCache[1]->mPosition.x) {

@@ -19,56 +19,43 @@ void Background::update() {
 		mSwitchTick = 0;
 
 		switch (mAnimationIndex) {
-		case 0:
-			if (Game::mSpeedToggled) {
-				setAnimation(mAnimationIndex, 2, 200);
-			}
-			else {
-				setAnimation(mAnimationIndex, 2, 500);
-			}
+			case 0: {
+				if (Game::mSpeedToggled) {
+					setAnimation(mAnimationIndex, 2, 200);
+				}
+				else {
+					setAnimation(mAnimationIndex, 2, 500);
+				}
 
-			#ifdef __EMSCRIPTEN__
-				int id = NIGHT_MUSIC
-				emscripten_async_call(playMusicWrapper, &id, 0);
-			#else
 				Game::mSoundManager.playMusic(NIGHT_MUSIC);
-			#endif
-
-			mAnimationIndex = 1;
-			mSwitchCap = 200;
-			break;
-		case 1:
-			if (Game::mSpeedToggled) {
-				setAnimation(mAnimationIndex, 2, 200);
-			}
-			else {
-				setAnimation(mAnimationIndex, 2, 500);
-			}
-
-			if (Game::mSoundManager.getCurrentPlayingMusic() == NIGHT_MUSIC) {
-				#ifdef __EMSCRIPTEN__
-					int id = MORNING_MUSIC
-					emscripten_async_call(playMusicWrapper, &id, 0);
-				#else
-					Game::mSoundManager.playMusic(MORNING_MUSIC);
-				#endif
 
 				mAnimationIndex = 1;
-				mSwitchCap = 350;
+				mSwitchCap = 200;
+				break;
 			}
-			else if (Game::mSoundManager.getCurrentPlayingMusic() == MORNING_MUSIC) {
-				#ifdef __EMSCRIPTEN__
-					int id = NOON_MUSIC
-					emscripten_async_call(playMusicWrapper, &id, 0);
-				#else
-					Game::mSoundManager.playMusic(NOON_MUSIC);
-				#endif
-				
-				mAnimationIndex = 0;
-				mSwitchCap = 350;
-			}
+			case 1: {
+				if (Game::mSpeedToggled) {
+					setAnimation(mAnimationIndex, 2, 200);
+				}
+				else {
+					setAnimation(mAnimationIndex, 2, 500);
+				}
 
-			break;
+				if (Game::mSoundManager.getCurrentPlayingMusic() == NIGHT_MUSIC) {
+					Game::mSoundManager.playMusic(MORNING_MUSIC);
+
+					mAnimationIndex = 1;
+					mSwitchCap = 350;
+				}
+				else if (Game::mSoundManager.getCurrentPlayingMusic() == MORNING_MUSIC) {
+					Game::mSoundManager.playMusic(NOON_MUSIC);
+
+					mAnimationIndex = 0;
+					mSwitchCap = 350;
+				}
+
+				break;
+			}
 		}
 	}
 

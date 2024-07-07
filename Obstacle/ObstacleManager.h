@@ -9,8 +9,9 @@ class Entity;
 class ObstacleManager {
 	int mJustCollidedIndex = 0;
 	int mDistanceBetweenObstacles = 0;
-	int mObstacleVelocity = -15;
 	int mMaxObstacleSpriteIndex = 2;
+
+	float mObstacleVelocity = -15;
 
 	std::vector<Entity*> mObstacles;
 	std::vector<TransformComponent*> mObstaclesTransformCache;

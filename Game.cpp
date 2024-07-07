@@ -119,16 +119,20 @@ void Game::showTitleScreen() {
 
 	mSoundManager.playMusic(LOBBY_MUSIC);
 
-	while (mInLobby) {
-		SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
-		SDL_RenderClear(Game::mGameRenderer);
+	SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(Game::mGameRenderer);
 
-		mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150, INSTANT);
+	mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150, INSTANT);
+	mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game\nby wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26, INSTANT);
+
+	SDL_Rect subtitleRect = { 0, 360, 1280, 40};
+
+	while (mInLobby) {
+		SDL_RenderFillRect(Game::mGameRenderer, &subtitleRect);
+		
 		if (subtitleIsVisible) {
 			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40, INSTANT);
 		}
-
-		mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game\nby wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26, INSTANT);
 
 		SDL_RenderPresent(Game::mGameRenderer);
 

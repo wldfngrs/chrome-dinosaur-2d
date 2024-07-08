@@ -189,7 +189,7 @@ void ObstacleManager::updateGameOverAnimation() {
 
 	mObstaclesTransformCache[mJustCollidedIndex]->mVelocity.x = (float)(-0.4);
 
-	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (Game::mSCREEN_WIDTH / 4 - mObstaclesTransformCache[mJustCollidedIndex]->mWidth)) {
+	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (static_cast<float>(Game::mSCREEN_WIDTH / 4) - mObstaclesTransformCache[mJustCollidedIndex]->mWidth)) {
 
 		mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x = static_cast<float>(3 * Game::mSCREEN_WIDTH / 4);
 

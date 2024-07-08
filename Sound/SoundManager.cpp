@@ -21,14 +21,14 @@ void SoundManager::init() {
 	mSounds.resize(mSoundsCount);
 	mMusic.resize(mMusicCount);
 
-	mSounds[SND_DINO_JUMP] = Mix_LoadWAV("Assets\\sounds\\Jump.wav");
-	mSounds[SND_DINO_LAND] = Mix_LoadWAV("Assets\\sounds\\Land.wav");
-	mSounds[SND_COLLISION] = Mix_LoadWAV("Assets\\sounds\\Collision.wav");
+	mSounds[SND_DINO_JUMP] = Mix_LoadWAV("Assets/sounds/Jump.wav");
+	mSounds[SND_DINO_LAND] = Mix_LoadWAV("Assets/sounds/Land.wav");
+	mSounds[SND_COLLISION] = Mix_LoadWAV("Assets/sounds/Collision.wav");
 
-	mMusic[MORNING_MUSIC] = Mix_LoadMUS("Assets\\sounds\\Morning.wav");
-	mMusic[NOON_MUSIC] = Mix_LoadMUS("Assets\\sounds\\Noon.wav");
-	mMusic[NIGHT_MUSIC] = Mix_LoadMUS("Assets\\sounds\\Night.wav");
-	mMusic[LOBBY_MUSIC] = Mix_LoadMUS("Assets\\sounds\\Lobby.wav");
+	mMusic[MORNING_MUSIC] = Mix_LoadMUS("Assets/sounds/Morning.wav");
+	mMusic[NOON_MUSIC] = Mix_LoadMUS("Assets/sounds/Noon.wav");
+	mMusic[NIGHT_MUSIC] = Mix_LoadMUS("Assets/sounds/Night.wav");
+	mMusic[LOBBY_MUSIC] = Mix_LoadMUS("Assets/sounds/Lobby.wav");
 
 	mInitDone = true;
 }

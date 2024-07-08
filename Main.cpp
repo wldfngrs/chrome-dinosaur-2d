@@ -5,7 +5,6 @@ int main(int argc, char** argv) {
 
 	while (game.initializationDone() && !game.playerHasQuit()) {
 		game.loop();
-		SDL_Delay(16);
 	}
 
 	return 0;

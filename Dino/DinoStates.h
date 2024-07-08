@@ -16,7 +16,7 @@ class RunningState : public DinoState {
 
 		rCollider.resize(1);
 		rCollider.setColliderRect(0, rTransform.mPosition.x, rTransform.mPosition.y + 59, 221, 213);
-		
+
 		if (Game::mSpeedToggled) {
 			dino.setAnimation(0, 2, 150);
 		}

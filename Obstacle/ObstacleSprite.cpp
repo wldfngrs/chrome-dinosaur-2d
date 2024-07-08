@@ -15,7 +15,7 @@ void DyingTree1::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 89, rTransform.mPosition.y + 8, 166, 264);
-	
+
 	}
 }
 
@@ -24,7 +24,7 @@ void DyingTree1::update() {
 void DyingTree2::init() {
 	getCollider().resize(1);
 	getCollider().setCollisionTag("Sh*t! caught in the Dying Trees!\nWriggle out for your next run?");
-	
+
 
 	setSrcRect(32, 0, 32, 32);
 	setTransform(Game::mSCREEN_WIDTH + 101, Game::mSCREEN_HEIGHT - 355, 273, 275);
@@ -36,7 +36,7 @@ void DyingTree2::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 72, rTransform.mPosition.y + 93, 140, 187);
-	
+
 	}
 }
 
@@ -56,7 +56,7 @@ void Bucket::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 51, rTransform.mPosition.y + 59, 151, 200);
-	
+
 	}
 }
 
@@ -76,7 +76,7 @@ void TreeStump::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 123, rTransform.mPosition.y + 162, 81, 110);
-	
+
 	}
 }
 
@@ -104,7 +104,7 @@ void Stalker::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 115, rTransform.mPosition.y + 8, 123, 255);
-	
+
 	}
 
 	rSrcRect.x = 32 + (rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount()));
@@ -135,7 +135,7 @@ void Brute::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 51, rTransform.mPosition.y + 59, 151, 200);
-	
+
 	}
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
@@ -154,7 +154,7 @@ void StalkerPup::init() {
 	}
 
 	setSrcRect(0, 96, 32, 32);
-	
+
 	getCollider().resize(1);
 	getCollider().setCollisionTag("Yikes, Stalker Pups...\nNothing to see or say here, Rex, run again?");
 
@@ -176,7 +176,7 @@ void StalkerPup::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
-	
+
 	}
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());
@@ -218,7 +218,7 @@ void Gale::update() {
 	if (rTransform.mVelocity.x < 0) {
 
 		getCollider().setColliderRect(0, rTransform.mPosition.x + 64, rTransform.mPosition.y, 109, 175);
-	
+
 	}
 
 	rSrcRect.x = rSrcRect.w * static_cast<int>((SDL_GetTicks() / getFramesSpeed()) % getFramesCount());

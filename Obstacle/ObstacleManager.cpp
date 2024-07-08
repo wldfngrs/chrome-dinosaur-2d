@@ -16,7 +16,7 @@ void ObstacleManager::init() {
 
 	for (size_t i = 0; i < mObstacles.size(); i++) {
 		mObstacles[i] = &(Game::mEntityManager.addEntity());
-		
+
 		Entity& obstacle = *(mObstacles[i]);
 		obstacle.addComponent<TransformComponent>();
 		obstacle.addComponent<SpriteComponent>("Assets/textures/ObstacleSheet.png");
@@ -51,10 +51,10 @@ void ObstacleManager::update() {
 
 void ObstacleManager::updateMaxObstacleSpriteIndex() {
 	int currentScore = Score::getCurrentScore();
-	
+
 	if (currentScore >= 700) {
 		mMaxObstacleSpriteIndex = 7;
-	} 
+	}
 	else if (currentScore >= 500) {
 		mMaxObstacleSpriteIndex = 5;
 	}
@@ -67,9 +67,9 @@ void ObstacleManager::updateMaxObstacleSpriteIndex() {
 }
 
 void ObstacleManager::updateObstacleSpeed() {
-	for (size_t i = 0; i < mObstacles.size(); i++) {		
+	for (size_t i = 0; i < mObstacles.size(); i++) {
 		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
-			
+
 			mObstaclesTransformCache[i]->mVelocity.zero();
 
 		}
@@ -154,10 +154,10 @@ void ObstacleManager::loadObstacles() {
 void ObstacleManager::fieldObstacle() {
 	for (size_t i = 0; i < mObstacles.size(); i++) {
 		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
-			
+
 			mObstacles[i]->destroy();
 			return;
-		
+
 		}
 	}
 
@@ -166,19 +166,20 @@ void ObstacleManager::fieldObstacle() {
 	}
 
 	if (mObstaclesTransformCache[0]->mPosition.x == mObstaclesTransformCache[1]->mPosition.x) {
-		
+
 		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
-	
+
 	}
-	
+
 	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mVelocity.x == 0) {
 
 		mObstaclesTransformCache[1]->mVelocity.x = mObstacleVelocity;
-	
-	} else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mVelocity.x == 0) {
+
+	}
+	else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mVelocity.x == 0) {
 
 		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
-	
+
 	}
 }
 
@@ -186,25 +187,25 @@ void ObstacleManager::updateGameOverAnimation() {
 	mObstacles[mJustCollidedIndex]->update();
 	mObstacles[mJustCollidedIndex]->draw();
 
-	mObstaclesTransformCache[mJustCollidedIndex]->mVelocity.x = (float)(- 0.4);
+	mObstaclesTransformCache[mJustCollidedIndex]->mVelocity.x = (float)(-0.4);
 
 	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (Game::mSCREEN_WIDTH / 4 - mObstaclesTransformCache[mJustCollidedIndex]->mWidth)) {
-		
+
 		mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x = static_cast<float>(3 * Game::mSCREEN_WIDTH / 4);
-	
+
 	}
 }
 
 void ObstacleManager::initGameOverAnimation() {
 	if (mObstaclesTransformCache[0]->mPosition.x < mObstaclesTransformCache[1]->mPosition.x) {
-		
+
 		mJustCollidedIndex = 0;
-	
+
 	}
 	else {
-		
+
 		mJustCollidedIndex = 1;
-	
+
 	}
 
 	SpriteComponent* spriteComponent = &mObstacles[mJustCollidedIndex]->getComponent<SpriteComponent>();

@@ -33,7 +33,7 @@ void Score::update() {
 		mToggleTick = 0;
 
 		Game::mSpeedToggled = Game::mSpeedToggled ? false : true;
-	
+
 		mToggleSignal = Game::mSpeedToggled ? 300 : 1000;
 	}
 }

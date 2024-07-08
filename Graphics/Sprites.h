@@ -100,7 +100,7 @@ public:
 
 	void startDuck();
 	void stopDuck();
-	
+
 	void startJump();
 	void stopJump();
 
@@ -155,7 +155,7 @@ public:
 class TreeStump : public Sprite {
 public:
 	void init() override;
-	
+
 	void update() override;
 };
 
@@ -176,7 +176,7 @@ public:
 class StalkerPup : public Sprite {
 public:
 	void init() override;
-	
+
 	void update() override;
 };
 

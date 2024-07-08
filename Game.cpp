@@ -43,13 +43,13 @@ Game::Game() {
 	if (initSounds() != 0) {
 		return;
 	}
-	
+
 	initNonDinoEntities();
-	
+
 	initDinoEntity();
-	
+
 	initObstacles();
-	
+
 	Score::init();
 
 	mInitDone = true;
@@ -95,7 +95,7 @@ int Game::initFonts() {
 		std::cerr << "[Error] Game::initFonts(): TTF_Init() failed!\nDetails: " << TTF_GetError() << "\n";
 		return -1;
 	}
-	
+
 	mTextManager.init();
 
 	return 0;
@@ -119,16 +119,20 @@ void Game::showTitleScreen() {
 
 	mSoundManager.playMusic(LOBBY_MUSIC);
 
-	while (mInLobby) {
-		SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
-		SDL_RenderClear(Game::mGameRenderer);
+	SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(Game::mGameRenderer);
 
-		mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150, INSTANT);
+	mTextManager.drawText_Static("DINO SAUR", CENTERED, Game::mSCREEN_HEIGHT / 5, 80, 150, INSTANT);
+	mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game\nby wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26, INSTANT);
+
+	SDL_Rect subtitleRect = { 0, 360, 1280, 40 };
+
+	while (mInLobby) {
+		SDL_RenderFillRect(Game::mGameRenderer, &subtitleRect);
+
 		if (subtitleIsVisible) {
 			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40, INSTANT);
 		}
-
-		mTextManager.drawText_Static("a 2D remake of the classic Chrome dinosaur game\nby wldfngrs; https://github.com/wldfngrs", CENTERED, 628, 12, 26, INSTANT);
 
 		SDL_RenderPresent(Game::mGameRenderer);
 
@@ -136,7 +140,7 @@ void Game::showTitleScreen() {
 			visibilityTick = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
 		}
-		
+
 		handleEvents();
 	}
 }
@@ -167,7 +171,7 @@ void Game::showGameOverScreen() {
 		mObstacleManager.updateGameOverAnimation();
 
 		mTextManager.drawText_Static(Game::mGameOverMessage, CENTERED, 400, 24, Game::mSCREEN_HEIGHT / 14, INSTANT);
-		
+
 		if (subtitleIsVisible) {
 			mTextManager.drawText_Static("press [SPACE] to run again, [ALT + F4] to quit...", CENTERED, 600, 18, 40, INSTANT);
 		}
@@ -178,7 +182,7 @@ void Game::showGameOverScreen() {
 			visibilityTick = 0;
 			subtitleIsVisible = subtitleIsVisible ? false : true;
 		}
-		
+
 		handleEvents();
 	}
 }
@@ -192,12 +196,12 @@ void Game::showGameCompletedScreen() {
 
 	SDL_SetRenderDrawColor(Game::mGameRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(Game::mGameRenderer);
-	
+
 	mTextManager.drawText_Static("Congratulations! You beat the game!\n"
-								 "It's no big deal, and certainly no difficult task, yet...\n\n"
-								 "I appreciate you for playing this long\n"
-								 "I had fun working on this. I hope you had fun playing as well\n"
-								 "Have a great day, anon!", CENTERED, 80, 20, 40, TYPEWRITER);
+		"It's no big deal, and certainly no difficult task, yet...\n\n"
+		"I appreciate you for playing this long\n"
+		"I had fun working on this. I hope you had fun playing as well\n"
+		"Have a great day, anon!", CENTERED, 80, 20, 40, TYPEWRITER);
 
 	SDL_Rect subtitleRect = { 0, 600, 1280, Game::mSCREEN_HEIGHT - 600 };
 
@@ -226,7 +230,7 @@ void Game::showGameCompletedScreen() {
 void Game::initNonDinoEntities() {
 	background.addComponent<TransformComponent>(0, 0, Game::mSCREEN_WIDTH, Game::mSCREEN_HEIGHT - 80);
 	background.addComponent<SpriteComponent>("Assets/textures/BackgroundSheet.png", std::make_unique<Background>(), 0, 64, 96, 64);
-		
+
 	celestialBody.addComponent<TransformComponent>(Game::mSCREEN_WIDTH, 150, 139, 130);
 	celestialBody.addComponent<SpriteComponent>("Assets/textures/Moon.png", std::make_unique<CelestialBody>(), 0, 0, 28, 30);
 
@@ -292,7 +296,7 @@ void Game::handleEvents() {
 			mInLobby = false;
 			mGameCompleted = false;
 		}
-		
+
 		break;
 	default:
 		break;
@@ -301,11 +305,11 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(Game::mGameRenderer);
-	
+
 	mEntityManager.draw();
 
 	mDirtManager.draw();
-	
+
 	Score::draw(*this);
 
 	SDL_RenderPresent(Game::mGameRenderer);
@@ -317,7 +321,7 @@ void Game::update() {
 	Score::update();
 
 	mObstacleManager.update();
-	
+
 	mEntityManager.refresh();
 	mEntityManager.update();
 
@@ -325,7 +329,7 @@ void Game::update() {
 
 	if (Collision::checkForCollisions()) {
 		mSoundManager.playSound(SND_COLLISION, CH_DINO);
-		
+
 		mPlayerFail = true;
 		Collision::mCollided = false;
 		mGameOverMessage = Collision::getTag();
@@ -343,18 +347,18 @@ void Game::loop() {
 
 	while (!mPlayerFail && !mGameCompleted) {
 		frameStart = SDL_GetTicks();
-		
+
 		handleEvents();
 		update();
 		render();
-		
+
 		frameTime = SDL_GetTicks() - frameStart;
 
 		if (frameDelay > frameTime) {
 			SDL_Delay(frameDelay - frameTime);
 		}
 	}
-	
+
 	if (mPlayerFail) {
 		showGameOverScreen();
 	}

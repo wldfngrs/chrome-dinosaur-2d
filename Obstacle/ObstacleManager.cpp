@@ -170,7 +170,10 @@ void ObstacleManager::fieldObstacle() {
 
 		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
 		justFieldedIndex = 0;
-
+		
+		if (mObstacles.size() > 1) {
+			nextToBeFieldedIndex = 1;
+		}
 	}
 
 	if (abs(mObstaclesTransformCache[justFieldedIndex]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[nextToBeFieldedIndex]->mVelocity.x == 0) {

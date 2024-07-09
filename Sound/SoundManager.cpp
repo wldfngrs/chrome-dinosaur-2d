@@ -33,12 +33,12 @@ void SoundManager::init() {
 	mInitDone = true;
 }
 
-void SoundManager::playSound(int id, int channel) {
+void SoundManager::playSound(int id) {
 	if (mInitDone == false) return;
 
 	int loops = 0;
 	
-	Mix_PlayChannel(channel, mSounds[id], loops);
+	Mix_PlayChannel(-1, mSounds[id], loops);
 }
 
 int SoundManager::getCurrentPlayingMusic() const {

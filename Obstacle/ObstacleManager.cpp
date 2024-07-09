@@ -156,6 +156,7 @@ void ObstacleManager::fieldObstacle() {
 		if (mObstaclesTransformCache[i]->mPosition.x <= -mObstaclesTransformCache[i]->mWidth) {
 
 			mObstacles[i]->destroy();
+			nextToBeFieldedIndex = i;
 			return;
 
 		}
@@ -168,18 +169,14 @@ void ObstacleManager::fieldObstacle() {
 	if (mObstaclesTransformCache[0]->mPosition.x == mObstaclesTransformCache[1]->mPosition.x) {
 
 		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
+		justFieldedIndex = 0;
 
 	}
 
-	if (abs(mObstaclesTransformCache[0]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[1]->mVelocity.x == 0) {
+	if (abs(mObstaclesTransformCache[justFieldedIndex]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[nextToBeFieldedIndex]->mVelocity.x == 0) {
 
-		mObstaclesTransformCache[1]->mVelocity.x = mObstacleVelocity;
-
-	}
-	else if (abs(mObstaclesTransformCache[1]->mPosition.x - Game::mSCREEN_WIDTH) >= mDistanceBetweenObstacles && mObstaclesTransformCache[0]->mVelocity.x == 0) {
-
-		mObstaclesTransformCache[0]->mVelocity.x = mObstacleVelocity;
-
+		mObstaclesTransformCache[nextToBeFieldedIndex]->mVelocity.x = mObstacleVelocity;
+		justFieldedIndex = nextToBeFieldedIndex;
 	}
 }
 
@@ -189,9 +186,9 @@ void ObstacleManager::updateGameOverAnimation() {
 
 	mObstaclesTransformCache[mJustCollidedIndex]->mVelocity.x = (float)(-0.4);
 
-	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (static_cast<float>(Game::mSCREEN_WIDTH / 4) - mObstaclesTransformCache[mJustCollidedIndex]->mWidth)) {
+	if (mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x <= (static_cast<float>(400 - mObstaclesTransformCache[mJustCollidedIndex]->mWidth))) {
 
-		mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x = static_cast<float>(3 * Game::mSCREEN_WIDTH / 4);
+		mObstaclesTransformCache[mJustCollidedIndex]->mPosition.x = static_cast<float>(Game::mSCREEN_WIDTH - 400);
 
 	}
 }
@@ -210,5 +207,5 @@ void ObstacleManager::initGameOverAnimation() {
 
 	SpriteComponent* spriteComponent = &mObstacles[mJustCollidedIndex]->getComponent<SpriteComponent>();
 
-	spriteComponent->getSprite()->setTransform(static_cast<float>(3 * Game::mSCREEN_WIDTH / 4), static_cast<float>(Game::mSCREEN_HEIGHT / 7), 273, 275);
+	spriteComponent->getSprite()->setTransform(static_cast<float>(Game::mSCREEN_WIDTH - 400), static_cast<float>(Game::mSCREEN_HEIGHT / 7), 273, 275);
 }

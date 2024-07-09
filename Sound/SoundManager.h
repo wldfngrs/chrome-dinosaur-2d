@@ -6,11 +6,6 @@
 #include <string>
 
 enum {
-	CH_ANY = -1,
-	CH_DINO,
-};
-
-enum {
 	SND_DINO_JUMP,
 	SND_DINO_LAND,
 	SND_COLLISION,
@@ -39,7 +34,7 @@ public:
 	~SoundManager();
 
 	void init();
-	void playSound(int id, int channel);
+	void playSound(int id);
 	void playMusic(int id);
 
 	int getCurrentPlayingMusic() const;

@@ -10,6 +10,7 @@
 #include "Score.h"
 
 #include "SDL_ttf.h"
+#include "SDL_video.h"
 #include "SDL.h"
 
 #include <sstream>
@@ -328,7 +329,7 @@ void Game::update() {
 	mDirtManager.update();
 
 	if (Collision::checkForCollisions()) {
-		mSoundManager.playSound(SND_COLLISION, CH_DINO);
+		mSoundManager.playSound(SND_COLLISION);
 
 		mPlayerFail = true;
 		Collision::mCollided = false;
@@ -379,14 +380,4 @@ bool Game::playerHasQuit() const {
 
 TextManager& Game::getTextManager() {
 	return mTextManager;
-}
-
-void playMusicWrapper(void* id) {
-	int* arg = (int*)id;
-	Game::mSoundManager.playMusic(*arg);
-}
-
-void playSoundWrapper(void* id) {
-	int* arg = (int*)id;
-	Game::mSoundManager.playSound(*arg, CH_DINO);
 }

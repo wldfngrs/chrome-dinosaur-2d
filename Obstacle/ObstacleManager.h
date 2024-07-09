@@ -8,6 +8,8 @@ class Entity;
 
 class ObstacleManager {
 	int mJustCollidedIndex = 0;
+	int justFieldedIndex = 0;
+	int nextToBeFieldedIndex = 0;
 	int mDistanceBetweenObstacles = 0;
 	int mMaxObstacleSpriteIndex = 2;
 

@@ -77,13 +77,13 @@ void Dino::startJump() {
 	mDucking = false;
 	mRunning = false;
 	
-	Game::mSoundManager.playSound(SND_DINO_JUMP, CH_DINO);
+	Game::mSoundManager.playSound(SND_DINO_JUMP);
 }
 
 void Dino::stopJump() {
 	mJumping = false;
 
-	Game::mSoundManager.playSound(SND_DINO_LAND, CH_DINO);
+	Game::mSoundManager.playSound(SND_DINO_LAND);
 }
 
 void Dino::startRun() {

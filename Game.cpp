@@ -130,7 +130,7 @@ void Game::showTitleScreen() {
 
 	while (mInLobby) {
 		SDL_RenderFillRect(Game::mGameRenderer, &subtitleRect);
-		
+
 		if (subtitleIsVisible) {
 			mTextManager.drawText_Static("press [SPACE] to start", CENTERED, 360, 18, 40, INSTANT);
 		}

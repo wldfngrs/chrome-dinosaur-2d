@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.15...3.27)
+cmake_minimum_required(VERSION 3.5)
 
-project(dinosaur CXX)
+project(DinoSaur)
 include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
 
@@ -29,18 +29,68 @@ enable_sanitizers(project_options)
 
 # allow for static analysis options
 include(cmake/StaticAnalyzers.cmake)
-add_executable(dinosaur_game)
 
+set(SDL2_DIR SDL2/cmake)
+set(SDL2_IMAGE_DIR SDL2_image/cmake)
+set(SDL2_MIXER_DIR SDL2_mixer/cmake)
+set(SDL2_TTF_DIR SDL2_ttf/cmake)
 
-target_sources(dinosaur_game PRIVATE src/main.cpp src/game.cpp src/obstacles.cpp src/player.cpp)
+find_package(SDL2 REQUIRED CONFIG PATHS ${SDL2_DIR})
+find_package(SDL2_image REQUIRED CONFIG PATHS ${SDL2_IMAGE_DIR})
+find_package(SDL2_mixer REQUIRED CONFIG PATHS ${SDL2_MIXER_DIR})
+find_package(SDL2_ttf REQUIRED CONFIG PATHS ${SDL2_TTF_DIR})
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(NCURSES
-    REQUIRED
-    IMPORTED_TARGET
-    ncurses)
+include_directories(SDL2/include)
+include_directories(SDL2_image/include)
+include_directories(SDL2_mixer/include)
+include_directories(SDL2_ttf/include)
 
-target_link_libraries(dinosaur_game PRIVATE PkgConfig::NCURSES project_options project_warnings)
+include_directories(
+      ${PROJECT_SOURCE_DIR}
+      Background
+      Core
+      Dino
+      Graphics
+      Obstacle
+      Physics
+      Physics
+      Sound
+      Text
+)
 
-include(cmake/CreateTargetLink.cmake)
-CreateTargetLink(dinosaur_game)
+add_executable(${PROJECT_NAME} Main.cpp
+      Game.h
+			Game.cpp
+			Background/BackgroundSprite.cpp
+      Background/DirtManager.h
+			Background/DirtManager.cpp
+      Core/EntityComponentSystem.h
+      Core/keyboardController.h
+      Core/Score.h
+			Core/Score.cpp
+      Core/SpriteComponent.h
+      Core/SpriteComponent.cpp
+      Core/TransformComponent.h
+      Dino/DinoSprite.cpp
+      Dino/DinoStates.h
+      Dino/States.h
+      Graphics/Sprites.h
+      Graphics/TextureManager.cpp
+      Graphics/TextureManager.h
+      Obstacle/ObstacleManager.cpp
+      Obstacle/ObstacleManager.h
+      Obstacle/ObstacleSprite.cpp
+      Physics/Collision.cpp
+      Physics/Collision.h
+      Physics/Vector2D.cpp
+      Physics/Vector2D.h
+      Sound/SoundManager.cpp
+      Sound/SoundManager.h
+      Text/Text.cpp
+      Text/Text.h
+)
+
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} SDL2_image::SDL2_image)
+target_link_libraries(${PROJECT_NAME} SDL2_mixer::SDL2_mixer)
+target_link_libraries(${PROJECT_NAME} SDL2_ttf::SDL2_ttf)

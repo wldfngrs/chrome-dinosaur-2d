@@ -29,10 +29,10 @@ class Game {
 
 	void handleEvents();
 
-	bool mInLobby;
-	bool mPlayerQuit;
-	bool mPlayerFail;
-	bool mInitDone;
+	bool mInLobby = false;
+	bool mPlayerQuit = false;
+	bool mPlayerFail = false;
+	bool mInitDone = false;
 
 	std::string mGameOverMessage;
 	std::string mInitErrorMessage;

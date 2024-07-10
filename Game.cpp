@@ -11,6 +11,7 @@
 
 #include "SDL_ttf.h"
 #include "SDL_video.h"
+#include "SDL_image.h"
 #include "SDL.h"
 
 #include <sstream>
@@ -87,6 +88,9 @@ int Game::initSDL() {
 		std::cerr << "[Error] Game::initSDL(): SDL_CreateRenderer() failed!\nDetails: " << SDL_GetError() << "\n";
 		return -1;
 	}
+
+	SDL_Surface* iconSurface = IMG_Load("Assets/icon.png");
+	SDL_SetWindowIcon(Game::mGameWindow, iconSurface);
 
 	return 0;
 }

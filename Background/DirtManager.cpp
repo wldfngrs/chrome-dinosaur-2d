@@ -84,7 +84,7 @@ void DirtManager::update() {
 			dirt.y = yDistr(gen);
 		}
 		else {
-			if (!positionIsOccupied(i, dirt.x - dirtVelocity - dirt.mWidth, dirt.y, dirt.mWidth)) {
+			if (!positionIsOccupied(i, dirt.x - mDirtVelocity - dirt.mWidth, dirt.y, dirt.mWidth)) {
 				dirt.x += mDirtVelocity;
 			}
 		}

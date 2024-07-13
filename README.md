@@ -28,17 +28,6 @@ $ cmake .. -G "Visual Studio 17 2022"
 $ cmake --build . --config Debug
 ```
 
-#### Makefiles
-
-The following commands generate and build the application project using Makefiles:
-
-```
-$ mkdir build_make
-$ cd build_make
-$ cmake .. -G "Unix Makefiles" ..
-$ make
-```
-
 For what it's worth, the project directory contains all of it's dependencies (SDL2, SDL2_image, SDL2_mixer, SDL2_ttf)so, you can get right to checking the project out, without much configuration trouble!
 
 Do not forget to copy the ``.dll`` files and `./Assets` directory from the project root directory to the folder containing your binary  after compiling and linking!

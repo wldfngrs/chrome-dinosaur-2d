@@ -24,7 +24,7 @@ The following commands generate and build the application project using the Visu
 ```
 $ mkdir build_vs
 $ cd build_vs
-$ cmake -G "Visual Studio 17 2022"
+$ cmake .. -G "Visual Studio 17 2022"
 $ cmake --build . --config Release
 ```
 
